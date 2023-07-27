@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/stile.css' %}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Login page</title>
+  </head>
+  <body>
+    <div class="video-container">
+      <video autoplay muted loop>
+        <source src= "{% static 'static_file/media2.mp4' %}" type="video/mp4" />
+
+        Il tuo browser non supporta la riproduzione di video HTML5.
+      </video>
+
+      <div class="content">
+        <!-- Il resto del contenuto della pagina -->
+        <div class="titolo_login_page">
+          <div class="text_login_page">Myw8 For Aesthetics</div>
+        </div>
+        <p class="text_sotto">Genetics Nutrition Coaching Program</p>
+      </div>
+    
+      <img
+        id="image_supdx"
+        class="image_login"
+        src= "{% static 'static_file/triangolosup.png' %}"
+        alt="Immagine"
+      />
+
+      <img
+        id="image_infsx"
+        class="image_login"
+        src= "{% static 'static_file/triangoloinf.png' %}"
+        alt="Immagine"
+      />
+
+      <div class="form-container">
+      
+        <form method="post", id="login-form">
+          {% csrf_token %}
+        
+          <div class="form-group" >
+            {%if error %}
+              {% if 'Username' in form_errors %}
+              <input class="input_login_error" type="text" id="Username" name="Username" placeholder="Username" autocomplete="current-password">
+              <p class="field-error-message">{{ form_errors.Username }}</p>
+              {% endif %}
+            {% else %}
+              <input class="input_login" type="text" id="Username" name="Username" placeholder="Username" autocomplete="current-password">
+            {% endif %}
+
+          </div>
+          <div class="form-group" autocomplete="off">
+            {%if error %}
+              {% if 'Password' in form_errors %}
+              <input  class="input_login_error" type="password" id="id_password" name="Password" placeholder="Password"  autocomplete="new-password" >
+              <p class="field-error-message">{{ form_errors.Password }}</p>
+              {% endif %}
+            {% else %}
+            <input  class="input_login" type="password" id="id_password" name="Password" placeholder="Password"  autocomplete="new-password">
+            {% endif %}
+              
+          </div>
+          <div class="form-group">
+              <button type="submit">Login</button>
+          </div>
+      </form>
+        
+      </div>
+
+      <div class="logo_login_page">
+        <img
+          id="image_logo"
+          class="image_login"
+          src= "{% static 'static_file/logo.png' %}"
+          alt="Immagine"
+        />
+      </div>
+    </div>
+  </body>
+
+  <script>
+    $(function() {
+      $('#login-form').disableAutoFill();
+    });
+    
+</script>
+</html>
