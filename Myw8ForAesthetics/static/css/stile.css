@@ -1,0 +1,234 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.video-container video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+}
+.container {
+  position: relative;
+}
+.content {
+  padding: 4px;
+  position: relative;
+  z-index: 1;
+
+  color: #fff;
+}
+
+.titolo_login_page {
+  position: relative;
+  
+  height: 8vh;
+  background-color: rgb(215, 212, 222);
+  border: 2px solid rgb(131, 113, 156);
+  border-radius: 15px 15px 15px 15px;
+}
+.logo_login_page {
+  position: absolute;
+  bottom: 2px;
+  width: 99%;
+  height: 8vh;
+  background-color: rgb(215, 212, 222);
+  border: 2px solid rgb(131, 113, 156);
+  border-radius: 15px 15px 15px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text_sotto {
+  color: white;
+  font-size: 30px; /* Dimensione del testo */
+  font-family: "Baskerville", cursive;
+  text-align: center;
+  z-index: 2;
+  text-decoration: underline;
+}
+
+#image_ragazza {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+#image_supdx {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-top: 2px;
+  margin-right: 0;
+}
+
+#image_infsx {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding-bottom: 2px;
+  margin-left: 0;
+}
+
+#image_logo {
+  position: relative;
+  height: 90%;
+  width: auto;
+}
+
+.image_login {
+  width: 20vw;
+  height: 20vw;
+  margin: 2px;
+  z-index: 1;
+}
+.text_login_page {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(131, 113, 156); /* Colore del testo */
+  font-size: 40px; /* Dimensione del testo */
+  font-family: "Round Hand", cursive;
+  text-align: center;
+  z-index: 2;
+}
+
+.form-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40vw; /* Larghezza del form */
+  height: auto;
+}
+
+.form-group {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input_login {
+  background-color: rgb(215, 212, 222); /* Colore di sfondo del form */
+  width: 100%;
+  height: auto;
+  padding: 20px; /* Spaziatura interna del form */
+  font-family: "Baskerville", cursive;
+  text-align: center;
+  font-size: 40px;
+  border: 2px solid rgb(131, 113, 156);
+  border-radius: 20px 20px 20px 20px;
+  outline: blueviolet;
+}
+
+.input_login::placeholder {
+  color: rgb(131, 113, 156);
+}
+
+.input_login input[type="text"] {
+  font-family: "Baskerville", cursive;
+}
+
+
+.input_login_error {
+  background-color: rgb(215, 212, 222); /* Colore di sfondo del form */
+  width: 100%;
+  height: auto;
+  padding: 20px; /* Spaziatura interna del form */
+  font-family: "Baskerville", cursive;
+  text-align: center;
+  font-size: 40px;
+  border: 2px solid #8A0000;
+  border-radius: 20px 20px 20px 20px;
+  outline: blueviolet;
+}
+
+button {
+  padding: 10px 20px;
+  width: 60%;
+  height: auto; /* Larghezza del form */
+  background-color: rgb(215, 212, 222);
+  color: rgb(131, 113, 156);
+  border: 2px solid rgb(131, 113, 156);
+  border-radius: 20px 20px 20px 20px;
+  font-family: "Baskerville", cursive;
+  text-align: center;
+  font-size: 30px;
+  padding: 20px;
+}
+
+@font-face {
+  font-family: "Round Hand";
+  src: url("static_file/fonts/SnellBt-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Baskerville";
+  src: url("static_file/fonts/baskvl.ttf") format("truetype");
+}
+
+
+.field-error-message {
+  background-color: rgb(215, 212, 222);
+  color: #570000;
+  padding: 4px;
+  border-radius: 20px 20px 20px 20px;
+  font-family: "Baskerville", cursive;
+}
+
+/* Media query per regolare la dimensione del testo */
+@media (max-width: 700px) {
+  .text_login_page {
+    font-size: 1.8em; /* Dimensione del testo per larghezza < 600px */
+  }
+
+  .form-container {
+    width: 30vw; /* Larghezza del form */
+  }
+  .image_login {
+    width: 25vw;
+    height: 25vw;
+    margin: 2px;
+  }
+
+  .input_login {
+    font-size: 1.8em;
+  }
+}
+
+@media (max-width: 400px) {
+  .text_login_page {
+    font-size: 1.4; /* Dimensione del testo per larghezza < 400px */
+  }
+
+  .image_login {
+    width: 30vw;
+    height: 30vw;
+    margin: 2px;
+  }
+  .form-container {
+    width: 18vw; /* Larghezza del form */
+  }
+
+  .input_login {
+    font-size: 1em;
+  }
+}
