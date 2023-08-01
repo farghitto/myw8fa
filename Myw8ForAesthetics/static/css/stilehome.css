@@ -1,0 +1,453 @@
+@font-face {
+  font-family: "Round Hand";
+  src: url("static_file/fonts/SnellBt-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Baskerville";
+  src: url("static_file/fonts/baskvl.ttf") format("truetype");
+}
+
+/* 1rem = 16px / 0.5rem = 8px / */
+header {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#page {
+  display: flex;
+  justify-content: center;
+}
+
+#conteiner {
+  display: flex;
+  margin: 0;
+  position: relative;
+  height: 77vh;
+  flex-direction: column;
+}
+
+#info_conteiner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  flex-grow: 1;
+  height: 99%;
+  padding: 1%;
+  width: 100%;
+}
+
+#info_grid_conteiner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 5%;
+  width: 100%;
+  height: 100%;
+  padding: 1%;
+}
+
+#graph_conteiner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  width: 40%;
+  height: 100%;
+  padding: 1%;
+}
+
+#news_rect {
+  width: 100%;
+  height: 25%;
+  margin: 0;
+}
+
+.purple_rect {
+  background-color: #d7d4de;
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+}
+#text_header_rect {
+  z-index: 0;
+  width: 88vw;
+  margin: 1.2rem;
+}
+
+#menu_text_button {
+  font-size: 1.5rem;
+  font-family: Round Hand, cursive;
+  text-align: center;
+  color: #83719c;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+.purple_square {
+  background-color: #d7d4de;
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+
+  width: 100%;
+  height: 50%;
+}
+#graph {
+  width: 99%;
+  height: 78%;
+}
+#info_graph {
+  width: 80%;
+  height: 47%;
+}
+
+.element {
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+  background-color: #d7d4de;
+
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#text_header {
+  font-size: 1.5rem;
+  /* font-family: "Baskerville", cursive; */
+  font-family: Round Hand, cursive;
+  text-align: center;
+  color: #83719c; /* anche nero*/
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+#text_info_grid {
+  font-size: 1.5rem;
+  /* font-family: "Baskerville", cursive; */
+  font-family: Round Hand, cursive;
+  text-align: center;
+  color: #83719c; /* anche nero*/
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+#image_supdx {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 0;
+}
+
+#image_infsx {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+}
+
+.image_login {
+  width: 15vw;
+  height: 15vw;
+  z-index: 1;
+}
+
+#el1p {
+  border: solid 0.2rem;
+  border-radius: 0.7rem;
+  border-color: #83719c;
+  margin: 0;
+  padding: 0.8rem;
+  width: 80%;
+  font-family: "Baskerville", cursive;
+  text-align: center;
+}
+
+#el1h {
+  border: solid 0.2rem;
+  border-radius: 0.7rem;
+  border-color: #83719c;
+  margin: 0;
+  padding: 1rem;
+  width: 80%;
+  font-family: "Baskerville", cursive;
+  text-align: center;
+}
+
+@keyframes boldAnimation {
+  0% {
+    font-weight: normal;
+  }
+  50% {
+    font-weight: bold;
+  }
+  100% {
+    font-weight: normal;
+  }
+}
+
+.animated-text {
+  animation: boldAnimation 2s infinite;
+}
+
+#text_news {
+  font-family: "Baskerville", cursive;
+  text-align: center;
+  width: 80%;
+}
+
+#text_title_news {
+  font-family: "Baskerville", cursive;
+  text-align: center;
+}
+
+/* CSS */
+.button_personalizzato {
+  align-items: center;
+  appearance: none;
+  background-color: #d7d4de;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+
+  font-weight: 500;
+  width: 80%;
+  height: 49%;
+  justify-content: center;
+  letter-spacing: 0.25px;
+  line-height: normal;
+
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.button_personalizzato:hover {
+  background: #d7d4de;
+  color: #3d3b53;
+}
+
+.button_personalizzato:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%),
+    0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+}
+
+.button_personalizzato:focus {
+  outline: none;
+  border: 2px solid #83719c;
+}
+
+.button_personalizzato:not(:disabled) {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button_personalizzato:not(:disabled):hover {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 2px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 6px 10px 4px;
+}
+
+.button_personalizzato:not(:disabled):focus {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button_personalizzato:not(:disabled):active {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+}
+
+.button_personalizzato:disabled {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+#image_logo {
+  position: relative;
+  height: 10%;
+  width: 10%;
+}
+
+#footer_rect {
+  margin-top: 1rem;
+  background-color: white;
+  border: 0.1rem solid white;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0px;
+  width:100%;
+}
+
+#button_prize {
+  width: 98%;
+  height: 20%;
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+}
+
+#button_element {
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+  background-color: #d7d4de;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  justify-content: space-evenly;
+  text-decoration: none;
+}
+
+#button_side {
+  width: 10%;
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+  background-color: #d7d4de;
+  text-align: center;
+}
+
+#pers1 {
+  background-color: #83719c !important;
+  height: 100%;
+}
+
+.nav-link {
+  color: #d7d4de !important;
+}
+
+/* nav */
+
+#nav_logo_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidenav-header {
+  height: 4.875rem;
+  display: flex;
+  align-items: center;
+}
+.nav_user_link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #d7d4de;;
+  /* transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out;
+} */
+}
+
+.nav_user_link:hover,
+.nav_user_link:focus {
+  color: #d7d4de;
+}
+
+.nav_menu_link {
+  display: flex;
+  align-items: center;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  font-weight: 500;
+  padding-top: 0.4rem;
+  padding-bottom: 0.3rem;
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  font-family: "Baskerville", cursive;
+
+  /* transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out; */
+}
+
+.nav_menu_link:hover,
+.nav_menu_link:focus {
+  background-color: rgba( 255, 255, 255, 0.08); /* Imposta l'opacità sullo sfondo */
+  color: rgba(255, 255, 255, 1); /* Imposta il colore del testo */
+}
+.icon{
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.avatar {
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  border-radius: 50rem;
+  height: 48px;
+  width: 48px;
+  transition: all 0.2s ease-in-out;
+}
+
+.avatar img {
+  width: 100%;
+}
+
+.avatar + .avatar-content {
+  display: inline-block;
+  margin-left: 0.75rem;
+}
+
+.avatar.avatar-raised {
+  margin-top: -24px;
+}
+
+.nav-link-text{
+  padding-left: 3rem;
+
+}
+
+.sidenav-footer{
+  color: #d7d4de;
+  text-align: center;
+  font-family: "Baskerville", cursive;
+
+}
+
+.nav_user_chat {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  padding-top: 0.4rem;
+  padding-bottom: 0.3rem;
+  text-decoration: none;
+  color: white;
+  font-family: "Baskerville", cursive;
+ 
+  /* transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out; */
+}
+
+.nav_user_chat:hover,
+.nav_user_chat:focus {
+  background-color: rgba( 255, 255, 255, 0.08); /* Imposta l'opacità sullo sfondo */
+  color: rgba(255, 255, 255, 1); /* Imposta il colore del testo */
+}
