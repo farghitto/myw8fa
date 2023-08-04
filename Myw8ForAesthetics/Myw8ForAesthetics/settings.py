@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
+    'multiselectfield',
+
     'utente',
+    'clienti',
+    'amministrazione',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +61,9 @@ ROOT_URLCONF = 'Myw8ForAesthetics.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                 os.path.join(BASE_DIR, 'utente/templates'),
+                 os.path.join(BASE_DIR, 'clienti/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'utente.context_processors.base_template_name_context_processor'
             ],
         },
     },
@@ -85,7 +92,7 @@ DATABASES = {
         'HOST': '192.168.76.200',
         'PORT': '3306',
     }
-}   
+}
 
 
 # Password validation

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Opzioni Clienti {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect' style='visibility: hidden'>
+        <p id="text_header" class="text"></p>
+    </div>
+
+{% endblock header%}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/stilethreerect.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+  
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+    <div id='conteiner_two_rect'> 
+
+        <a href="{% url 'clienti:tipocliente' %}" style="text-decoration: none;" class = 'botton_rect'>
+                
+                <p class= 'text_button_select_client'><span>Cliente</span><br><span>Privato</span></p>
+                <img
+                class="button_select_client_img"
+                src="{% static 'static_file/privati.png'%}"
+                alt="Immagine"
+                />
+                <p class= 'text_button_select_client_type' > Il cliente è una persona fisica</p>              
+        </a>
+
+        <a href="{% url 'clienti:tipocliente' %}" style="text-decoration: none;" class = 'botton_rect'>
+                
+            <p class= 'text_button_select_client'><span>Cliente con</span><br><span>Partita Iva</span></p>
+            <img
+            class="button_select_client_img"
+            src="{% static 'static_file/piva.png'%}"
+            alt="Immagine"
+            />
+            <p class= 'text_button_select_client_type' > Il cliente è una personaa giuridica </p>          
+        </a>
+
+        <a href="{% url 'clienti:tipocliente' %}" style="text-decoration: none;" class = 'botton_rect'>
+                    
+            <p class= 'text_button_select_client'><span>Cliente</span><br><span>Minorenne</span></p>
+                <img
+                class="button_select_client_img"
+                src="{% static 'static_file/tutore.png'%}"
+                alt="Immagine"
+                />
+                <p class= 'text_button_select_client_type' > Il cliente è un minorenne o un incapace </p>         
+        </a>
+
+    </div>
+
+{% endblock %}
+{% block script %}
+   
+
+{% endblock script %}

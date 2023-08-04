@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Homepage {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect'>
+        <p id="text_header" class="text"> Ti diamo il benvenuto in questa schermata trovi il riepilogo di tutta la tua attivita con noi</p>
+    </div> 
+{% endblock header%}
+{% block scriptlibrerie %}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+                <div id = 'conteiner'>
+                    <div id="info_conteiner">
+                        <div id ='info_grid_conteiner'>
+                            <a href="charts1.html" style="text-decoration: none;">
+                                <button id="button_element" class="button_personalizzato" role="button">
+                                <p id="el1p">Totale Fatturato</p>
+                                <h2 id="el1h">16700</h2>
+                                </button>
+                            </a>
+                            <a href="charts2.html" style="text-decoration: none;">
+                                <button id="button_element" class="button_personalizzato" role="button">
+                                <p id = "el1p"> Totale Clienti</p>
+                                <h2 id = "el1h"> 16700</h2>  
+                                </button>
+                            </a>
+                                <button id="button_element" class="button_personalizzato" role="button">
+                                <p id = "el1p"> Totale Fatturato</p>
+                                <h2 id = "el1h"> 16700</h2>  
+                                </button>
+                                <button id="button_element" class="button_personalizzato" role="button">
+                                <p id = "el1p"> Totale Fatturato</p>
+                                <h2 id = "el1h"> 16700</h2>  
+                                </button>
+                                <button id="button_element" class="button_personalizzato" role="button">
+                                <p id = "el1p"> Totale Fatturato</p>
+                                <h2 id = "el1h"> 16700</h2>  
+                                </button>
+                                <button id="button_element" class="button_personalizzato" role="button">
+                                <p id = "el1p"> Totale Fatturato</p>
+                                <h2 id = "el1h"> 16700</h2>  
+                                </button>
+                                <button id="button_element" class="button_personalizzato" role="button">
+                                <p id = "el1p"> Totale Fatturato</p>
+                                <h2 id = "el1h"> 16700</h2>  
+                                </button>
+                                <button id="button_element" class="button_personalizzato" role="button">
+                                <p id = "el1p"> Totale Fatturato</p>
+                                <h2 id = "el1h"> 16700</h2>  
+                                </button>
+                        </div>
+                        <div id="graph_conteiner">
+                            <div id="graph" class = 'purple_square'>
+                                <div id = 'chart'></div>
+                            </div>
+                            <button id="button_prize" class="button_personalizzato" role="button">Richiedi Premio</button>
+                        </div>         
+                    </div>
+                        <div id="news_rect" class = 'element'>
+                        <h4 id="text_title_news" class="animated-text"> News</h4>
+                        <h4 id="text_news">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias officiis facere omnis reprehenderit pariatur quibusdam eveniet aliquid amet itaque accusamus eaque minus consequuntur, adipisci veritatis soluta et, minima architecto!</h4>
+                    </div>
+                </div> 
+{% endblock %}
+{% block script %}
+    <script>
+
+        var options = {
+            series: [99],
+            chart: {
+            height: '125%',
+            
+            type: 'radialBar',
+            offsetY: -10
+        },
+        plotOptions: {
+            radialBar: {
+            startAngle: -100,
+            endAngle: 100,
+            dataLabels: {
+                name: {
+                fontSize: '16px',
+                color: undefined,
+                offsetY: 120
+                },
+                value: {
+                offsetY: 76,
+                fontSize: '22px',
+                color: 'black',
+                formatter: function (val) {
+                    return val + "%";
+                }
+                }
+            }
+            }
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'dark',
+                gradientToColors: ['#f9bc2c'],
+                type: 'horizontal',
+                shadeIntensity: 0,
+                inverseColors: false,
+                opacityFrom: 1,
+                opacityTo: 1,
+                stops: [0,50,100]
+                
+            },
+            colors: ['#FFFF00', '#FFD700']
+            
+        },
+        states: {
+            hover: {
+                filter: {
+                    type: 'none',
+                }
+            },
+            
+            active: {
+                filter: {
+                    type: 'none',
+                }
+            },
+            
+        },
+
+        stroke: {
+            dashArray: 4
+        },
+        labels: ['Obiettivo'],
+        colors:['black', '#83719C']
+        
+        }; 
+
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();   
+    </script>
+
+{% endblock script %}
