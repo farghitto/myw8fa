@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Nuovo Clienti {% endblock title %}
+{% block header %}
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text"> Nuovo Cliente </p>
+</div> 
+
+{% endblock header%}
+{% block css %}
+   
+{% endblock css %}
+{% block scriptlibrerie %}
+  
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+<div class="form-container">
+    <form method="post" novalidate>{% csrf_token %}
+        <div class="form-floating mb-3">
+            {% if form.is_bound %}
+                {% if form.nome.errors %}
+                      {% render_field form.nome class="form-control is-invalid" %}
+                      {% for error in form.nome.errors  %}
+                        <div class="invalid-feedback">
+                          {{ error }}
+                        </div>
+                      {% endfor %}
+                {% else %}
+                    {% render_field form.nome class="form-control is-valid" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.nome class="form-control" %}
+             {% endif %}
+             <label for="{{ form.nome.id_for_label }}">{{ form.nome.label_tag }}</label>
+        </div>
+      <button type="submit">Crea</button>
+    </form>
+  </div>
+
+{% endblock %}
+{% block script %}
+   
+
+{% endblock script %}

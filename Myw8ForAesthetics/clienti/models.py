@@ -1,5 +1,5 @@
 from django.db import models
-from utente.models import Anagrafica
+from utente.models import AnagraficaUtente
 # from amministrazione.models import Alimenti
 from multiselectfield import MultiSelectField
 
@@ -33,7 +33,7 @@ class Cliente(models.Model):
 
     """ Consulente """
     consulente = models.ForeignKey(
-        Anagrafica, on_delete=models.SET_NULL, null=True)
+        AnagraficaUtente, on_delete=models.SET_NULL, null=True)
 
     """ Date modifica """
     data_creazione = models.DateTimeField(auto_now_add=True)
