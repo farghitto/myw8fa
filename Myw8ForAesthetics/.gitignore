@@ -6,8 +6,8 @@
 # Node artifact files
 
 utenti/migrations/
-myenv
-/myenv
+myenv/
+/myenv/
 
 
 
