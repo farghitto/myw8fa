@@ -1,10 +1,10 @@
 @font-face {
   font-family: "Round Hand";
-  src: url("static_file/fonts/SnellBt-Regular.otf") format("opentype");
+  src: url("/static/static_file/fonts/SnellBt-Regular.otf") format("opentype");
 }
 @font-face {
   font-family: "Baskerville";
-  src: url("static_file/fonts/baskvl.ttf") format("truetype");
+  src: url("/static/static_file/fonts/baskvl.ttf") format("truetype");
 }
 
 /* 1rem = 16px / 0.5rem = 8px / */
@@ -451,3 +451,31 @@ header {
   background-color: rgba( 255, 255, 255, 0.08); /* Imposta l'opacità sullo sfondo */
   color: rgba(255, 255, 255, 1); /* Imposta il colore del testo */
 }
+
+
+.font-custom {
+  font-family: "Baskerville", cursive;
+}
+
+.bottone_viola {
+    width: 20%;
+    border: 0.1rem solid #83719c;
+    border-radius: 1rem;
+    background-color: #d7d4de;
+    text-align: center;
+    padding: 4px;
+    vertical-align: middle;
+}
+
+
+
+.bottone_viola:hover,
+.bottone_viola:focus,
+.bottone_viola:active{
+  outline: none;
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+  background-color: #d7d4de;
+}
+
+    

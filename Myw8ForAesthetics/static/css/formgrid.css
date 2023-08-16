@@ -1,0 +1,36 @@
+.grid-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Due colonne con larghezza flessibile */
+    gap: 1rem; /* Spazio tra le celle */
+   
+    margin: 0 auto; /* Centra il form orizzontalmente */
+    margin-top: 1%;
+  }
+  
+ 
+  
+  .form-control {
+    width: 100%; /* Riempi completamente la cella */
+    padding: 0.5rem; /* Spaziatura interna */
+    font-family: 'Baskerville',cursive;
+  }
+ 
+  .invalid-feedback {
+
+    font-family: 'Baskerville',cursive;
+
+  }
+  
+  #bottoni_griglia
+  {
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 2%;
+    
+    
+  }
+  
+  
+  
