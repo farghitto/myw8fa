@@ -24,7 +24,7 @@
   #bottoni_griglia
   {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 2%;
@@ -32,5 +32,19 @@
     
   }
   
-  
+  .form-container
+  {
+    
+    height: 120vh; /* Altezza al 100% della viewport */
+    overflow: auto; /* Aggiunge le barre di scorrimento se il contenuto supera l'area visibile */
+    padding-top: 20px; /* Margine interno per separare il contenuto dai bordi */
+    padding-left: 6vw;
+    padding-right: 6vw;
+    box-sizing: border-box;
+    
+  }
+
+  .bottone_viola {
+    margin: 3%;
+}
   

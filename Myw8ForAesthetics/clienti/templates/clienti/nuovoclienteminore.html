@@ -20,7 +20,7 @@
 {% block content %}
    
 <div class="form-container">
-  <form  method="post" novalidate>{% csrf_token %}
+  <form class="form-grid" method="post" novalidate>{% csrf_token %}
     <div class="grid-form">
 
       <div class="form-floating mb-3">
@@ -229,8 +229,78 @@
       </div>
 
       <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.beneficiario_nome.errors %}
+            {% render_field form.beneficiario_nome class="form-control is-invalid" %}
+            {% for error in form.beneficiario_nome.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.beneficiario_nome class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.beneficiario_nome class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.beneficiario_nome.id_for_label }}">{{ form.beneficiario_nome.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.beneficiario_cognome.errors %}
+            {% render_field form.beneficiario_cognome class="form-control is-invalid" %}
+            {% for error in form.beneficiario_cognome.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.beneficiario_cognome class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.beneficiario_cognome class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.beneficiario_cognome.id_for_label }}">{{ form.beneficiario_cognome.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+     
+            {% render_field form.beneficiario_cellulare class="form-control" %}
+        
+        <label class="font-custom" for="{{ form.beneficiario_cellulare.id_for_label }}">{{ form.beneficiario_cellulare.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.beneficiario_codice_fiscale.errors %}
+            {% render_field form.beneficiario_codice_fiscale class="form-control is-invalid" %}
+            {% for error in form.beneficiario_codice_fiscale.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.beneficiario_codice_fiscale class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.beneficiario_codice_fiscale class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.beneficiario_codice_fiscale.id_for_label }}">{{ form.beneficiario_codice_fiscale.label_tag }}</label>
+      </div>
+
+     
+      <div class="form-floating mb-3">
        
-      </div> 
+      </div>
+      
+      <div class="form-floating mb-3">
+       
+      </div>
+
+      <div class="form-floating mb-3">
+       
+      </div>
 
       <div class="form-floating mb-3">
       
@@ -238,6 +308,8 @@
     
         <label class="font-custom" for="{{ form.note.id_for_label }}">{{ form.note.label_tag }}</label>
       </div>
+
+      
 
     </div>
 

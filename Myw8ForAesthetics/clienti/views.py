@@ -2,21 +2,25 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 
 from codicefiscale import codicefiscale
 
 from .models import Cliente
-from .form import FormCliente
+from .form import FormCliente, FormClientePiva, FormClienteMinore
 
 
 def sceltacliente(request):
 
     return render(request, 'clienti/opzioniclienti.html')
 
-
 def sceltamenu(request):
 
     return render(request, 'clienti/sceltaregistrazione.html')
+
+def sceltapostcliente(request):
+
+    return render(request, 'clienti/sceltadoporegistrazione.html')
 
 
 class ClienteView(CreateView):  # classe per la creazione del cliente
@@ -24,16 +28,22 @@ class ClienteView(CreateView):  # classe per la creazione del cliente
     model = Cliente
     form_class = FormCliente
     template_name = 'clienti/nuovocliente.html'
-    success_url = '/clienti/elencoclienti'
+    success_url = reverse_lazy ('clienti:postcliente')
 
 
+class ClientePivaView(CreateView):  # classe per la creazione del cliente
 
-    def form_valid(self, form):
+    model = Cliente
+    form_class = FormClientePiva
+    template_name = 'clienti/nuovoclientepiva.html'
+    success_url = reverse_lazy ('clienti:postcliente')
 
-        dati = form.save(commit=False)
-        dati.data_nascita = form.cleaned_data['data_di_nascita']
-        dati.save()
-        return super().form_valid(form)
+class ClienteMinoreView(CreateView):  # classe per la creazione del cliente
+
+    model = Cliente
+    form_class = FormClienteMinore
+    template_name = 'clienti/nuovoclienteminore.html'
+    success_url = reverse_lazy ('clienti:postcliente')
 
 
 
