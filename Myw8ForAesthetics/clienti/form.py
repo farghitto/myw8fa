@@ -244,7 +244,13 @@ class FormClienteMinore(forms.ModelForm):
                     
         return cleaned_data
         
-        
+class ClientiSearchForm(forms.Form):
+    
+    search_query = forms.CharField(
+        label='Cerca:',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Cerca'}),
+    )
         
    
     

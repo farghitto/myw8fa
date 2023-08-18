@@ -350,6 +350,9 @@ header {
   height: 4.875rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  
+  
 }
 .nav_user_link {
   display: flex;
@@ -478,4 +481,10 @@ header {
   background-color: #d7d4de;
 }
 
-    
+#image_barra
+{
+  position: relative;
+  height: auto;
+  width: 12vw;
+  padding-top:2%;
+}

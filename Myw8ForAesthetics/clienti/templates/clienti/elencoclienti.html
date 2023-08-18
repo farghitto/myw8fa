@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Elenco Clienti {% endblock title %}
+{% block header %}
+
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text"> Elenco Clienti </p>
+</div>
+
+{% endblock header%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/clientesearch.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+ 
+{% endblock scriptlibrerie %}
+{% block content %}
+   
+<div class="elenco-container">
+    <h3 id = "cliente_search">Cerca Cliente</h3>
+    <form method="get" novalidate>
+        <div id= 'form_cerca'>
+            <div class="form-floating mb-3">
+                
+                {% render_field form.search_query class="form-control" %}
+                <label class="font-custom" for="{{ form.search_query.id_for_label }}">{{ form.search_query.label_tag }}</label>
+
+            </div>
+            <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Cerca </p></button>
+        </div>
+        
+  
+        
+    </form>
+
+    {% if risultato %}
+
+        <ul>
+            {% for cliente in risultato %}
+                <li>{{ cliente.nome }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+</div>
+
+{% endblock %}
+{% block script %}
+
+
+  
+{% endblock script %}

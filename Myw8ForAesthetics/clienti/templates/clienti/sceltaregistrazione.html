@@ -19,7 +19,7 @@
 {% block content %}
    
     <div id='conteiner_two_rect'> 
-        <a href="{% url 'clienti:tipocliente' %}" style="text-decoration: none;" class = 'botton_rect'>
+        <a href= "{% url 'clienti:tipocliente' %}" style="text-decoration: none;" class = 'botton_rect'>
                 
                 <p class= 'text_button_select_client'>Nuovo Clienti</p>
                 <img
@@ -27,9 +27,9 @@
                 src="{% static 'static_file/nuovo_cliente.png'%}"
                 alt="Immagine"
                 />       
-        
+                
         </a>
-        <a href=# style="text-decoration: none;" class = 'botton_rect'>
+        <a href= "{% url 'clienti:search_clienti' %}" style="text-decoration: none;" class = 'botton_rect'>
             
                 <p class= 'text_button_select_client'>Elenco Clienti</p>
                 <img

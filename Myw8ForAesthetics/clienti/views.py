@@ -8,6 +8,7 @@ from codicefiscale import codicefiscale
 
 from .models import Cliente
 from .form import FormCliente, FormClientePiva, FormClienteMinore
+from .form import ClientiSearchForm
 
 
 def sceltacliente(request):
@@ -78,3 +79,17 @@ def get_codice_fiscale(request):
             }
     
     return JsonResponse(data)
+
+
+def search_clienti(request):
+    
+    form = ClientiSearchForm(request.GET)
+    risultato = []
+
+    if form.is_valid():
+        search_query = form.cleaned_data['search_query']
+        risultato = Cliente.objects.filter(cognome__istartswith=search_query)
+    else:    
+        risultato = Cliente.objects.all()
+
+    return render(request, 'clienti\elencoclienti.html', {'form': form, 'risultato': risultato})
