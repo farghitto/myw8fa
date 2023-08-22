@@ -3,6 +3,7 @@ from django.views.generic import CreateView
 
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.core.paginator import Paginator
 
 from codicefiscale import codicefiscale
 
@@ -88,8 +89,25 @@ def search_clienti(request):
 
     if form.is_valid():
         search_query = form.cleaned_data['search_query']
-        risultato = Cliente.objects.filter(cognome__istartswith=search_query)
+        elementi = Cliente.objects.filter(cognome__istartswith=search_query)
     else:    
-        risultato = Cliente.objects.all()
+        elementi = Cliente.objects.all()
+    
+    
+    # Imposta il numero di elementi da visualizzare per pagina
+    paginator = Paginator(elementi, 8)  # Ad esempio, 10 elementi per pagina
+    
+    page_number = request.GET.get('page')  # Ottieni il numero di pagina dalla query string
+    page_obj = paginator.get_page(page_number)
+    
 
-    return render(request, 'clienti\elencoclienti.html', {'form': form, 'risultato': risultato})
+    
+    
+    
+    context = {
+        'page_obj': page_obj,
+        'elementi': elementi,
+        'form': form
+        }
+
+    return render(request, 'clienti\elencoclienti.html', context)

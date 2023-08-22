@@ -20,10 +20,10 @@
 {% block content %}
    
 <div class="elenco-container">
-    <h3 id = "cliente_search">Cerca Cliente</h3>
+    
     <form method="get" novalidate>
         <div id= 'form_cerca'>
-            <div class="form-floating mb-3">
+            <div class="form-floating">
                 
                 {% render_field form.search_query class="form-control" %}
                 <label class="font-custom" for="{{ form.search_query.id_for_label }}">{{ form.search_query.label_tag }}</label>
@@ -35,16 +35,51 @@
   
         
     </form>
-
-    {% if risultato %}
-
-        <ul>
-            {% for cliente in risultato %}
-                <li>{{ cliente.nome }}</li>
+    <div class =' table_conteiner'>   
+        <table class = "tabella_cliente">
+           
+            {% for elemento in page_obj %}
+                <tr>
+                    <td><p id = 'table_text_button'> {{ elemento.nome }}</p></td>
+                    <td><p id = 'table_text_button'>{{ elemento.cognome }}</p></td>
+                    <td>
+                        <div class="button_conteiner">
+                            <button id= 'button_info' class="bottone_clienti" type="submit"><p id = 'menu_text_button'> Informazioni </p></button>
+                            <button id= 'button_accordo' class="bottone_clienti" type="submit"><p id = 'menu_text_button'> Accordo </p></button>
+                            <button id= 'button_bmi' class="bottone_clienti" type="submit"><p id = 'menu_text_button'> BMI </p></button>
+                        </div>
+                    </td>
+                </tr>
             {% endfor %}
-        </ul>
-    {% endif %}
-    
+        </table>
+        
+        <div class="pagination">
+            <span class="step-links left">
+                {% if page_obj.has_previous %}               
+                    <!--  <a href="?page=1">&laquo; prima</a> -->
+                    <a href="?page={{ page_obj.previous_page_number }}">Precedente</a>
+                {% else %}
+                    <a href="" style='visibility: hidden'>Precedente</a>
+                {% endif %}
+            </span>
+            
+            <span class="step-links center">
+                <span class="current-page">
+                    Pagina {{ page_obj.number }} di {{ page_obj.paginator.num_pages }}.
+                </span>
+            </span>
+            
+            <span class="step-links right">
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Successiva</a>
+                    <!--<a href="?page={{ page_obj.paginator.num_pages }}">ultima &raquo;</a> -->
+                {% else %}
+                <a href="" style='visibility: hidden'>Successiva</a>
+                {% endif %}
+            </span>
+        </div>
+
+    </div>
 </div>
 
 {% endblock %}

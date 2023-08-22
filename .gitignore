@@ -6,6 +6,7 @@
 # Node artifact files
 
 utenti/migrations/
+clienti/migrations
 myenv/
 /myenv/
 myw8fa\myenv
