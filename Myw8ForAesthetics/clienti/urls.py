@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import sceltamenu, sceltacliente, sceltapostcliente
 from .views import ClienteView, ClientePivaView, ClienteMinoreView
-from .views import get_codice_fiscale,search_clienti
+from .views import get_codice_fiscale,search_clienti, crea_cliente
 
 app_name = 'clienti'
 
@@ -11,7 +11,7 @@ urlpatterns = [
     path('tipo', sceltacliente, name='tipocliente'),
     path('post', sceltapostcliente, name='postcliente'),
     
-    path('nuovo', ClienteView.as_view(), name='nuovocliente'),
+    path('nuovo', crea_cliente, name='nuovocliente'),
     path('nuovopiva', ClientePivaView.as_view(), name='nuovoclientepiva'),
     path('nuovominore', ClienteMinoreView.as_view(), name='nuovoclienteminore'),
     

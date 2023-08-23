@@ -47,8 +47,10 @@
           <div class="form-group" >
             {%if error %}
               {% if 'Username' in form_errors %}
-              <input class="input_login_error" type="text" id="Username" name="Username" placeholder="Username" autocomplete="current-password">
-              <p class="field-error-message">{{ form_errors.Username }}</p>
+                <input class="input_login_error" type="text" id="Username" name="Username" placeholder="Username" autocomplete="current-password">
+                <p class="field-error-message">{{ form_errors.Username }}</p>
+              {% else %}
+                <input class="input_login" type="text" id="Username" name="Username" placeholder="Username" autocomplete="current-password">
               {% endif %}
             {% else %}
               <input class="input_login" type="text" id="Username" name="Username" placeholder="Username" autocomplete="current-password">
@@ -58,11 +60,13 @@
           <div class="form-group" autocomplete="off">
             {%if error %}
               {% if 'Password' in form_errors %}
-              <input  class="input_login_error" type="password" id="id_password" name="Password" placeholder="Password"  autocomplete="new-password" >
-              <p class="field-error-message">{{ form_errors.Password }}</p>
+                <input  class="input_login_error" type="password" id="id_password" name="Password" placeholder="Password"  autocomplete="new-password" >
+                <p class="field-error-message">{{ form_errors.Password }}</p>
+              {% else %}
+                <input  class="input_login" type="password" id="id_password" name="Password" placeholder="Password"  autocomplete="new-password">
               {% endif %}
             {% else %}
-            <input  class="input_login" type="password" id="id_password" name="Password" placeholder="Password"  autocomplete="new-password">
+              <input  class="input_login" type="password" id="id_password" name="Password" placeholder="Password"  autocomplete="new-password">
             {% endif %}
               
           </div>
