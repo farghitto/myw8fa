@@ -21,36 +21,45 @@
     <div id='conteiner_two_rect'> 
 
         <a href="{% url 'clienti:nuovocliente' %}" style="text-decoration: none;" class = 'botton_rect'>
-                
+            <div class="txt_top">
                 <p class= 'text_button_select_client'><span>Cliente</span><br><span>Privato</span></p>
+            </div>
+            <div class= "image_three">
                 <img
                 class="button_select_client_img"
                 src="{% static 'static_file/privati.png'%}"
                 alt="Immagine"
                 />
-                <p class= 'text_button_select_client_type' > Il cliente è una persona fisica</p>              
+                <p class= 'text_button_select_client_type' > Il cliente è una persona fisica</p>
+            </div>              
         </a>
 
         <a href= "{% url 'clienti:nuovoclientepiva' %}" style="text-decoration: none;" class = 'botton_rect'>
-                
-            <p class= 'text_button_select_client'><span>Cliente con</span><br><span>Partita Iva</span></p>
-            <img
-            class="button_select_client_img"
-            src="{% static 'static_file/piva.png'%}"
-            alt="Immagine"
-            />
-            <p class= 'text_button_select_client_type' > Il cliente è una personaa giuridica </p>          
+            <div class="txt_top"> 
+                <p class= 'text_button_select_client'><span>Cliente con</span><br><span>Partita Iva</span></p>
+            </div>
+            <div class= "image_three">
+                <img
+                class="button_select_client_img"
+                src="{% static 'static_file/piva.png'%}"
+                alt="Immagine"
+                />
+                <p class= 'text_button_select_client_type' > Il cliente è una personaa giuridica </p>
+            </div>          
         </a>
 
         <a href= "{% url 'clienti:nuovoclienteminore' %}" style="text-decoration: none;" class = 'botton_rect'>
-                    
+            <div class="txt_top">        
             <p class= 'text_button_select_client'><span>Cliente</span><br><span>Minorenne</span></p>
+            </div>
+            <div class= "image_three">
                 <img
                 class="button_select_client_img"
                 src="{% static 'static_file/tutore.png'%}"
                 alt="Immagine"
                 />
-                <p class= 'text_button_select_client_type' > Il cliente è un minorenne o un incapace </p>         
+                <p class= 'text_button_select_client_type' > Il cliente è un minorenne o un incapace </p>
+            </div>         
         </a>
 
     </div>

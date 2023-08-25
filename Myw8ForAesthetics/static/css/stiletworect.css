@@ -14,19 +14,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
-  width: 30vw;
+  justify-content: space-between;
+  width: 25vw;
   max-width: 470px;
   height: 40vw;
-  max-height: 550px
+  max-height: 550px;
 }
 
 .text_button_select_client {
-  font-size: 2.5vw;
+  font-size: clamp(16px, 2.5vw, 35px);
   font-family: Round Hand, cursive;
   text-align: center;
   color: #83719c;
-  padding: 2%;
+  font-weight: bold;
+  margin-top: 10px;
+  
 }
 
 .button_select_client_img {

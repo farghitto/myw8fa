@@ -60,7 +60,7 @@
     border-radius: 1rem;
     background-color: #d7d4de;
     text-align: center;
-   
+    text-decoration: none;
     vertical-align: middle;
 }
 
@@ -134,6 +134,19 @@ td {
 
 .step-links a:hover {
     color: black; /* Cambia il colore del testo quando ci si passa sopra */
+}
+
+.iconae
+{
+    width: 1px;   
+}
+
+.ics 
+{
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 

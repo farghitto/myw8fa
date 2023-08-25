@@ -28,13 +28,14 @@
     font-family: Round Hand, cursive;
     text-align: center;
     color: #83719c;
-    padding: 2%;
     font-weight: bold;
+    margin-top: 10px;
+    
   }
   
   .button_select_client_img {
     width: 22vw;
-    max-width: 280px;
+    max-width: 330px;
   }
   
   .container-fluid{
@@ -61,4 +62,12 @@
 
 .hidden_paragraph{
     height: min-content;
+}
+
+.image_three
+{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

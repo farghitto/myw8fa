@@ -1,3 +1,4 @@
+import string
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, View
 from django.conf import settings
@@ -25,64 +26,6 @@ def sceltamenu(request):
 def sceltapostcliente(request):
 
     return render(request, 'clienti/sceltadoporegistrazione.html')
-
-
-""" class CreaClienteView(View):
-    
-    template_name = 'clienti/nuovocliente.html'
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        base_url = 'http://127.0.0.1:8000/'  # L'URL base del tuo server
-        clienti_endpoint = 'clienti/lista'  # L'endpoint API per la creazione
-
-        # Recupera i dati dal form
-        nome = request.POST.get('nome')
-        cognome = request.POST.get('cognome')
-        # Altri campi dati...
-
-        # Crea il payload da inviare al server
-        payload = {
-            'nome': nome,
-            'cognome': cognome,
-            # Altri campi dati...
-        }
-
-        # Effettua la richiesta POST all'endpoint API
-        response = requests.post(base_url + clienti_endpoint, data=payload)
-
-        if response.status_code == 201:
-            return redirect('clienti:postcliente')  # Redirect dopo la creazione
-        else:
-            error_message = "Errore nella creazione del cliente"
-            return render(request, self.template_name, {'error_message': error_message}) """
-
-
-class ClienteView(CreateView):  # classe per la creazione del cliente
-
-    model = Cliente
-    form_class = FormCliente
-    template_name = 'clienti/nuovocliente.html'
-    success_url = reverse_lazy ('clienti:postcliente')
-
-
-class ClientePivaView(CreateView):  # classe per la creazione del cliente
-
-    model = Cliente
-    form_class = FormClientePiva
-    template_name = 'clienti/nuovoclientepiva.html'
-    success_url = reverse_lazy ('clienti:postcliente')
-
-class ClienteMinoreView(CreateView):  # classe per la creazione del cliente
-
-    model = Cliente
-    form_class = FormClienteMinore
-    template_name = 'clienti/nuovoclienteminore.html'
-    success_url = reverse_lazy ('clienti:postcliente')
-
-
 
 def get_codice_fiscale(request):
     
@@ -117,8 +60,11 @@ def get_codice_fiscale(request):
     return JsonResponse(data)
 
 def crea_cliente(request):
+    
+    # 
     if request.method == 'POST':
         form = FormCliente(request.POST)
+       
         if form.is_valid():
             
             # Prendi i dati dal form
@@ -140,8 +86,11 @@ def crea_cliente(request):
 
             # Effettua la richiesta POST all'API
             url_backend = settings.BASE_URL + 'cliente/lista/'
-            response = requests.post(url_backend, data=payload)
-
+            headers = {
+                        "Authorization": f"Token {request.session['auth_token']}"
+                        }
+            response = requests.post(url_backend, data=payload, headers=headers)
+            print( response.status_code)
             if response.status_code == 201:  # Status code per "Created"
                 return redirect('clienti:postcliente')  # Redirect alla lista dei clienti o dove preferisci
 
@@ -150,19 +99,114 @@ def crea_cliente(request):
 
     return render(request, 'clienti/nuovocliente.html', {'form': form})
 
+def crea_cliente_piva(request):
+    
+    # 
+    if request.method == 'POST':
+        form = FormClientePiva(request.POST)
+       
+        if form.is_valid():
+            
+            # Prendi i dati dal form
+            payload = {
+                'nome': form.cleaned_data['nome'],
+                'cognome': form.cleaned_data['cognome'],
+                'citta_nascita': form.cleaned_data['citta_nascita'],
+                'data_nascita': form.cleaned_data['data_nascita'],
+                'indirizzo': form.cleaned_data['indirizzo'],
+                'cap': form.cleaned_data['cap'],
+                'citta': form.cleaned_data['citta'],
+                'codice_fiscale': form.cleaned_data['codice_fiscale'],
+                'telefono': form.cleaned_data['telefono'],
+                'cellulare': form.cleaned_data['cellulare'],
+                'email': form.cleaned_data['email'],
+                'sesso': form.cleaned_data['sesso'],
+                'note': form.cleaned_data['note'],
+                'ragione_sociale': form.cleaned_data['ragione_sociale'],
+                'sede' : form.cleaned_data['sede'],
+                'indirizzo_sede' : form.cleaned_data['indirizzo_sede'],
+                'cap_sede' : form.cleaned_data['cap_sede'],
+                'telefono_sede' : form.cleaned_data['telefono_sede'],
+                'email_sede' : form.cleaned_data['email_sede'],
+                'partita_iva' : form.cleaned_data['partita_iva'],
+                'codice_univoco': form.cleaned_data['codice_univoco'],
+                
+            }
+
+
+            # Effettua la richiesta POST all'API
+            url_backend = settings.BASE_URL + 'cliente/lista/'
+            headers = {
+                        "Authorization": f"Token {request.session['auth_token']}"
+                        }
+            response = requests.post(url_backend, data=payload, headers=headers)
+            
+            if response.status_code == 201:  # Status code per "Created"
+                return redirect('clienti:postcliente')  # Redirect alla lista dei clienti o dove preferisci
+        
+    else:
+        form = FormClientePiva()
+
+    return render(request, 'clienti/nuovoclientepiva.html', {'form': form})
+
+def crea_cliente_minore(request):
+    
+    # 
+    if request.method == 'POST':
+        form = FormClienteMinore(request.POST)
+       
+        if form.is_valid():
+            
+            # Prendi i dati dal form
+            payload = {
+                'nome': form.cleaned_data['nome'],
+                'cognome': form.cleaned_data['cognome'],
+                'citta_nascita': form.cleaned_data['citta_nascita'],
+                'data_nascita': form.cleaned_data['data_nascita'],
+                'indirizzo': form.cleaned_data['indirizzo'],
+                'cap': form.cleaned_data['cap'],
+                'citta': form.cleaned_data['citta'],
+                'codice_fiscale': form.cleaned_data['codice_fiscale'],
+                'telefono': form.cleaned_data['telefono'],
+                'cellulare': form.cleaned_data['cellulare'],
+                'email': form.cleaned_data['email'],
+                'sesso': form.cleaned_data['sesso'],
+                'note': form.cleaned_data['note'],
+                'beneficiario_nome' : form.cleaned_data['beneficiario_nome'],
+                'beneficiario_cognome' : form.cleaned_data['beneficiario_cognome'],
+                'beneficiario_codice_fiscale' : form.cleaned_data['beneficiario_codice_fiscale'],
+                'beneficiario_cellulare' : form.cleaned_data['beneficiario_cellulare'],
+                
+            }
+
+            # Effettua la richiesta POST all'API
+            url_backend = settings.BASE_URL + 'cliente/lista/'
+            headers = {
+                        "Authorization": f"Token {request.session['auth_token']}"
+                        }
+            response = requests.post(url_backend, data=payload, headers=headers)
+            
+            if response.status_code == 201:  # Status code per "Created"
+                return redirect('clienti:postcliente')  # Redirect alla lista dei clienti o dove preferisci
+
+    else:
+        form = FormClienteMinore()
+
+    return render(request, 'clienti/nuovoclienteminore.html', {'form': form})
 
 def search_clienti(request):
     
     form = ClientiSearchForm(request.GET)
     
     url_backend = settings.BASE_URL + 'cliente/lista'
+    headers = {
+                        "Authorization": f"Token {request.session['auth_token']}"
+              }
 
-    response = requests.get(url_backend)
+    response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
             clienti = response.json()
     
-    """ return render(request, 'errore.html') """
-
     if form.is_valid():
         
         search_query = form.cleaned_data['search_query']
@@ -172,10 +216,8 @@ def search_clienti(request):
          
         elementi = clienti
     
-    
     # Imposta il numero di elementi da visualizzare per pagina
-    paginator = Paginator(elementi, 8)  # Ad esempio, 10 elementi per pagina
-    
+    paginator = Paginator(elementi, 8)  # 8 elementi per pagina   
     page_number = request.GET.get('page')  # Ottieni il numero di pagina dalla query string
     page_obj = paginator.get_page(page_number)
       
@@ -186,3 +228,61 @@ def search_clienti(request):
         }
 
     return render(request, 'clienti\elencoclienti.html', context)
+
+
+def info_cliente(request, id):
+    
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+    headers = {
+                        "Authorization": f"Token {request.session['auth_token']}"
+              }
+    if request.method == 'POST':
+        
+        form = FormCliente(request.POST)
+       
+        if form.is_valid():
+            
+            # Prendi i dati dal form
+            payload = {
+                'nome': form.cleaned_data['nome'],
+                'cognome': form.cleaned_data['cognome'],
+                'citta_nascita': form.cleaned_data['citta_nascita'],
+                'data_nascita': form.cleaned_data['data_nascita'],
+                'indirizzo': form.cleaned_data['indirizzo'],
+                'cap': form.cleaned_data['cap'],
+                'citta': form.cleaned_data['citta'],
+                'codice_fiscale': form.cleaned_data['codice_fiscale'],
+                'telefono': form.cleaned_data['telefono'],
+                'cellulare': form.cleaned_data['cellulare'],
+                'email': form.cleaned_data['email'],
+                'sesso': form.cleaned_data['sesso'],
+                'note': form.cleaned_data['note'],
+            }
+
+            # Effettua la richiesta Put all'API per aggiornare
+
+            response = requests.put(url_backend, data=payload, headers=headers)
+
+            if response.status_code == 200:  # Status code per "Created"
+                print('ciao')
+                return redirect('clienti:search_clienti')  # Redirect alla lista dei clienti
+            
+        
+    else:    
+        response = requests.get(url_backend, headers=headers)
+        if response.status_code == 200:
+                clienti = response.json()
+        
+        if clienti['ragione_sociale']:
+            form = FormClientePiva(initial=clienti)
+            return render(request, 'clienti/modificacliente.html',  {'form': form})
+        
+            
+        elif clienti['beneficiario_cognome']:
+            form = FormClienteMinore(initial=clienti)
+            return render(request, 'clienti/nuovocliente.html',  {'form': form})
+            
+        
+        else:
+            form = FormCliente(initial=clienti)
+            return render(request, 'clienti/modificacliente.html',  {'form': form})
