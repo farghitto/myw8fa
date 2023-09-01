@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Errore {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect'>
+        <p id="text_header" class="text"> ERRORE SERVER </p>
+    </div> 
+{% endblock header%}
+{% block scriptlibrerie %}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+{% endblock scriptlibrerie %}
+
+{% block content %}
+<div class ='error_conteiner'>
+    <p class = 'errorp'>Codice d'errore: {{ codice_di_errore }} --- Tipo d'errore: {{ dettaglio }} </p>
+   
+    <div class="image-container">
+        <img
+            class ="img_error"      
+            src="{% static 'static_file/errore1.png'%}"
+            alt="Immagine"
+                    />
+    </div>
+    
+    <p class = 'errorp'> Contatta l'assistenza comunicando il codice e l'errore. Grazie </p>
+   </div>
+                
+{% endblock %}
+{% block script %}
+    
+
+{% endblock script %}

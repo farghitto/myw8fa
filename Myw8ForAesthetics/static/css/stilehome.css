@@ -76,6 +76,7 @@ header {
   z-index: 0;
   width: 88vw;
   margin: 1.2rem;
+  height: 6vh;
   
 }
 
@@ -124,6 +125,11 @@ header {
   color: #83719c; /* anche nero*/
   margin-top: 0.4rem;
   margin-bottom: 0.4rem;
+  text-align: center;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #text_info_grid {
@@ -328,6 +334,7 @@ header {
   border-radius: 1rem;
   background-color: #d7d4de;
   text-align: center;
+  height: 6vh;
 }
 
 #pers1 {
@@ -488,4 +495,29 @@ header {
   height: auto;
   width: 12vw;
   padding-top:2%;
+}
+
+.errorp 
+{
+  color: #83719c;;
+  text-align: center;
+  font-family: "Baskerville", cursive;
+}
+
+.img_error{
+
+  width: 22vw;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.error_conteiner
+{
+  height: 120vh;
+  overflow: auto;
 }

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Errore {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect'>
+        <p id="text_header" class="text"> ERRORE </p>
+    </div> 
+{% endblock header%}
+{% block scriptlibrerie %}
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   <div class ='error_conteiner'>
+    <p class = 'errorp'>Codice d'errore: {{ codice }} --- Tipo d'errore: {{ tipo }} </p>
+    <p class = 'errorp'>Messaggio: {{ messaggio }} --- Percorso: {{ path }}</p>
+    <div class="image-container">
+        <img
+            class ="img_error"      
+            src="{% static 'static_file/errore.png'%}"
+            alt="Immagine"
+                    />
+    </div>
+    
+    <p class = 'errorp'> Contatta l'assistenza comunicando il codice e l'errore. Grazie </p>
+   </div>
+                
+{% endblock %}
+{% block script %}
+    
+
+{% endblock script %}

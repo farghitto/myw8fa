@@ -3,10 +3,10 @@
 {% load widget_tweaks %}
 
 
-{% block title %} Nuovo Clienti {% endblock title %}
+{% block title %} Modifica Clienti {% endblock title %}
 {% block header %}
 <div id="text_header_rect" class = 'purple_rect'>
-    <p id="text_header" class="text"> Modifica Cliente Privato </p>
+    <p id="text_header" class="text"> Modifica Cliente con Partita Iva </p>
 </div> 
 
 {% endblock header%}
@@ -20,7 +20,7 @@
 {% block content %}
    
 <div class="form-container">
-  <form  method="post" novalidate>{% csrf_token %}
+  <form class="form-grid" method="post" novalidate>{% csrf_token %}
     <div class="grid-form">
 
       <div class="form-floating mb-3">
@@ -229,8 +229,145 @@
       </div>
 
       <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.ragione_sociale.errors %}
+            {% render_field form.ragione_sociale class="form-control is-invalid" %}
+            {% for error in form.ragione_sociale.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.ragione_sociale class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.ragione_sociale class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.ragione_sociale.id_for_label }}">{{ form.ragione_sociale.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.sede.errors %}
+            {% render_field form.sede class="form-control is-invalid" %}
+            {% for error in form.sede.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.sede class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.sede class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.sede.id_for_label }}">{{ form.sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.indirizzo_sede.errors %}
+            {% render_field form.indirizzo_sede class="form-control is-invalid" %}
+            {% for error in form.indirizzo_sede.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.indirizzo_sede class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.indirizzo_sede class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.indirizzo_sede.id_for_label }}">{{ form.indirizzo_sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.cap_sede.errors %}
+            {% render_field form.cap_sede class="form-control is-invalid" %}
+            {% for error in form.cap_sede.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.cap_sede class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.cap_sede class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.cap_sede.id_for_label }}">{{ form.cap_sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+      
+            {% render_field form.telefono_sede class="form-control" %}
+        
+        <label class="font-custom" for="{{ form.telefono_sede.id_for_label }}">{{ form.telefono_sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.email_sede.errors %}
+            {% render_field form.email_sede class="form-control is-invalid" %}
+            {% for error in form.email_sede.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.email_sede class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.email_sede class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.email_sede.id_for_label }}">{{ form.email_sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.partita_iva.errors %}
+            {% render_field form.partita_iva class="form-control is-invalid" %}
+            {% for error in form.partita_iva.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.partita_iva class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.partita_iva class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.partita_iva.id_for_label }}">{{ form.partita_iva.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.codice_univoco.errors %}
+            {% render_field form.codice_univoco class="form-control is-invalid" %}
+            {% for error in form.codice_univoco.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.codice_univoco class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.codice_univoco class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.codice_univoco.id_for_label }}">{{ form.codice_univoco.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
        
-      </div> 
+      </div>
+
+      <div class="form-floating mb-3">
+       
+      </div>
 
       <div class="form-floating mb-3">
       
@@ -238,6 +375,8 @@
     
         <label class="font-custom" for="{{ form.note.id_for_label }}">{{ form.note.label_tag }}</label>
       </div>
+
+      
 
     </div>
 

@@ -16,9 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from utente.views import erroreserver
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('utente/', include('utente.urls')),
     path('cliente/', include('clienti.urls')),
+
+    path('erroreserver/<int:status_code>/<str:text>/',
+         erroreserver, name='erroreserver'),
+
 ]
