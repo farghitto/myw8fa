@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Opzioni Misura {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect' style='visibility: hidden'>
+        <p id="text_header" class="text"></p>
+    </div>
+
+{% endblock header%}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/stiletworect.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+  
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+    <div id='conteiner_two_rect'> 
+        <a href= "{% url 'clienti:tipocliente' %}" style="text-decoration: none;" class = 'botton_rect'>
+                
+                <p class= 'text_button_select_client'>Inserisci Misure</p>
+                <img
+                class="button_select_client_img"
+                src="{% static 'static_file/misure_da_inserire.png'%}"
+                alt="Immagine"
+                />       
+                
+        </a>
+        <a href= "{% url 'clienti:search_clienti' %}" style="text-decoration: none;" class = 'botton_rect'>
+            
+                <p class= 'text_button_select_client'>Misure Precedenti</p>
+                <img
+                class="button_select_client_img"
+                src="{% static 'static_file/misure_inserite.png'%}"
+                alt="Immagine"
+                />       
+            
+        </a>
+    </div>
+
+{% endblock %}
+{% block script %}
+   
+
+{% endblock script %}

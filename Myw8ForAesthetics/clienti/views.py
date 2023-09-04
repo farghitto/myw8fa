@@ -15,6 +15,8 @@ from .models import Cliente
 from .form import FormCliente, FormClientePiva, FormClienteMinore
 from .form import ClientiSearchForm
 
+import pdb
+
 
 @handle_exceptions
 def sceltacliente(request):
@@ -32,6 +34,12 @@ def sceltamenu(request):
 def sceltapostcliente(request):
 
     return render(request, 'clienti/sceltadoporegistrazione.html')
+
+
+@handle_exceptions
+def sceltamisure(request):
+
+    return render(request, 'clienti/sceltamisura.html')
 
 
 @handle_exceptions
@@ -101,9 +109,10 @@ def crea_cliente(request):
             }
             response = requests.post(
                 url_backend, data=payload, headers=headers)
-            print(response.status_code)
+            
             if response.status_code == 201:  # Status code per "Created"
                 # Redirect alla lista dei clienti o dove preferisci
+                request.session['ultimo_utente'] = response.json()
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -158,7 +167,7 @@ def crea_cliente_piva(request):
                 url_backend, data=payload, headers=headers)
 
             if response.status_code == 201:  # Status code per "Created"
-                # Redirect alla lista dei clienti o dove preferisci
+                request.session['ultimo_utente'] = response.json()
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -209,7 +218,7 @@ def crea_cliente_minore(request):
                 url_backend, data=payload, headers=headers)
 
             if response.status_code == 201:  # Status code per "Created"
-                # Redirect alla lista dei clienti o dove preferisci
+                request.session['ultimo_utente'] = response.json()
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -263,15 +272,15 @@ def search_clienti(request):
 
 @handle_exceptions
 def info_cliente(request, id):
-    print('pene')
+   
     # prendo l'url il token echiamp il server per il cliente
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
 
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
     }
-    print('prova')
-    print(request.session['user_id'])
+   
+    
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         clienti = response.json()
@@ -365,7 +374,7 @@ def info_cliente(request, id):
                     url_backend, data=payload, headers=headers)
 
                 if response.status_code == 200:
-                    print('ciao')
+                   
                     # Redirect alla lista dei clienti
                     return redirect('clienti:search_clienti')
                 elif response.status_code >= 400:
@@ -408,7 +417,7 @@ def info_cliente(request, id):
 
                 response = requests.put(
                     url_backend, data=payload, headers=headers)
-                print('ciao')
+               
 
                 if response.status_code == 200:
 
@@ -423,3 +432,49 @@ def info_cliente(request, id):
         else:
             form = FormCliente(initial=clienti)
             return render(request, 'clienti/modificacliente.html',  {'form': form})
+        
+@handle_exceptions
+def crea_misura(request):
+
+    #
+    if request.method == 'POST':
+        form = FormCliente(request.POST)
+
+        if form.is_valid():
+
+            # Prendi i dati dal form
+            payload = {
+                'nome': form.cleaned_data['nome'],
+                'cognome': form.cleaned_data['cognome'],
+                'citta_nascita': form.cleaned_data['citta_nascita'],
+                'data_nascita': form.cleaned_data['data_nascita'],
+                'indirizzo': form.cleaned_data['indirizzo'],
+                'cap': form.cleaned_data['cap'],
+                'citta': form.cleaned_data['citta'],
+                'codice_fiscale': form.cleaned_data['codice_fiscale'],
+                'telefono': form.cleaned_data['telefono'],
+                'cellulare': form.cleaned_data['cellulare'],
+                'email': form.cleaned_data['email'],
+                'sesso': form.cleaned_data['sesso'],
+                'note': form.cleaned_data['note'],
+            }
+
+            # Effettua la richiesta POST all'API
+            url_backend = settings.BASE_URL + 'cliente/lista/'
+            headers = {
+                "Authorization": f"Token {request.session['auth_token']}"
+            }
+            response = requests.post(
+                url_backend, data=payload, headers=headers)
+            
+            if response.status_code == 201:  # Status code per "Created"
+                # Redirect alla lista dei clienti o dove preferisci
+                request.session['ultimo_utente'] = response.json()
+                return redirect('clienti:postcliente')
+            elif response.status_code >= 400:
+                return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    else:
+        form = FormCliente()
+
+    return render(request, 'clienti/nuovocliente.html', {'form': form})

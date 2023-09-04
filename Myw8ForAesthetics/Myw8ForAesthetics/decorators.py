@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 def handle_exceptions(view_func):
     def wrapped_view(request, *args, **kwargs):
-        print('pisellino777')
+        
         try:
             return view_func(request, *args, **kwargs)
         except Exception as e:
@@ -18,7 +18,7 @@ def handle_error_response(view_func):
 
     def wrapped_view(request, *args, **kwargs):
         response = view_func(request, *args, **kwargs)
-        print('pisellino')
+        
         if response.status_code >= 400:
 
             status_code = response.status_code
