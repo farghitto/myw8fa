@@ -7,7 +7,14 @@
     margin-top: 1%;
   }
   
- 
+  .grid-form_misure {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Due colonne con larghezza flessibile */
+    gap: 1rem; /* Spazio tra le celle */
+   
+    margin: 0 auto; /* Centra il form orizzontalmente */
+    margin-top: 1%;
+  }
   
   .form-control {
     width: 100%; /* Riempi completamente la cella */

@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
 
+from datetime import datetime
+
 from codicefiscale import codicefiscale
 
 import requests
@@ -13,6 +15,7 @@ import requests
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
 from .models import Cliente
 from .form import FormCliente, FormClientePiva, FormClienteMinore
+from .form import FormMisure
 from .form import ClientiSearchForm
 
 import pdb
@@ -109,7 +112,7 @@ def crea_cliente(request):
             }
             response = requests.post(
                 url_backend, data=payload, headers=headers)
-            
+
             if response.status_code == 201:  # Status code per "Created"
                 # Redirect alla lista dei clienti o dove preferisci
                 request.session['ultimo_utente'] = response.json()
@@ -272,15 +275,14 @@ def search_clienti(request):
 
 @handle_exceptions
 def info_cliente(request, id):
-   
+
     # prendo l'url il token echiamp il server per il cliente
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
 
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
     }
-   
-    
+
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         clienti = response.json()
@@ -374,7 +376,7 @@ def info_cliente(request, id):
                     url_backend, data=payload, headers=headers)
 
                 if response.status_code == 200:
-                   
+
                     # Redirect alla lista dei clienti
                     return redirect('clienti:search_clienti')
                 elif response.status_code >= 400:
@@ -417,7 +419,6 @@ def info_cliente(request, id):
 
                 response = requests.put(
                     url_backend, data=payload, headers=headers)
-               
 
                 if response.status_code == 200:
 
@@ -432,49 +433,97 @@ def info_cliente(request, id):
         else:
             form = FormCliente(initial=clienti)
             return render(request, 'clienti/modificacliente.html',  {'form': form})
-        
+
+
 @handle_exceptions
 def crea_misura(request):
 
-    #
+    dati_cliente = request.session['ultimo_utente']
     if request.method == 'POST':
-        form = FormCliente(request.POST)
+        form = FormMisure(request.POST)
 
         if form.is_valid():
 
             # Prendi i dati dal form
-            payload = {
-                'nome': form.cleaned_data['nome'],
-                'cognome': form.cleaned_data['cognome'],
-                'citta_nascita': form.cleaned_data['citta_nascita'],
-                'data_nascita': form.cleaned_data['data_nascita'],
-                'indirizzo': form.cleaned_data['indirizzo'],
-                'cap': form.cleaned_data['cap'],
-                'citta': form.cleaned_data['citta'],
-                'codice_fiscale': form.cleaned_data['codice_fiscale'],
-                'telefono': form.cleaned_data['telefono'],
-                'cellulare': form.cleaned_data['cellulare'],
-                'email': form.cleaned_data['email'],
-                'sesso': form.cleaned_data['sesso'],
-                'note': form.cleaned_data['note'],
+            misure = {
+                'cliente': str(dati_cliente['id']),
+                'peso': form.cleaned_data['peso'],
+                'altezza': form.cleaned_data['altezza'],
+                'bmi': form.cleaned_data['bmi'],
+                'grasso_corporeo': form.cleaned_data['grasso_corporeo'],
+                'muscolatura': form.cleaned_data['muscolatura'],
+                'metabolismo': form.cleaned_data['metabolismo'],
+                'grasso_viscerale': form.cleaned_data['grasso_viscerale'],
+                'collocm': form.cleaned_data['collocm'],
+                'toracecm': form.cleaned_data['toracecm'],
+                'cosciadxcm': form.cleaned_data['cosciadxcm'],
+                'cosciasxcm': form.cleaned_data['cosciasxcm'],
+                'fianchicm': form.cleaned_data['fianchicm'],
+                'addomecm': form.cleaned_data['addomecm'],
+                'ginocchiodxcm': form.cleaned_data['ginocchiodxcm'],
+                'ginocchiosxcm': form.cleaned_data['ginocchiosxcm'],
             }
+            # aggioramenti dei dati del cliente
+            dati_cliente = request.session['ultimo_utente']
+            informazioni_cliente = {}
+            if dati_cliente['altezza'] != form.cleaned_data['altezza']:
+                informazioni_cliente['altezza'] = form.cleaned_data['altezza']
 
-            # Effettua la richiesta POST all'API
-            url_backend = settings.BASE_URL + 'cliente/lista/'
+            if dati_cliente['cellulare'] != form.cleaned_data['cellulare']:
+                informazioni_cliente['cellulare'] = form.cleaned_data['cellulare']
+
+            if dati_cliente['email'] != form.cleaned_data['email']:
+                informazioni_cliente['email'] = form.cleaned_data['email']
+
+            if len(informazioni_cliente) != 0:
+
+                url_backend = settings.BASE_URL + \
+                    'cliente/clienti/'+str(dati_cliente['id'])+'/'
+                headers = {
+                    "Authorization": f"Token {request.session['auth_token']}"
+                }
+                response = requests.patch(
+                    url_backend, data=informazioni_cliente, headers=headers)
+
+                if response.status_code == 200:
+                    request.session['ultimo_utente'] = response.json()
+                elif response.status_code >= 400:
+                    return redirect('erroreserver', status_code=response.status_code, text=response.text)
+            # inserimento misura
+            url_backend = settings.BASE_URL + 'cliente/clientimisure/'
             headers = {
                 "Authorization": f"Token {request.session['auth_token']}"
             }
             response = requests.post(
-                url_backend, data=payload, headers=headers)
-            
-            if response.status_code == 201:  # Status code per "Created"
-                # Redirect alla lista dei clienti o dove preferisci
-                request.session['ultimo_utente'] = response.json()
-                return redirect('clienti:postcliente')
+                url_backend, data=misure, headers=headers)
+            if response.status_code == 200:
+                print('ciao')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
     else:
-        form = FormCliente()
 
-    return render(request, 'clienti/nuovocliente.html', {'form': form})
+        if dati_cliente['altezza']:
+            altezza = dati_cliente['altezza']
+        else:
+            altezza = 0
+
+        formato = "%Y-%m-%d"
+        data_di_nascita = datetime.strptime(
+            dati_cliente['data_nascita'], formato)
+        data_corrente = datetime.now()
+        eta = data_corrente.year - data_di_nascita.year - \
+            ((data_corrente.month, data_corrente.day) <
+             (data_di_nascita.month, data_di_nascita.day))
+
+        initial_data = {
+            'cellulare': dati_cliente['cellulare'],
+            'email': dati_cliente['email'],
+            'altezza': altezza,
+            'sesso': dati_cliente['sesso'],
+            'eta': eta
+
+        }
+        form = FormMisure(initial=initial_data)
+
+    return render(request, 'clienti/nuovamisura.html', {'form': form})

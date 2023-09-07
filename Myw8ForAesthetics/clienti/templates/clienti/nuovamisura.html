@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Nuove Misure {% endblock title %}
+{% block header %}
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text"> Nuove Misure </p>
+</div> 
+
+{% endblock header%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/formgrid.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+<div class="form-container">
+  <form  method="post" novalidate>{% csrf_token %}
+    <div class="grid-form_misure">
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.peso.errors %}
+            {% render_field form.peso class="form-control is-invalid" %}
+            {% for error in form.peso.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.peso class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.peso class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.peso.id_for_label }}">{{ form.peso.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.altezza.errors %}
+            {% render_field form.altezza class="form-control is-invalid" %}
+            {% for error in form.altezza.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.altezza class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.altezza class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.altezza.id_for_label }}">{{ form.altezza.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.eta.errors %}
+            {% render_field form.eta class="form-control is-invalid" %}
+            {% for error in form.eta.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.eta class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.eta class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.eta.id_for_label }}">{{ form.eta.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% render_field form.bmi class="form-control" %}
+        <label class="font-custom" for="{{ form.bmi.id_for_label }}">{{ form.bmi.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% render_field form.grasso_corporeo class="form-control" %}
+        <label class="font-custom" for="{{ form.grasso_corporeo.id_for_label }}">{{ form.grasso_corporeo.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% render_field form.grasso_viscerale class="form-control" %}
+        <label class="font-custom" for="{{ form.grasso_viscerale.id_for_label }}">{{ form.grasso_viscerale.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% render_field form.metabolismo class="form-control" %}
+        <label class="font-custom" for="{{ form.metabolismo.id_for_label }}">{{ form.metabolismo.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% render_field form.muscolatura class="form-control" %}
+        <label class="font-custom" for="{{ form.muscolatura.id_for_label }}">{{ form.muscolatura.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.collocm.errors %}
+            {% render_field form.collocm class="form-control is-invalid" %}
+            {% for error in form.collocm.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.collocm class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.collocm class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.collocm.id_for_label }}">{{ form.collocm.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.toracecm.errors %}
+            {% render_field form.toracecm class="form-control is-invalid" %}
+            {% for error in form.toracecm.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.toracecm class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.toracecm class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.toracecm.id_for_label }}">{{ form.toracecm.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.cosciadxcm.errors %}
+            {% render_field form.cosciadxcm class="form-control is-invalid" %}
+            {% for error in form.cosciadxcm.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.cosciadxcm class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.cosciadxcm class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.cosciadxcm.id_for_label }}">{{ form.cosciadxcm.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.cosciasxcm.errors %}
+            {% render_field form.cosciasxcm class="form-control is-invalid" %}
+            {% for error in form.cosciasxcm.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.cosciasxcm class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.cosciasxcm class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.cosciasxcm.id_for_label }}">{{ form.cosciasxcm.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.fianchicm.errors %}
+            {% render_field form.fianchicm class="form-control is-invalid" %}
+            {% for error in form.fianchicm.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.fianchicm class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.fianchicm class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.fianchicm.id_for_label }}">{{ form.fianchicm.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.addomecm.errors %}
+            {% render_field form.addomecm class="form-control is-invalid" %}
+            {% for error in form.addomecm.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.addomecm class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.addomecm class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.addomecm.id_for_label }}">{{ form.addomecm.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.ginocchiodxcm.errors %}
+            {% render_field form.ginocchiodxcm class="form-control is-invalid" %}
+            {% for error in form.ginocchiodxcm.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.ginocchiodxcm class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.ginocchiodxcm class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.ginocchiodxcm.id_for_label }}">{{ form.ginocchiodxcm.label_tag }}</label>
+      </div>
+      
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.ginocchiosxcm.errors %}
+            {% render_field form.ginocchiosxcm class="form-control is-invalid" %}
+            {% for error in form.ginocchiosxcm.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.ginocchiosxcm class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.ginocchiosxcm class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.ginocchiosxcm.id_for_label }}">{{ form.ginocchiosxcm.label_tag }}</label>
+      </div>  
+
+      <div class="form-floating mb-3">
+       
+      </div>
+    
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.cellulare.errors %}
+            {% render_field form.cellulare class="form-control is-invalid" %}
+            {% for error in form.cellulare.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.cellulare class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.cellulare class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.cellulare.id_for_label }}">{{ form.cellulare.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.email.errors %}
+            {% render_field form.email class="form-control is-invalid" %}
+            {% for error in form.email.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.email class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.email class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.email.id_for_label }}">{{ form.email.label_tag }}</label>
+      </div>
+
+      
+
+    </div>
+
+    <div id = 'bottoni_griglia'>
+
+      <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Crea </p></button>
+      <a href="{% url 'clienti:sceltamenu' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+
+    </div>
+    </form>
+  </div>
+
+{% endblock %}
+{% block script %}
+
+  <script>
+    $(document).ready(function() {
+
+        calc()
+            $("#id_peso").focusout(calc);
+            $("#id_altezza").focusout(calc);
+
+
+
+            function calc() {
+
+                if (($("#id_peso").val() != '' || ($("#id_peso").val() != '0')) && ($("#id_altezza").val() != '') || ($("#id_peso").val() != '0'))
+                {
+                    peso = $("#id_peso").val().replace(',','.')
+                    altezza = $("#id_altezza").val().replace(',','.')
+                    peso = parseFloat(peso)
+                    altezza = parseFloat(altezza)
+                    bmiox = (1.3*peso)/(Math.pow((altezza/100), 2.5))
+
+                    $('#id_bmi').val(bmiox.toFixed(2));
+
+                }
+
+            };
+
+        })
+        </script>
+
+    
+    })
+  </script>
+  
+{% endblock script %}
