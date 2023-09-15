@@ -257,7 +257,7 @@ class FormMisure(forms.Form):
                             widget=forms.NumberInput(
                                 attrs={'class': 'form-control font-custom', 'placeholder': 'peso'}),
                             error_messages={'required': 'Il peso è obbligatorio.'})
-    altezza = forms.FloatField(label='Altezza:',
+    altezza = forms.FloatField(label='Altezza in cm:',
                                widget=forms.NumberInput(
                                    attrs={'class': 'form-control font-custom', 'placeholder': 'altezza'}),
                                error_messages={'required': 'L\'altezza è obbligatoria.'})
@@ -267,13 +267,13 @@ class FormMisure(forms.Form):
                            error_messages={'required': 'L\'eta è obbligatoria.'})
     bmi = forms.FloatField(label='Bmi:',
                            widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'bmi', 'readonly': True}))
-    grasso_corporeo = forms.FloatField(label='Grasso corporeo:', required=False,
+    grasso_corporeo = forms.FloatField(label='Percentuale grasso corporeo:', required=False,
                                        widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'grasso_corporeo'}))
     muscolatura = forms.FloatField(label='Muscolatura:', required=False,
                                    widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'muscolatura'}))
     metabolismo = forms.FloatField(label='Metabolismo:', required=False,
                                    widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'metabolismo'}))
-    grasso_viscerale = forms.FloatField(label='Grasso viscerale:', required=False,
+    grasso_viscerale = forms.FloatField(label='Percentuale grasso viscerale:', required=False,
                                         widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'grasso_viscerale'}))
     collocm = forms.FloatField(label='Misura cm collo:',
                                widget=forms.NumberInput(
@@ -316,33 +316,24 @@ class FormMisure(forms.Form):
                                  attrs={'class': "form-control font-custom", 'placeholder': 'email'}),
                              error_messages={'required': "L'email è obbligatoria.", 'invalid': 'L\'indirizzo email non è valido.'})
 
-    def clean(self):
 
-        cleaned_data = super(FormMisure, self).clean()
+class FormMisureRiassunto(forms.Form):
 
-        """ ragione_sociale = cleaned_data.get('ragione_sociale')
-        sede = cleaned_data.get('sede')
-        indirizzo_sede = cleaned_data.get('indirizzo_sede')
-        cap_sede = cleaned_data.get('cap_sede')
-        partita_iva = cleaned_data.get('partita_iva')
-        codice_univoco = cleaned_data.get('codice_univoco')
+    peso_ottimale = forms.FloatField(label='Peso ottimale:',
+                                     widget=forms.NumberInput(
+                                         attrs={'class': 'form-control font-custom', 'placeholder': 'peso_ottimale', 'readonly': True}))
+    peso_desiderato = forms.IntegerField(label='Peso desiderato:',
+                                         widget=forms.NumberInput(
+                                             attrs={'class': 'form-control font-custom', 'placeholder': 'peso_desiderato'}))
+    # programma_consigliato = UserModelChoiceField(queryset=Programmi.objects.filter(gruppo__nome_gruppo='MW- NUTRIGEN'))
+    misura = forms.ChoiceField(label='Misura da Visualizzare:',
+                               widget=forms.Select(attrs={'class': 'form-select font-custom', 'placeholder': 'misura'}))
+
+    def __init__(self, *args, **kwargs):
+
+        lista_opzioni = kwargs.pop('lista_opzioni', [])
         
-        if ragione_sociale is None:
-                self.errors['ragione_sociale'] = ['La ragione sociale è obbligatorio']
-        
-        if sede is None:
-                self.errors['sede'] = ['La città della sede è obbligatorio']
-                
-        if indirizzo_sede is None:
-                self.errors['indirizzo_sede'] = ['L\'indirizzo della sede sociale è obbligatorio']
-                
-        if partita_iva is None:
-                self.errors['partita_iva'] = ['La partita iva è obbligatorio']
-                
-        if cap_sede is None:
-                self.errors['cap_sede'] = ['Il cap della sede sociale è obbligatorio']
-                
-        if codice_univoco is None:
-                self.errors['codice_univoco'] = ['Il codice univoco è obbligatorio']      """
 
-        return cleaned_data
+        super(FormMisureRiassunto, self).__init__(*args, **kwargs)
+
+        self.fields['misura'].choices = lista_opzioni

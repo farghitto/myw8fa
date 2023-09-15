@@ -1,4 +1,6 @@
 import string
+import json
+
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import CreateView, View
 from django.conf import settings
@@ -15,8 +17,9 @@ import requests
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
 from .models import Cliente
 from .form import FormCliente, FormClientePiva, FormClienteMinore
-from .form import FormMisure
+from .form import FormMisure, FormMisureRiassunto
 from .form import ClientiSearchForm
+from .apiapp import dati_cliente_misure
 
 import pdb
 
@@ -496,11 +499,13 @@ def crea_misura(request):
             }
             response = requests.post(
                 url_backend, data=misure, headers=headers)
-            if response.status_code == 200:
-                print('ciao')
+            if response.status_code == 200 or response.status_code == 201:
+                return redirect('clienti:misure_riepilogo_clienti', id=dati_cliente['id'])
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
+        else:
 
+            return render(request, 'clienti/nuovamisura.html', {'form': form})
     else:
 
         if dati_cliente['altezza']:
@@ -527,3 +532,101 @@ def crea_misura(request):
         form = FormMisure(initial=initial_data)
 
     return render(request, 'clienti/nuovamisura.html', {'form': form})
+
+
+def riepilogo_misura(request, id):
+    # richiamare misure
+    url_backend = settings.BASE_URL + 'cliente/misure/'+str(id)+'/'
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        misure = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    # richiamare cliente
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        cliente = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    # richiamare nome misure
+    url_backend = settings.BASE_URL + 'cliente/api/campi_misure/'
+
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        apimisure = response.json()
+
+    # misure app
+
+    misureapp = dati_cliente_misure(request, cliente['email'])
+
+    # '1', 'Peso', 'it', '1'
+    # '3', 'Glicemia', 'it', '2'
+    # '5', 'Pressione Min', 'it', '3'
+    # '7', 'Pressione Max', 'it', '4'
+    # '9', 'Circ Collo', 'it', '5'
+    # '11', 'Circ Torace', 'it', '6'
+    # '13', 'Circ Vita', 'it', '7'
+    # '29', 'Circ Bacino', 'it', '8'
+    # '30', 'Circ Coscia', 'it', '9'
+
+    # la lsta delle opzioni su cui selezioanre il grafico
+
+    lista_opzioni = apimisure
+
+    # variabile per il campo peso desiderato
+    if cliente['peso_desiderato']:
+        peso_desiderato = cliente['peso_desiderato']
+    else:
+        peso_desiderato = 0
+
+    # aggiungo alle misure dell'app le misure che ho presenti nel sistema
+    for misurainserita in misure:
+
+        data_input = misurainserita['data']
+        data_datetime = datetime.strptime(data_input, "%Y-%m-%dT%H:%M:%SZ")
+
+        del misurainserita['id']
+        del misurainserita['data']
+        del misurainserita['peso_ottimale']
+        del misurainserita['cliente']
+
+        for chiave, valore in misurainserita.items():
+
+            for nomemisura in apimisure:
+
+                if chiave in nomemisura:
+                    nome = nomemisura[1]
+                    break
+                else:
+                    nome = chiave
+
+            nuovoelemento = {'data': data_datetime,
+                             'valore': str(valore),
+                             'misura': str(nome)}
+
+            misureapp.append(nuovoelemento)
+
+    # le ordino per data
+
+    misure_ordinate = sorted(misureapp, key=lambda x: x['data'])
+
+    lista_misure = json.dumps(misure_ordinate)
+
+    form = FormMisureRiassunto(
+        initial={'peso_ottimale': misure[-1]['peso_ottimale'], 'peso_desiderato': peso_desiderato}, lista_opzioni=lista_opzioni)
+
+    return render(request, 'clienti/riassuntopc.html', {'form': form, 'misure_da_inserire': lista_misure, 'cliente': cliente})

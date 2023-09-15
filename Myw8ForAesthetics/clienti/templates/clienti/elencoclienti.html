@@ -45,7 +45,7 @@
                             <img class='ics' src="{% static 'static_file/minore.png'%}"> 
                         </td> 
                     {% elif elemento.ragione_sociale %}
-                        <td class="text-center col-auto iconae" ">
+                        <td class="text-center col-auto iconae">
                             <img class='ics' src="{% static 'static_file/iva.png'%}" > 
                         </td>
                     {% else %}
@@ -63,7 +63,7 @@
                         <div class="button_conteiner">
                             <a href="{% url 'clienti:info_cliente' elemento.id %}" id= 'button_info' class="bottone_clienti"><p id = 'menu_text_button'> Informazioni </p></a>
                             <button id= 'button_accordo' class="bottone_clienti" type="submit"><p id = 'menu_text_button'> Accordo </p></button>
-                            <button id= 'button_bmi' class="bottone_clienti" type="submit"><p id = 'menu_text_button'> BMI </p></button>
+                            <button id= 'button_bmi' class="bottone_clienti" type="submit"><p id = 'menu_text_button'> bmi </p></button>
                         </div>
                     </td>
                 </tr>

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Personal Check Up {% endblock title %}
+{% block header %}
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text"> Personal Check Up di {{cliente.nome}} {{cliente.cognome}} </p>
+</div> 
+
+{% endblock header%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/formgrid.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+  <scrip src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.js" integrity="sha512-6LKCH7i2+zMNczKuCT9ciXgFCKFp3MevWTZUXDlk7azIYZ2wF5LRsrwZqO7Flt00enUI+HwzzT5uhOvy6MNPiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>>
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+<div class="form-container">
+  <form  method="post" novalidate>{% csrf_token %}
+    <div class="grid-form_misure">
+
+        <div class="form-floating mb-3">
+            {% render_field form.peso_ottimale class="form-control" %}
+            <label class="font-custom" for="{{ form.peso_ottimale.id_for_label }}">{{ form.peso_ottimale.label_tag }}</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            {% if form.is_bound %}
+            {% if form.peso_desiderato.errors %}
+                {% render_field form.peso_desiderato class="form-control is-invalid" %}
+                {% for error in form.peso_desiderato.errors  %}
+                <div class="invalid-feedback">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% else %}
+                {% render_field form.peso_desiderato class="form-control is-valid" %}
+            {% endif %}
+            {% else %}
+                {% render_field form.peso_desiderato class="form-control" %}
+            {% endif %}
+            <label class="font-custom" for="{{ form.peso_desiderato.id_for_label }}">{{ form.peso_desiderato.label_tag }}</label>
+        </div>
+
+        <div class="form-floating mb-3">
+        
+        </div>
+
+        <div class="form-floating mb-3">
+        
+        </div>
+
+        <div class="form-floating mb-3">
+            {% render_field form.misura class="form-control" %}
+            <label class="font-custom" for="{{ form.misura.id_for_label }}">{{ form.misura.label_tag }}</label>
+        </div>
+        
+
+        <canvas id="myChart" width="400" height="200"></canvas>
+        
+
+
+    <div id = 'bottoni_griglia'>
+
+      <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Crea </p></button>
+      <a href="{% url 'clienti:sceltamenu' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+
+    </div>
+    </form>
+  </div>
+
+{% endblock %}
+{% block script %}
+
+  <script>
+    const ctx = document.getElementById('myChart');
+    var myChart;
+
+    function destroyChart() {
+        myChart.destroy();
+    }
+
+    function misure() {
+
+        var misura = $("#id_misura").val()
+        var labels =[];
+        var dati = [];
+        var misuredati = {{misure_da_inserire|safe}};
+
+        for (var i = 0; i < misuredati.length; i++) {
+          debugger;
+          labels.push(misuredati[i].data);
+          console.log(misuredati[i]);
+      }
+       
+        
+        generagrafico(misura, labels, dati)
+
+      
+        // const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+    };
+    function generagrafico(nome, labels, dati) {
+
+        max = Math.max(...dati)
+        min = Math.min(...dati)
+
+        label = nome
+        const datacl = {
+              labels: labels,
+              datasets: [{
+                  label: label,
+                  data: dati,
+                  fill: false,
+                  borderColor: 'rgb(30, 144, 255)',
+                  borderWidth: 1,
+                  backgroundColor: 'rgba(30, 144, 255, 0.5)',
+                  tension: 0
+              }]
+          };
+        myChart = new Chart(ctx, {
+        type: 'line',
+        data: datacl,
+        options : {
+            scales : {
+                y : {
+                    ticks: {
+                        stepSize: 1
+                    },
+                    min: min - 2,
+                    max: max + 2,
+                }
+    }
+}
+        })
+
+    };
+
+    $(document).ready(function(){
+      
+        misure();
+        
+
+
+
+         }) 
+  </script>
+  
+{% endblock script %}
