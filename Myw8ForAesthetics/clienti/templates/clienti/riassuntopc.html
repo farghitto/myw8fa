@@ -11,11 +11,14 @@
 
 {% endblock header%}
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/formgrid.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/formgrid.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/personalcu.css' %}" />
 {% endblock css %}
 {% block scriptlibrerie %}
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
-  <scrip src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.js" integrity="sha512-6LKCH7i2+zMNczKuCT9ciXgFCKFp3MevWTZUXDlk7azIYZ2wF5LRsrwZqO7Flt00enUI+HwzzT5uhOvy6MNPiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js">
+  </script>
 {% endblock scriptlibrerie %}
 
 {% block content %}
@@ -24,6 +27,7 @@
   <form  method="post" novalidate>{% csrf_token %}
     <div class="grid-form_misure">
 
+         <!--  prima riga    -->
         <div class="form-floating mb-3">
             {% render_field form.peso_ottimale class="form-control" %}
             <label class="font-custom" for="{{ form.peso_ottimale.id_for_label }}">{{ form.peso_ottimale.label_tag }}</label>
@@ -50,16 +54,41 @@
         <div class="form-floating mb-3">
         
         </div>
+        <div class="form-floating mb-3">
+        
+        </div>
+
+        <!--  seconda riga    -->
+        <div class="form-floating mb-3">
+            
+                <p class= "jp">Stato attuale:</p>
+                <p id="stato" class= "jp" >---</p>
+             
+        </div>
+
+        <div class="form-floating mb-3">
+                <p class= "jp">Differenza ultima misurazione:</p>
+                <p id="valore" class= "jp" >---</p>
+         
+        </div>
+            
+        <div class="form-floating mb-3">
+          
+                <p class= "jp" >Differenza dalla prima misurazione:</p>
+                <p id="diff" class= "jp" >---</p>
+            
+        </div>
 
         <div class="form-floating mb-3">
         
         </div>
 
+         <!--  terza riga    -->
         <div class="form-floating mb-3">
             {% render_field form.misura class="form-control" %}
             <label class="font-custom" for="{{ form.misura.id_for_label }}">{{ form.misura.label_tag }}</label>
         </div>
-        
+    </div>  
 
         <canvas id="myChart" width="400" height="200"></canvas>
         
@@ -78,76 +107,157 @@
 {% block script %}
 
   <script>
+    
     const ctx = document.getElementById('myChart');
     var myChart;
+
+    const plugin = {
+        id: 'customCanvasBackgroundColor',
+        beforeDraw: (chart, args, options) => {
+          const {ctx} = chart;
+          ctx.save();
+          ctx.globalCompositeOperation = 'destination-over';
+          ctx.fillStyle = options.color || '#99ffff';
+          ctx.fillRect(0, 0, chart.width, chart.height);
+          ctx.restore();
+        }
+      };
+
 
     function destroyChart() {
         myChart.destroy();
     }
 
-    function misure() {
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
-        var misura = $("#id_misura").val()
+    function misure() 
+    {
+
+        var selectElement = document.getElementById("id_misura");
+
+            // Ottieni l'opzione selezionata
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            // Ottieni il testo dell'opzione selezionata
+     
+        var misura = selectedOption.text;
+        
         var labels =[];
         var dati = [];
         var misuredati = {{misure_da_inserire|safe}};
 
-        for (var i = 0; i < misuredati.length; i++) {
-          debugger;
-          labels.push(misuredati[i].data);
-          console.log(misuredati[i]);
-      }
+        for (var i = 0; i < misuredati.length; i++) 
+        {
+            let misuraMinuscola = misura.toLowerCase()
+            let misuradatiMinuscola = misuredati[i].misura.toLowerCase()
+            if (misuraMinuscola == misuradatiMinuscola)
+            {
+                labels.push(misuredati[i].data);
+                dati.push(misuredati[i].valore);
+            }         
+        }
        
-        
         generagrafico(misura, labels, dati)
+        debugger;
+        lunghezzaarraydati = dati.length
+        if (lunghezzaarraydati > 1)
+        {
+            diffprima = (dati[lunghezzaarraydati - 1] - dati[0]).toFixed(2)
+            diffultima = (dati[lunghezzaarraydati - 1] - dati[(lunghezzaarraydati - 2)]).toFixed(2)
+            
+            if (diffprima > 0)
+            {
+                $("#valore").css('color', 'red');
+            }
+            else if (diffprima < 0)
+            {
+                $("#valore").css('color', 'green');
+            }
+            else
+            {
+                $("#valore").css('color', 'black');
+            }
 
-      
-        // const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+            if (diffultima > 0)
+            {
+                $("#diff").css('color', 'red');
+            }
+            else if (diffultima< 0)
+            {
+                $("#diff").css('color', 'green');
+            }
+            else
+            {
+                $("#diff").css('color', 'black');
+            }
+
+            
+            $("#valore").text(diffprima)
+            $("#diff").text(diffultima)
+        }       
     };
-    function generagrafico(nome, labels, dati) {
 
-        max = Math.max(...dati)
+    function generagrafico(nome, labels, dati) 
+    {
+
+        max = Math.max(...dati) 
         min = Math.min(...dati)
 
-        label = nome
-        const datacl = {
+        label = capitalizeFirstLetter(nome);
+        const datacl = 
+            {
               labels: labels,
               datasets: [{
                   label: label,
                   data: dati,
                   fill: false,
-                  borderColor: 'rgb(30, 144, 255)',
+                  borderColor: 'rgb(131, 113, 156)',
                   borderWidth: 1,
-                  backgroundColor: 'rgba(30, 144, 255, 0.5)',
+                  backgroundColor: 'rgba(131, 113, 156, 0.5)',
                   tension: 0
               }]
-          };
+            };
         myChart = new Chart(ctx, {
         type: 'line',
         data: datacl,
-        options : {
-            scales : {
-                y : {
-                    ticks: {
-                        stepSize: 1
-                    },
-                    min: min - 2,
-                    max: max + 2,
-                }
-    }
-}
+        options : 
+        {
+            plugins: 
+                {
+                    customCanvasBackgroundColor: 
+                    {
+                    color: '#d7d4de',
+                    }
+                },
+            scales : 
+            {
+                y : 
+                    {
+                        ticks: 
+                            {
+                                stepSize: 2
+                            },
+                        min: min - 2,
+                        max: max + 2,
+                    }
+            }
+        },
+        plugins: [plugin],
         })
-
     };
 
-    $(document).ready(function(){
+    
+    $(document).ready(function()
+    {
       
         misure();
+        $("#id_misura").change(destroyChart);
+        $("#id_misura").change(misure);
         
+    }) 
 
-
-
-         }) 
   </script>
   
 {% endblock script %}

@@ -1,5 +1,6 @@
 import string
 import json
+import copy
 
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import CreateView, View
@@ -537,54 +538,38 @@ def crea_misura(request):
 def riepilogo_misura(request, id):
     # richiamare misure
     url_backend = settings.BASE_URL + 'cliente/misure/'+str(id)+'/'
-    headers = {
-        "Authorization": f"Token {request.session['auth_token']}"
-    }
-
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         misure = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
     # richiamare cliente
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
-
-    headers = {
-        "Authorization": f"Token {request.session['auth_token']}"
-    }
-
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         cliente = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
     # richiamare nome misure
     url_backend = settings.BASE_URL + 'cliente/api/campi_misure/'
-
-    headers = {
-        "Authorization": f"Token {request.session['auth_token']}"
-    }
-
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         apimisure = response.json()
 
+    # richiamare bmi
+    url_backend = settings.BASE_URL + 'utils/'+str(id)+'/'
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        bmi = response.json()
+
     # misure app
-
     misureapp = dati_cliente_misure(request, cliente['email'])
-
-    # '1', 'Peso', 'it', '1'
-    # '3', 'Glicemia', 'it', '2'
-    # '5', 'Pressione Min', 'it', '3'
-    # '7', 'Pressione Max', 'it', '4'
-    # '9', 'Circ Collo', 'it', '5'
-    # '11', 'Circ Torace', 'it', '6'
-    # '13', 'Circ Vita', 'it', '7'
-    # '29', 'Circ Bacino', 'it', '8'
-    # '30', 'Circ Coscia', 'it', '9'
-
-    # la lsta delle opzioni su cui selezioanre il grafico
-
     lista_opzioni = apimisure
 
     # variabile per il campo peso desiderato
@@ -592,12 +577,13 @@ def riepilogo_misura(request, id):
         peso_desiderato = cliente['peso_desiderato']
     else:
         peso_desiderato = 0
+    misuracopia = copy.deepcopy(misure)
 
     # aggiungo alle misure dell'app le misure che ho presenti nel sistema
-    for misurainserita in misure:
+    for misurainserita in misuracopia:
 
         data_input = misurainserita['data']
-        data_datetime = datetime.strptime(data_input, "%Y-%m-%dT%H:%M:%SZ")
+        data_datetime = datetime.strptime(data_input, '%Y-%m-%dT%H:%M:%S.%fZ')
 
         del misurainserita['id']
         del misurainserita['data']
@@ -616,15 +602,20 @@ def riepilogo_misura(request, id):
 
             nuovoelemento = {'data': data_datetime,
                              'valore': str(valore),
-                             'misura': str(nome)}
+                             'misura': str(nome),
+                             'app': False}
 
             misureapp.append(nuovoelemento)
 
     # le ordino per data
-
     misure_ordinate = sorted(misureapp, key=lambda x: x['data'])
+    # preparo il json
 
-    lista_misure = json.dumps(misure_ordinate)
+    def custom_json_converter(obj):
+        if isinstance(obj, datetime):
+            return obj.strftime('%d-%m-%Y')
+        raise TypeError("Oggetto non serializzabile")
+    lista_misure = json.dumps(misure_ordinate, default=custom_json_converter)
 
     form = FormMisureRiassunto(
         initial={'peso_ottimale': misure[-1]['peso_ottimale'], 'peso_desiderato': peso_desiderato}, lista_opzioni=lista_opzioni)
