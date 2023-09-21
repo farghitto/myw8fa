@@ -21,6 +21,7 @@ from .form import FormCliente, FormClientePiva, FormClienteMinore
 from .form import FormMisure, FormMisureRiassunto
 from .form import ClientiSearchForm
 from .apiapp import dati_cliente_misure
+from amministrazione.creapdfcheckup import ModuloPersonal
 
 import pdb
 
@@ -536,6 +537,7 @@ def crea_misura(request):
 
 
 def riepilogo_misura(request, id):
+
     # richiamare misure
     url_backend = settings.BASE_URL + 'cliente/misure/'+str(id)+'/'
     headers = {"Authorization": f"Token {request.session['auth_token']}"}
@@ -561,13 +563,6 @@ def riepilogo_misura(request, id):
     if response.status_code == 200:
         apimisure = response.json()
 
-    # richiamare bmi
-    url_backend = settings.BASE_URL + 'utils/'+str(id)+'/'
-    headers = {"Authorization": f"Token {request.session['auth_token']}"}
-    response = requests.get(url_backend, headers=headers)
-    if response.status_code == 200:
-        bmi = response.json()
-
     # misure app
     misureapp = dati_cliente_misure(request, cliente['email'])
     lista_opzioni = apimisure
@@ -583,7 +578,7 @@ def riepilogo_misura(request, id):
     for misurainserita in misuracopia:
 
         data_input = misurainserita['data']
-        data_datetime = datetime.strptime(data_input, '%Y-%m-%dT%H:%M:%S.%fZ')
+        data_datetime = datetime.strptime(data_input, '%Y-%m-%dT%H:%M:%SZ')
 
         del misurainserita['id']
         del misurainserita['data']
@@ -617,7 +612,26 @@ def riepilogo_misura(request, id):
         raise TypeError("Oggetto non serializzabile")
     lista_misure = json.dumps(misure_ordinate, default=custom_json_converter)
 
+    # richiamare bmi
+    bmi_ultima_misura = misure[-1]['bmi']
+    url_backend = settings.BASE_URL + 'utils/statobmi/' + \
+        str(id) + '/' + str(bmi_ultima_misura)
+
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        stato_peso = response.json()
+
     form = FormMisureRiassunto(
         initial={'peso_ottimale': misure[-1]['peso_ottimale'], 'peso_desiderato': peso_desiderato}, lista_opzioni=lista_opzioni)
 
-    return render(request, 'clienti/riassuntopc.html', {'form': form, 'misure_da_inserire': lista_misure, 'cliente': cliente})
+    return render(request, 'clienti/riassuntopc.html', {'form': form, 'misure_da_inserire': lista_misure, 'cliente': cliente, 'stato': stato_peso})
+
+
+
+# va creata prima la pagina sms e mail
+def crea_inviapcu(request, id):
+
+    creato = ModuloPersonal(request, id)
+
+    return 1

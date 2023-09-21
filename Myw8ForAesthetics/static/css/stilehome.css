@@ -232,7 +232,7 @@ header {
   letter-spacing: 0.25px;
   line-height: normal;
 
-  overflow: visible;
+  /* overflow: visible; */
   padding: 2px 24px;
   position: relative;
   text-align: center;
@@ -519,5 +519,5 @@ header {
 .error_conteiner
 {
   height: 120vh;
-  overflow: auto;
+  /* overflow: auto; */
 }

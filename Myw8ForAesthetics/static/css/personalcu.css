@@ -4,4 +4,72 @@
     font-size:110%;
     text-align: center;
     font-family: 'Baskerville',cursive;
+    margin: 0;
 }
+
+
+  
+  .grid-form_misure {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Due colonne con larghezza flessibile */
+    gap: 1rem; /* Spazio tra le celle */
+   
+    margin: 0 auto; /* Centra il form orizzontalmente */
+    margin-top: 1%;
+  }
+  
+  .form-control {
+    width: 100%; /* Riempi completamente la cella */
+    padding: 0.5rem; /* Spaziatura interna */
+    font-family: 'Baskerville',cursive;
+  }
+ 
+  .invalid-feedback {
+
+    font-family: 'Baskerville',cursive;
+
+  }
+  
+  #bottoni_griglia
+  {
+    display: flex;
+    justify-content: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 2%;
+    
+    
+  }
+  
+  .form-container
+  {
+    
+    height: 120vh; /* Altezza al 100% della viewport */
+    /* Aggiunge le barre di scorrimento se il contenuto supera l'area visibile */
+    padding-top: 20px; /* Margine interno per separare il contenuto dai bordi */
+    padding-left: 6vw;
+    padding-right: 6vw;
+    box-sizing: border-box;
+    margin-bottom: 3%;
+    
+  }
+
+  .bottone_viola {
+    margin: 3%;
+}
+  
+.myChart
+{
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    padding-top: 2vw;
+}
+
+#myChart
+{
+  width: 100% !important;
+}
+

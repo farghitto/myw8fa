@@ -3,7 +3,7 @@ from .views import sceltamenu, sceltacliente, sceltapostcliente, sceltamisure
 from .views import get_codice_fiscale, search_clienti
 from .views import crea_cliente, crea_cliente_piva, crea_cliente_minore
 from .views import info_cliente
-from .views import crea_misura, riepilogo_misura
+from .views import crea_misura, riepilogo_misura, crea_inviapcu
 
 app_name = 'clienti'
 
@@ -21,6 +21,7 @@ urlpatterns = [
     path('nuovamisura', crea_misura, name='nuovamisura'),
     path('misurariepilogo/<int:id>/', riepilogo_misura,
          name='misure_riepilogo_clienti'),
+    path('inviopcu/<int:id>/', crea_inviapcu, name='inviomailpcu'),
 
     path('search/', search_clienti, name='search_clienti'),
 
@@ -29,6 +30,6 @@ urlpatterns = [
 
 
     path('ajax/cf', get_codice_fiscale, name='ajax_codice_fiscale'),
-    
+
 
 ]

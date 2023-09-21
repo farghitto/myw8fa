@@ -11,7 +11,7 @@
 
 {% endblock header%}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/formgrid.css' %}" />
+
     <link rel="stylesheet" href="{% static 'css/personalcu.css' %}" />
 {% endblock css %}
 {% block scriptlibrerie %}
@@ -28,12 +28,12 @@
     <div class="grid-form_misure">
 
          <!--  prima riga    -->
-        <div class="form-floating mb-3">
+        <div class="form-floating">
             {% render_field form.peso_ottimale class="form-control" %}
             <label class="font-custom" for="{{ form.peso_ottimale.id_for_label }}">{{ form.peso_ottimale.label_tag }}</label>
         </div>
 
-        <div class="form-floating mb-3">
+        <div class="form-floating">
             {% if form.is_bound %}
             {% if form.peso_desiderato.errors %}
                 {% render_field form.peso_desiderato class="form-control is-invalid" %}
@@ -51,53 +51,50 @@
             <label class="font-custom" for="{{ form.peso_desiderato.id_for_label }}">{{ form.peso_desiderato.label_tag }}</label>
         </div>
 
-        <div class="form-floating mb-3">
+        <div class="form-floating">
         
         </div>
-        <div class="form-floating mb-3">
         
-        </div>
 
         <!--  seconda riga    -->
-        <div class="form-floating mb-3">
+        <div class="form-floating">
             
                 <p class= "jp">Stato attuale:</p>
-                <p id="stato" class= "jp" >---</p>
+                <p class= "jp" > {{stato}}</p>
              
         </div>
 
-        <div class="form-floating mb-3">
+        <div class="form-floating">
                 <p class= "jp">Differenza ultima misurazione:</p>
                 <p id="valore" class= "jp" >---</p>
          
         </div>
             
-        <div class="form-floating mb-3">
+        <div class="form-floating">
           
                 <p class= "jp" >Differenza dalla prima misurazione:</p>
                 <p id="diff" class= "jp" >---</p>
             
         </div>
 
-        <div class="form-floating mb-3">
         
-        </div>
 
          <!--  terza riga    -->
-        <div class="form-floating mb-3">
+        <div class="form-floating">
             {% render_field form.misura class="form-control" %}
             <label class="font-custom" for="{{ form.misura.id_for_label }}">{{ form.misura.label_tag }}</label>
         </div>
     </div>  
 
-        <canvas id="myChart" width="400" height="200"></canvas>
-        
+    <div class = 'myChart'>
+        <canvas id="myChart"></canvas>
+    </div>
 
 
     <div id = 'bottoni_griglia'>
 
-      <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Crea </p></button>
-      <a href="{% url 'clienti:sceltamenu' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+      
+      <a href="{% url 'clienti:inviomailpcu' cliente.id %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Invia </p></a>
 
     </div>
     </form>
@@ -160,7 +157,7 @@
         }
        
         generagrafico(misura, labels, dati)
-        debugger;
+  
         lunghezzaarraydati = dati.length
         if (lunghezzaarraydati > 1)
         {
@@ -194,8 +191,8 @@
             }
 
             
-            $("#valore").text(diffprima)
-            $("#diff").text(diffultima)
+            $("#valore").text(diffultima)
+            $("#diff").text( diffprima)
         }       
     };
 
@@ -242,8 +239,12 @@
                         min: min - 2,
                         max: max + 2,
                     }
-            }
+            },
+            responsive: true, 
+            maintainAspectRatio: false
+            
         },
+        
         plugins: [plugin],
         })
     };

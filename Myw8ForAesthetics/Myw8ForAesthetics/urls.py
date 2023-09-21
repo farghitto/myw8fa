@@ -23,6 +23,7 @@ urlpatterns = [
     path('utente/', include('utente.urls')),
     path('cliente/', include('clienti.urls')),
 
+
     path('erroreserver/<int:status_code>/<str:text>/',
          erroreserver, name='erroreserver'),
 
