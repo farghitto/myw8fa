@@ -70,7 +70,7 @@ def ModuloPersonal(request, id):
     formato = "%Y-%m-%d"
     data_di_nascita = datetime.strptime(
         cliente['data_nascita'], formato)
-    data_corrente = datetime.now()
+    data_corrente = date.today()
     eta = data_corrente.year - data_di_nascita.year - \
         ((data_corrente.month, data_corrente.day) <
          (data_di_nascita.month, data_di_nascita.day))
@@ -795,7 +795,7 @@ def ModuloPersonal(request, id):
         print(f"La cartella '{cartella_destinazione}' esiste già.")
 
     # Ora puoi aprire il file PDF nella cartella specificata
-    nome_file_pdf = f"{cliente['codice_fiscale']}-personal.pdf"
+    nome_file_pdf = f"{data_corrente}-personal.pdf"
     percorso_completo_pdf = os.path.join(cartella_destinazione, nome_file_pdf)
 
     outputStream = open(percorso_completo_pdf, "wb")

@@ -44,3 +44,12 @@
   background-repeat: no-repeat;
 
 }
+
+.text_button_select_client_type
+{
+  text-align: center;
+    
+  margin: 0;
+  font-family: Round Hand, cursive;
+  font-size: 2vh;
+  }

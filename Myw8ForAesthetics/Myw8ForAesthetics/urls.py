@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('utente/', include('utente.urls')),
     path('cliente/', include('clienti.urls')),
+    path('amministrazione/', include('amministrazione.urls')),
 
 
     path('erroreserver/<int:status_code>/<str:text>/',

@@ -22,6 +22,7 @@ from .form import FormMisure, FormMisureRiassunto
 from .form import ClientiSearchForm
 from .apiapp import dati_cliente_misure
 from amministrazione.creapdfcheckup import ModuloPersonal
+from amministrazione.views import inviomail, inviosms
 
 import pdb
 
@@ -578,7 +579,9 @@ def riepilogo_misura(request, id):
     for misurainserita in misuracopia:
 
         data_input = misurainserita['data']
-        data_datetime = datetime.strptime(data_input, '%Y-%m-%dT%H:%M:%SZ')
+
+        data_datetime = datetime.strptime(
+            data_input[0:19], '%Y-%m-%dT%H:%M:%S')
 
         del misurainserita['id']
         del misurainserita['data']
@@ -628,10 +631,22 @@ def riepilogo_misura(request, id):
     return render(request, 'clienti/riassuntopc.html', {'form': form, 'misure_da_inserire': lista_misure, 'cliente': cliente, 'stato': stato_peso})
 
 
-
 # va creata prima la pagina sms e mail
-def crea_inviapcu(request, id):
+def inviopcu(request, id):
+    
+    chiave = get_random_string(length=10, allowed_chars='0123456789')
+    
+    if request.method == 'POST':
+        azione = request.POST.get('azione')
+
+        if azione == 'sms':
+            inviosms(chiave , id)
+            # Esegui l'invio SMS
+        elif azione == 'email':
+            inviomail(chiave , id)
+            # Esegui l'invio Email
+    
 
     creato = ModuloPersonal(request, id)
 
-    return 1
+    return render(request, 'clienti/invio.html', {'id': id})

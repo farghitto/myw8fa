@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Opzioni Misura {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect' style='visibility: hidden'>
+        <p id="text_header" class="text"></p>
+    </div>
+
+{% endblock header%}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/stiletworect.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+  
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+    
+<form method="post" action="{% url 'clienti:inviopcu' id %}" id='conteiner_two_rect'>
+    {% csrf_token %}
+    <button type="submit" name="azione" value="sms" class = 'botton_rect'>
+        <p class= 'text_button_select_client'>Invio SMS</p>
+        <img
+        class="button_select_client_img"
+        src="{% static 'static_file/sms.png'%}"
+        alt="Immagine"
+        />
+        <p class= 'text_button_select_client_type' > Il codice sarà inviato al cliente tramite SMS al numero registrato
+            nella sua scheda anagrafica</p>           
+    </button>
+    <button type="submit" name="azione" value="email" class = 'botton_rect'>
+        <p class= 'text_button_select_client'>Invio Mail</p>
+        <img
+        class="button_select_client_img"
+        src="{% static 'static_file/mail.png'%}"
+        alt="Immagine"
+        />
+        <p class= 'text_button_select_client_type' > Il codice sarà inviato al cliente tramite Email alla casella di
+            posta elettronica registrata nella sua scheda anagrafica</p>       
+    </button>
+ 
+</form>
+{% endblock %}
+{% block script %}
+   
+
+{% endblock script %}
