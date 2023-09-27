@@ -61,9 +61,9 @@
                     <td><p id = 'table_text_button'>{{ elemento.cognome }}</p></td>
                     <td>
                         <div class="button_conteiner">
-                            <a href="{% url 'clienti:info_cliente' elemento.id %}" id= 'button_info' class="bottone_clienti"><p id = 'menu_text_button'> Informazioni </p></a>
-                            <button id= 'button_accordo' class="bottone_clienti" type="submit"><p id = 'menu_text_button'> Accordo </p></button>
-                            <button id= 'button_bmi' class="bottone_clienti" type="submit"><p id = 'menu_text_button'> bmi </p></button>
+                            <a href="{% url 'clienti:info_cliente' elemento.id %}" id= 'button_info' class="bottone_clienti"><p id = 'cliente_text_button'> Informazioni </p></a>
+                            <button id= 'button_accordo' class="bottone_clienti" type="submit"><p id = 'cliente_text_button'> Accordo </p></button>
+                            <a href="{% url 'clienti:misure_riepilogo_clienti_elenco' elemento.id %}" id= 'button_info' class="bottone_clienti"><p id = 'cliente_text_button'> bmi </p></a>
                         </div>
                     </td>
                 </tr>

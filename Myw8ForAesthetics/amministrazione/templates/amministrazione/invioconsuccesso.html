@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Invio effettuato {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect'>
+        <p id="text_header" class="text"> Invio effettuato</p>
+    </div> 
+{% endblock header%}
+{% block scriptlibrerie %}
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   <div class ='error_conteiner'>
+        <p class = 'errorp'>Email inviata con successo </p>
+        
+        <div class="image-container">
+            <img
+                class ="img_success"      
+                src="{% static 'static_file/successo.png'%}"
+                alt="Immagine"
+                        />
+        </div>
+        <div class = 'button_success'>
+            <a href="{% url 'utente:homec' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Torna alla Home </p></a>
+   
+        </div>
+    </div>
+                
+{% endblock %}
+{% block script %}
+    
+
+{% endblock script %}

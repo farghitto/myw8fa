@@ -801,3 +801,5 @@ def ModuloPersonal(request, id):
     outputStream = open(percorso_completo_pdf, "wb")
     output.write(outputStream)
     outputStream.close()
+
+    return percorso_completo_pdf

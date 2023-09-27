@@ -164,3 +164,11 @@ LOGGING = {
         },
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.myw8.it'
+EMAIL_PORT = '25'
+EMAIL_HOST_USER = 'myoffice@myw8.it'
+EMAIL_HOST_PASSWORD = 'Myw8italia@mw8'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False

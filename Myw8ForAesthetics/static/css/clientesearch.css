@@ -3,7 +3,7 @@
 {
     text-align: center;
     font-size: 1.9rem;
-     font-family: Round Hand, cursive;
+    font-family: Round Hand, cursive;
     text-align: center;
     color: black;
     margin-top: 0.4rem;
@@ -11,6 +11,14 @@
 
 }
 
+#cliente_text_button {
+    font-size: 1.5rem;
+    font-family: "Baskerville", cursive;
+    text-align: center;
+    color: #83719c;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
 
 
 .form-control:focus {
@@ -62,6 +70,7 @@
     text-align: center;
     text-decoration: none;
     vertical-align: middle;
+    
 }
 
 .tabella_cliente
@@ -105,7 +114,7 @@ td {
     padding-left: 5px;
     padding-right: 5px;
     font-size: 1.2rem;
-    font-family: Round Hand, cursive;
+    font-family: 'Baskerville',cursive;
     text-align: center;
 }
 

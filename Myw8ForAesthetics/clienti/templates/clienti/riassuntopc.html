@@ -93,8 +93,8 @@
 
     <div id = 'bottoni_griglia'>
 
+        <button id= 'button_esci' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Prosegui </p></button>
       
-      <a href="{% url 'clienti:inviomailpcu' cliente.id %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Invia </p></a>
 
     </div>
     </form>
@@ -156,11 +156,15 @@
             }         
         }
        
-        generagrafico(misura, labels, dati)
-  
+        var newDati = dati.map(function(item) {
+            return item === 'None' ? null : item;
+          });
+        generagrafico(misura, labels, newDati)
+        
         lunghezzaarraydati = dati.length
         if (lunghezzaarraydati > 1)
         {
+            
             diffprima = (dati[lunghezzaarraydati - 1] - dati[0]).toFixed(2)
             diffultima = (dati[lunghezzaarraydati - 1] - dati[(lunghezzaarraydati - 2)]).toFixed(2)
             
@@ -191,17 +195,35 @@
             }
 
             
+            if (diffultima == 'NaN' )
+            {
+                diffultima = '0'
+            }
+            if (diffprima == 'NaN' )
+            {
+                diffprima = '0'
+            }
+
             $("#valore").text(diffultima)
             $("#diff").text( diffprima)
-        }       
+        }
+        else{
+
+            $("#valore").text('0')
+            $("#diff").text( '0')
+
+        }
+
     };
 
     function generagrafico(nome, labels, dati) 
     {
-
-        max = Math.max(...dati) 
-        min = Math.min(...dati)
-
+        var datiFiltrati = dati.filter(function(element) {
+            return element !== null;
+          });
+        max = Math.max(...datiFiltrati) 
+        min = Math.min(...datiFiltrati)
+       
         label = capitalizeFirstLetter(nome);
         const datacl = 
             {

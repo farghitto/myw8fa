@@ -327,13 +327,21 @@ class FormMisureRiassunto(forms.Form):
                                              attrs={'class': 'form-control font-custom', 'placeholder': 'peso_desiderato'}))
     # programma_consigliato = UserModelChoiceField(queryset=Programmi.objects.filter(gruppo__nome_gruppo='MW- NUTRIGEN'))
     misura = forms.ChoiceField(label='Misura da Visualizzare:',
-                               widget=forms.Select(attrs={'class': 'form-select font-custom', 'placeholder': 'misura'}))
+                               widget=forms.Select(
+                                   attrs={'class': 'form-select font-custom', 'placeholder': 'misura'}),
+                               required=False)
 
     def __init__(self, *args, **kwargs):
 
         lista_opzioni = kwargs.pop('lista_opzioni', [])
-        
 
         super(FormMisureRiassunto, self).__init__(*args, **kwargs)
 
         self.fields['misura'].choices = lista_opzioni
+
+
+class FormChiave(forms.Form):
+
+    chiave = forms.CharField(label='Inserire codice:',
+                             widget=forms.TextInput(
+                                 attrs={'class': 'form-control font-custom', 'placeholder': 'chiave'}), error_messages={'required': 'Il cap è obbligatorio.'})

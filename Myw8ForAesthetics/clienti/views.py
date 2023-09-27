@@ -2,12 +2,13 @@ import string
 import json
 import copy
 
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView, View
 from django.conf import settings
 from django.http import JsonResponse
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.core.paginator import Paginator
+from django.utils.crypto import get_random_string
 
 from datetime import datetime
 
@@ -19,10 +20,10 @@ from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_respons
 from .models import Cliente
 from .form import FormCliente, FormClientePiva, FormClienteMinore
 from .form import FormMisure, FormMisureRiassunto
-from .form import ClientiSearchForm
+from .form import ClientiSearchForm, FormChiave
 from .apiapp import dati_cliente_misure
 from amministrazione.creapdfcheckup import ModuloPersonal
-from amministrazione.views import inviomail, inviosms
+from amministrazione.views import inviomailchiave, inviosms, inviomailallegato
 
 import pdb
 
@@ -405,7 +406,7 @@ def info_cliente(request, id):
             if form.is_valid():
 
                 # Prendi i dati dal form
-                payload = {
+                misure = {
                     'nome': form.cleaned_data['nome'],
                     'cognome': form.cleaned_data['cognome'],
                     'citta_nascita': form.cleaned_data['citta_nascita'],
@@ -424,7 +425,7 @@ def info_cliente(request, id):
                 # Effettua la richiesta Put all'API per aggiornare
 
                 response = requests.put(
-                    url_backend, data=payload, headers=headers)
+                    url_backend, data=misure, headers=headers)
 
                 if response.status_code == 200:
 
@@ -539,6 +540,46 @@ def crea_misura(request):
 
 def riepilogo_misura(request, id):
 
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        cliente = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    # variabile per il campo peso desiderato
+    if cliente['peso_desiderato']:
+        peso_desiderato = cliente['peso_desiderato']
+    else:
+        peso_desiderato = 0
+
+    if request.method == 'POST':
+        form = FormMisureRiassunto(request.POST)
+        pesoform = request.POST.get("peso_desiderato")
+
+        if pesoform != peso_desiderato:
+
+            misure = {
+                'peso_desiderato': pesoform
+            }
+            # Effettua la richiesta Put all'API per aggiornare
+            url_backend = settings.BASE_URL + \
+                'cliente/clienti/'+str(id)+'/'
+            headers = {
+                "Authorization": f"Token {request.session['auth_token']}"}
+            response = requests.patch(
+                url_backend, data=misure, headers=headers)
+
+            if response.status_code == 200:
+
+                # Redirect alla lista dei clienti
+                return redirect('clienti:inviopcu', id=id)
+            elif response.status_code >= 400:
+                return redirect('erroreserver', status_code=response.status_code, text=response.text)
+        else:
+            return redirect('clienti:inviopcu', id=id)
+
     # richiamare misure
     url_backend = settings.BASE_URL + 'cliente/misure/'+str(id)+'/'
     headers = {"Authorization": f"Token {request.session['auth_token']}"}
@@ -566,13 +607,13 @@ def riepilogo_misura(request, id):
 
     # misure app
     misureapp = dati_cliente_misure(request, cliente['email'])
+
+    if misureapp != False:
+        misurepergrafico = misureapp
+    else:
+        misurepergrafico = []
     lista_opzioni = apimisure
 
-    # variabile per il campo peso desiderato
-    if cliente['peso_desiderato']:
-        peso_desiderato = cliente['peso_desiderato']
-    else:
-        peso_desiderato = 0
     misuracopia = copy.deepcopy(misure)
 
     # aggiungo alle misure dell'app le misure che ho presenti nel sistema
@@ -603,10 +644,11 @@ def riepilogo_misura(request, id):
                              'misura': str(nome),
                              'app': False}
 
-            misureapp.append(nuovoelemento)
+            misurepergrafico.append(nuovoelemento)
 
     # le ordino per data
-    misure_ordinate = sorted(misureapp, key=lambda x: x['data'])
+    misure_ordinate = sorted(misurepergrafico, key=lambda x: x['data'])
+
     # preparo il json
 
     def custom_json_converter(obj):
@@ -631,22 +673,170 @@ def riepilogo_misura(request, id):
     return render(request, 'clienti/riassuntopc.html', {'form': form, 'misure_da_inserire': lista_misure, 'cliente': cliente, 'stato': stato_peso})
 
 
-# va creata prima la pagina sms e mail
 def inviopcu(request, id):
-    
-    chiave = get_random_string(length=10, allowed_chars='0123456789')
-    
+
+    risposta = False
+
     if request.method == 'POST':
         azione = request.POST.get('azione')
-
+        chiave = get_random_string(length=10, allowed_chars='0123456789')
         if azione == 'sms':
-            inviosms(chiave , id)
+            risposta = inviosms(request, chiave, id)
+            request.session['firma_moduli_pcu'] = chiave
             # Esegui l'invio SMS
         elif azione == 'email':
-            inviomail(chiave , id)
+            # idemail invio riassunto pcu 12
+            idemail = 12
+            risposta = inviomailchiave(request, chiave, id, idemail)
+            request.session['firma_moduli_pcu'] = chiave
+            print(chiave)
             # Esegui l'invio Email
-    
+        elif azione == 'chiave':
+            chiave_inserita = request.POST.get('chiave')
+            chiave = request.session['firma_moduli_pcu']
+            if chiave == chiave_inserita:
+                idemail = 13
+                percorso = ModuloPersonal(request, id)
+                risposta = inviomailallegato(request, percorso, id, idemail)
+                return render(request, 'amministrazione/invioconsuccesso.html')
 
-    creato = ModuloPersonal(request, id)
+    form = FormChiave()
+    context = {'id': id, 'inserimento': risposta, 'form': form}
+    return render(request, 'clienti/invio.html', context)
 
-    return render(request, 'clienti/invio.html', {'id': id})
+
+def riepilogo_misura_elenco(request, id):
+
+    # richiama cliente
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        cliente = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    # variabile per il campo peso desiderato
+    if cliente['peso_desiderato']:
+        peso_desiderato = cliente['peso_desiderato']
+    else:
+        peso_desiderato = 0
+
+    if request.method == 'POST':
+        form = FormMisureRiassunto(request.POST)
+        pesoform = request.POST.get("peso_desiderato")
+
+        if pesoform != peso_desiderato:
+
+            misure = {
+                'peso_desiderato': pesoform
+            }
+            # Effettua la richiesta Put all'API per aggiornare
+            url_backend = settings.BASE_URL + \
+                'cliente/clienti/'+str(id)+'/'
+            headers = {
+                "Authorization": f"Token {request.session['auth_token']}"}
+            response = requests.patch(
+                url_backend, data=misure, headers=headers)
+
+            if response.status_code == 200:
+
+                # Redirect alla lista dei clienti
+                return redirect('clienti:inviopcu', id=id)
+            elif response.status_code >= 400:
+                return redirect('erroreserver', status_code=response.status_code, text=response.text)
+        else:
+            request.session['ultimo_utente'] = cliente
+            return redirect('clienti:nuovamisura')
+
+    # richiamare misure
+    url_backend = settings.BASE_URL + 'cliente/misure/'+str(id)+'/'
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        misure = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    # richiamare cliente
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        cliente = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    # richiamare nome misure
+    url_backend = settings.BASE_URL + 'cliente/api/campi_misure/'
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        apimisure = response.json()
+
+    # misure app
+    misureapp = dati_cliente_misure(request, cliente['email'])
+
+    if misureapp != False:
+        misurepergrafico = misureapp
+    else:
+        misurepergrafico = []
+    lista_opzioni = apimisure
+
+    misuracopia = copy.deepcopy(misure)
+
+    # aggiungo alle misure dell'app le misure che ho presenti nel sistema
+    for misurainserita in misuracopia:
+
+        data_input = misurainserita['data']
+
+        data_datetime = datetime.strptime(
+            data_input[0:19], '%Y-%m-%dT%H:%M:%S')
+
+        del misurainserita['id']
+        del misurainserita['data']
+        del misurainserita['peso_ottimale']
+        del misurainserita['cliente']
+
+        for chiave, valore in misurainserita.items():
+
+            for nomemisura in apimisure:
+
+                if chiave in nomemisura:
+                    nome = nomemisura[1]
+                    break
+                else:
+                    nome = chiave
+
+            nuovoelemento = {'data': data_datetime,
+                             'valore': str(valore),
+                             'misura': str(nome),
+                             'app': False}
+
+            misurepergrafico.append(nuovoelemento)
+
+    # le ordino per data
+    misure_ordinate = sorted(misurepergrafico, key=lambda x: x['data'])
+
+    # preparo il json
+
+    def custom_json_converter(obj):
+        if isinstance(obj, datetime):
+            return obj.strftime('%d-%m-%Y')
+        raise TypeError("Oggetto non serializzabile")
+    lista_misure = json.dumps(misure_ordinate, default=custom_json_converter)
+
+    # richiamare bmi
+    bmi_ultima_misura = misure[-1]['bmi']
+    url_backend = settings.BASE_URL + 'utils/statobmi/' + \
+        str(id) + '/' + str(bmi_ultima_misura)
+
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        stato_peso = response.json()
+
+    form = FormMisureRiassunto(
+        initial={'peso_ottimale': misure[-1]['peso_ottimale'], 'peso_desiderato': peso_desiderato}, lista_opzioni=lista_opzioni)
+
+    return render(request, 'clienti/riassuntopc.html', {'form': form, 'misure_da_inserire': lista_misure, 'cliente': cliente, 'stato': stato_peso})

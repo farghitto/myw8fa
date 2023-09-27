@@ -43,11 +43,13 @@ def dati_utente(request, mail):
 
             pazienteid = utente['patient']['id']
             lingua = utente['preferred_lang']
+            risposta = {'id': pazienteid, 'lingua': lingua}
+            break
 
         else:
-            p = 0
-            # utente non trovato, uscire
-    risposta = {'id': pazienteid, 'lingua': lingua}
+
+            risposta = {'id': False, 'lingua': False}
+    
     return (risposta)
 
 
@@ -56,7 +58,8 @@ def dati_cliente_misure(request, mail):
     # entro superutente
     aut = autenticazione(request)
     datiutente = dati_utente(request, mail)
-
+    if datiutente['id'] == False:
+        return False
     # il token generato è preso dalla session
     token = request.session['token']
     s = requests.Session()
