@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Info Clienti {% endblock title %}
+{% block header %}
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text"> Informazioni Cliente Privato </p>
+</div> 
+
+{% endblock header%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/formgrid.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+<div class="form-container">
+  
+   
+    <div class ='grid_info'>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Data Iscrizione </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Accordo </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Data Scadenza </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Giorni Rimanenti </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Peso Iniziale </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Peso Desiderato </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> {{data_creazione}} </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> {{programma}} </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> {{data_scadenza}}</p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> {{giorni}} giorni </p></div>    
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> {{ peso_iniziale }} kg </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> {{ peso_desiderato}} kg </p></div>
+    </div>
+    <div class ='info'>   
+        <div class="grid-form" id='grande_div'>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.nome.errors %}
+                    {% render_field form.nome class="form-control is-invalid" %}
+                    {% for error in form.nome.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.nome class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.nome class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.nome.id_for_label }}">{{ form.nome.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.cognome.errors %}
+                    {% render_field form.cognome class="form-control is-invalid" %}
+                    {% for error in form.cognome.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.cognome class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.cognome class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.cognome.id_for_label }}">{{ form.cognome.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.citta_nascita.errors %}
+                    {% render_field form.citta_nascita class="form-control is-invalid" %}
+                    {% for error in form.citta_nascita.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.citta_nascita class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.citta_nascita class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.citta_nascita.id_for_label }}">{{ form.citta_nascita.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.data_nascita.errors %}
+                    {% render_field form.data_nascita class="form-control is-invalid" %}
+                    {% for error in form.data_nascita.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.data_nascita class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.data_nascita class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.data_nascita.id_for_label }}">{{ form.data_nascita.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.sesso.errors %}
+                    {% render_field form.sesso class="form-control is-invalid" %}
+                    {% for error in form.sesso.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.sesso class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.sesso class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.sesso.id_for_label }}">{{ form.sesso.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.codice_fiscale.errors %}
+                    {% render_field form.codice_fiscale class="form-control is-invalid" %}
+                    {% for error in form.codice_fiscale.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.codice_fiscale class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.codice_fiscale class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.codice_fiscale.id_for_label }}">{{ form.codice_fiscale.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.indirizzo.errors %}
+                    {% render_field form.indirizzo class="form-control is-invalid" %}
+                    {% for error in form.indirizzo.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.indirizzo class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.indirizzo class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.indirizzo.id_for_label }}">{{ form.indirizzo.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.cap.errors %}
+                    {% render_field form.cap class="form-control is-invalid" %}
+                    {% for error in form.cap.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.cap class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.cap class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.cap.id_for_label }}">{{ form.cap.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.citta.errors %}
+                    {% render_field form.citta class="form-control is-invalid" %}
+                    {% for error in form.citta.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.citta class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.citta class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.citta.id_for_label }}">{{ form.citta.label_tag }}</label>
+            </div>   
+
+            <div class="form-floating mb-3">
+            
+                    {% render_field form.telefono class="form-control" %}
+                
+                <label class="font-custom" for="{{ form.telefono.id_for_label }}">{{ form.telefono.label_tag }}</label>
+            </div>
+            
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.cellulare.errors %}
+                    {% render_field form.cellulare class="form-control is-invalid" %}
+                    {% for error in form.cellulare.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.cellulare class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.cellulare class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.cellulare.id_for_label }}">{{ form.cellulare.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                {% if form.is_bound %}
+                {% if form.email.errors %}
+                    {% render_field form.email class="form-control is-invalid" %}
+                    {% for error in form.email.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.email class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.email class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.email.id_for_label }}">{{ form.email.label_tag }}</label>
+            </div>
+
+            <div class="form-floating mb-3">
+        
+            </div> 
+
+            <div class="form-floating mb-3">
+            
+                {% render_field form.note class="form-control" %}
+            
+                <label class="font-custom" for="{{ form.note.id_for_label }}">{{ form.note.label_tag }}</label>
+            </div>
+
+        </div>
+    
+        <div class = 'bottoni_griglia' id='piccolo_div'>
+
+            <a href="{% url 'clienti:modifica_cliente' id %}" class="btn bottone_viola"><p class = 'info_button'> Modifica </p></a>
+            <a href="{% url 'clienti:search_clienti' %}"  class="btn bottone_viola"><p class = 'info_button'> Esci senza salvare </p></a>
+
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}
+{% block script %}
+
+  <script>
+ 
+  </script>
+  
+{% endblock script %}

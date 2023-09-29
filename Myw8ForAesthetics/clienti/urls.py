@@ -2,7 +2,7 @@ from django.urls import path
 from .views import sceltamenu, sceltacliente, sceltapostcliente, sceltamisure
 from .views import get_codice_fiscale, search_clienti
 from .views import crea_cliente, crea_cliente_piva, crea_cliente_minore
-from .views import info_cliente
+from .views import info_cliente, modifica_cliente
 from .views import crea_misura, riepilogo_misura, inviopcu, riepilogo_misura_elenco
 
 app_name = 'clienti'
@@ -30,7 +30,7 @@ urlpatterns = [
     path('search/', search_clienti, name='search_clienti'),
 
     path('informazioni/<int:id>/', info_cliente, name='info_cliente'),
-
+    path('modifica/<int:id>/', modifica_cliente, name='modifica_cliente'),
 
 
 

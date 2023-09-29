@@ -1,6 +1,8 @@
 import string
 import json
 import copy
+import locale
+
 
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, View
@@ -9,6 +11,7 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy, reverse
 from django.core.paginator import Paginator
 from django.utils.crypto import get_random_string
+from django.utils import timezone
 
 from datetime import datetime
 
@@ -21,7 +24,7 @@ from .models import Cliente
 from .form import FormCliente, FormClientePiva, FormClienteMinore
 from .form import FormMisure, FormMisureRiassunto
 from .form import ClientiSearchForm, FormChiave
-from .apiapp import dati_cliente_misure
+from .apiapp import dati_cliente_misure, dati_cliente_profilo
 from amministrazione.creapdfcheckup import ModuloPersonal
 from amministrazione.views import inviomailchiave, inviosms, inviomailallegato
 
@@ -280,8 +283,146 @@ def search_clienti(request):
     return render(request, 'clienti/elencoclienti.html', context)
 
 
-@handle_exceptions
 def info_cliente(request, id):
+
+    # per la lingua delle date
+    locale.setlocale(locale.LC_TIME, 'it_IT.UTF-8')
+    # prendo l'url il token chiamoil server per il cliente
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        clienti = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    # prendo il peso iniziale dal server per il cliente
+    url_backend = settings.BASE_URL + 'cliente/peso/'+str(id)+'/'
+
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        peso = response.json()
+
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    # partita iva
+    if clienti['ragione_sociale']:
+
+        form = FormClientePiva(initial=clienti)
+        for field in form:
+            field.field.widget.attrs['disabled'] = 'disabled'
+
+        dati_app = dati_cliente_profilo(request, clienti['email'])
+        if dati_app:
+            oggi = timezone.localdate()
+            differenza_data = dati_app['data_scadenza'] - oggi
+            numero_giorni = differenza_data.days
+            programma = dati_app['programma_attuale']
+            scadenza = dati_app['data_scadenza'].strftime("%d %B, %Y")
+        else:
+            programma = 'Non disponibile'
+            scadenza = 'Non disponibile'
+            numero_giorni = 'Non disponibile'
+
+        data_is = datetime.strptime(
+            clienti['data_creazione'][0:10], "%Y-%m-%d")
+        data_da_confrontare_date = data_is.date()
+        data_creazione = data_da_confrontare_date.strftime("%d %B, %Y")
+
+        peso_desiderato = str(clienti['peso_desiderato'])
+        if peso_desiderato is None:
+            peso_desiderato = 'Non disponibile'
+
+        context = {
+            'form': form, 'id': clienti['id'], 'programma': programma,
+            'data_creazione': data_creazione, 'giorni': numero_giorni,
+            'data_scadenza': scadenza,
+            'peso_desiderato': peso_desiderato, 'peso_iniziale': peso['peso']
+        }
+
+        return render(request, 'clienti/infoclientepiva.html',  context)
+    # minore
+    elif clienti['beneficiario_cognome']:
+
+        form = FormClienteMinore(initial=clienti)
+        for field in form:
+            field.field.widget.attrs['disabled'] = 'disabled'
+
+        dati_app = dati_cliente_profilo(request, clienti['email'])
+        if dati_app:
+            oggi = timezone.localdate()
+            differenza_data = dati_app['data_scadenza'] - oggi
+            numero_giorni = differenza_data.days
+            programma = dati_app['programma_attuale']
+            scadenza = dati_app['data_scadenza'].strftime("%d %B, %Y")
+        else:
+            programma = 'Non disponibile'
+            scadenza = 'Non disponibile'
+            numero_giorni = 'Non disponibile'
+
+        data_is = datetime.strptime(
+            clienti['data_creazione'][0:10], "%Y-%m-%d")
+        data_da_confrontare_date = data_is.date()
+        data_creazione = data_da_confrontare_date.strftime("%d %B, %Y")
+
+        peso_desiderato = clienti['peso_desiderato']
+        if peso_desiderato is None:
+            peso_desiderato = 'Non disponibile'
+
+        context = {
+            'form': form, 'id': clienti['id'], 'programma': programma,
+            'data_creazione': data_creazione, 'giorni': numero_giorni,
+            'data_scadenza': scadenza,
+            'peso_desiderato': peso_desiderato, 'peso_iniziale': peso['peso']
+        }
+
+        return render(request, 'clienti/infoclienteminore.html', context)
+    # altri
+    else:
+        form = FormCliente(initial=clienti)
+        for field in form:
+            field.field.widget.attrs['disabled'] = 'disabled'
+
+        dati_app = dati_cliente_profilo(request, clienti['email'])
+        if dati_app:
+            oggi = timezone.localdate()
+            differenza_data = dati_app['data_scadenza'] - oggi
+            numero_giorni = differenza_data.days
+            programma = dati_app['programma_attuale']
+            scadenza = dati_app['data_scadenza'].strftime("%d %B, %Y")
+        else:
+            programma = 'Non disponibile'
+            scadenza = 'Non disponibile'
+            numero_giorni = 'Non disponibile'
+
+        data_is = datetime.strptime(
+            clienti['data_creazione'][0:10], "%Y-%m-%d")
+        data_da_confrontare_date = data_is.date()
+        data_creazione = data_da_confrontare_date.strftime("%d %B, %Y")
+
+        peso_desiderato = clienti['peso_desiderato']
+        if peso_desiderato is None:
+            peso_desiderato = 'Non disponibile'
+
+        context = {
+            'form': form, 'id': clienti['id'], 'programma': programma,
+            'data_creazione': data_creazione, 'giorni': numero_giorni,
+            'data_scadenza': scadenza,
+            'peso_desiderato': peso_desiderato, 'peso_iniziale': peso['peso']
+        }
+
+        return render(request, 'clienti/infocliente.html',  context)
+
+
+@handle_exceptions
+def modifica_cliente(request, id):
 
     # prendo l'url il token echiamp il server per il cliente
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'

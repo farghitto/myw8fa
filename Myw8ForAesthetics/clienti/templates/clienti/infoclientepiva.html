@@ -3,10 +3,10 @@
 {% load widget_tweaks %}
 
 
-{% block title %} Modifica Cliente {% endblock title %}
+{% block title %} Info Cliente {% endblock title %}
 {% block header %}
 <div id="text_header_rect" class = 'purple_rect'>
-    <p id="text_header" class="text"> Modifica Cliente Privato </p>
+    <p id="text_header" class="text"> Informazioni Cliente con Partita Iva </p>
 </div> 
 
 {% endblock header%}
@@ -20,8 +20,24 @@
 {% block content %}
    
 <div class="form-container">
-  <form  method="post" novalidate>{% csrf_token %}
-    <div class="grid-form">
+  
+   
+  <div class ='grid_info'>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> Data Iscrizione </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> Accordo </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> Data Scadenza </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> Giorni Rimanenti </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> Peso Iniziale </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> Peso Desiderato </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{data_creazione}} </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{programma}} </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{data_scadenza}}</p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{giorni}}</p></div>    
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{ peso_iniziale }} </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{ peso_desiderato}} </p></div>
+  </div>
+  <div class ='info'>   
+      <div class="grid-form" id='grande_div'>
 
       <div class="form-floating mb-3">
         {% if form.is_bound %}
@@ -229,8 +245,145 @@
       </div>
 
       <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.ragione_sociale.errors %}
+            {% render_field form.ragione_sociale class="form-control is-invalid" %}
+            {% for error in form.ragione_sociale.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.ragione_sociale class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.ragione_sociale class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.ragione_sociale.id_for_label }}">{{ form.ragione_sociale.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.sede.errors %}
+            {% render_field form.sede class="form-control is-invalid" %}
+            {% for error in form.sede.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.sede class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.sede class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.sede.id_for_label }}">{{ form.sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.indirizzo_sede.errors %}
+            {% render_field form.indirizzo_sede class="form-control is-invalid" %}
+            {% for error in form.indirizzo_sede.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.indirizzo_sede class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.indirizzo_sede class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.indirizzo_sede.id_for_label }}">{{ form.indirizzo_sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.cap_sede.errors %}
+            {% render_field form.cap_sede class="form-control is-invalid" %}
+            {% for error in form.cap_sede.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.cap_sede class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.cap_sede class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.cap_sede.id_for_label }}">{{ form.cap_sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+      
+            {% render_field form.telefono_sede class="form-control" %}
+        
+        <label class="font-custom" for="{{ form.telefono_sede.id_for_label }}">{{ form.telefono_sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.email_sede.errors %}
+            {% render_field form.email_sede class="form-control is-invalid" %}
+            {% for error in form.email_sede.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.email_sede class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.email_sede class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.email_sede.id_for_label }}">{{ form.email_sede.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.partita_iva.errors %}
+            {% render_field form.partita_iva class="form-control is-invalid" %}
+            {% for error in form.partita_iva.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.partita_iva class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.partita_iva class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.partita_iva.id_for_label }}">{{ form.partita_iva.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.codice_univoco.errors %}
+            {% render_field form.codice_univoco class="form-control is-invalid" %}
+            {% for error in form.codice_univoco.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.codice_univoco class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.codice_univoco class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.codice_univoco.id_for_label }}">{{ form.codice_univoco.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
        
-      </div> 
+      </div>
+
+      <div class="form-floating mb-3">
+       
+      </div>
 
       <div class="form-floating mb-3">
       
@@ -239,66 +392,24 @@
         <label class="font-custom" for="{{ form.note.id_for_label }}">{{ form.note.label_tag }}</label>
       </div>
 
-    </div>
-
-    <div id = 'bottoni_griglia'>
-
-      <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Modifica </p></button>
-      <a href="{% url 'clienti:search_clienti' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+      
 
     </div>
-    </form>
+
+    <div class = 'bottoni_griglia' id='piccolo_div'>
+
+      <a href="{% url 'clienti:modifica_cliente' id %}" class="btn bottone_viola"><p class = 'info_button'> Modifica </p></a>
+      <a href="{% url 'clienti:search_clienti' %}"  class="btn bottone_viola"><p class = 'info_button'> Esci senza salvare </p></a>
+
+    </div>
   </div>
+    
+</div>
 
 {% endblock %}
 {% block script %}
 
   <script>
-    $(document).ready(function() {
-
-      $('#id_cognome').blur(codicefiscale);
-      $('#id_nome').blur(codicefiscale);
-      $('#id_sesso').on('change', codicefiscale);
-      $('#id_citta_nascita').blur(codicefiscale);
-      $('#id_data_nascita').blur(codicefiscale);
-
-      function codicefiscale()
-      {   
-        
-        cognome=$('#id_cognome').val();
-        nome  =$('#id_nome').val();
-        datan = $('#id_data_nascita').val();
-        sesso =$('#id_sesso').val();
-        comune = $('#id_citta_nascita').val();
-
-        url = '{% url 'clienti:ajax_codice_fiscale' %}';
-        
-        if (cognome != "" && nome != "" && datan != ""  && sesso != "" && comune != "") {
-          
-          $.ajax({
-              type: 'GET',
-              url: url,
-              data: {
-              "cognome": cognome,
-              "nome": nome,
-              "data": datan,
-              "sesso": sesso,
-              "comune": comune,
-              },
-              success: function (data) {
-      
-                  $('#id_codice_fiscale').val(data.content);
-              
-              },
-              error: function (data){
-
-                  alert(data);
-
-              }
-            });
-        }   
-      }
-    })
   </script>
   
 {% endblock script %}

@@ -3,10 +3,10 @@
 {% load widget_tweaks %}
 
 
-{% block title %} Modifica Cliente {% endblock title %}
+{% block title %} Info Clienti {% endblock title %}
 {% block header %}
 <div id="text_header_rect" class = 'purple_rect'>
-    <p id="text_header" class="text"> Modifica Cliente Privato </p>
+    <p id="text_header" class="text"> Informazioni Cliente Minorenne </p>
 </div> 
 
 {% endblock header%}
@@ -20,8 +20,23 @@
 {% block content %}
    
 <div class="form-container">
-  <form  method="post" novalidate>{% csrf_token %}
-    <div class="grid-form">
+  
+  <div class ='grid_info'>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Data Iscrizione </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Accordo </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Data Scadenza </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Giorni Rimanenti </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Peso Iniziale </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Peso Desiderato </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{data_creazione}} </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{programma}} </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{data_scadenza}}</p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{giorni}} giorni </p></div>    
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{ peso_iniziale }} kg </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{ peso_desiderato}} kg </p></div>
+</div>
+<div class ='info'>   
+    <div class="grid-form" id='grande_div'>
 
       <div class="form-floating mb-3">
         {% if form.is_bound %}
@@ -229,8 +244,78 @@
       </div>
 
       <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.beneficiario_nome.errors %}
+            {% render_field form.beneficiario_nome class="form-control is-invalid" %}
+            {% for error in form.beneficiario_nome.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.beneficiario_nome class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.beneficiario_nome class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.beneficiario_nome.id_for_label }}">{{ form.beneficiario_nome.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.beneficiario_cognome.errors %}
+            {% render_field form.beneficiario_cognome class="form-control is-invalid" %}
+            {% for error in form.beneficiario_cognome.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.beneficiario_cognome class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.beneficiario_cognome class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.beneficiario_cognome.id_for_label }}">{{ form.beneficiario_cognome.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+     
+            {% render_field form.beneficiario_cellulare class="form-control" %}
+        
+        <label class="font-custom" for="{{ form.beneficiario_cellulare.id_for_label }}">{{ form.beneficiario_cellulare.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.beneficiario_codice_fiscale.errors %}
+            {% render_field form.beneficiario_codice_fiscale class="form-control is-invalid" %}
+            {% for error in form.beneficiario_codice_fiscale.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.beneficiario_codice_fiscale class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.beneficiario_codice_fiscale class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.beneficiario_codice_fiscale.id_for_label }}">{{ form.beneficiario_codice_fiscale.label_tag }}</label>
+      </div>
+
+     
+      <div class="form-floating mb-3">
        
-      </div> 
+      </div>
+      
+      <div class="form-floating mb-3">
+       
+      </div>
+
+      <div class="form-floating mb-3">
+       
+      </div>
 
       <div class="form-floating mb-3">
       
@@ -239,66 +324,24 @@
         <label class="font-custom" for="{{ form.note.id_for_label }}">{{ form.note.label_tag }}</label>
       </div>
 
-    </div>
-
-    <div id = 'bottoni_griglia'>
-
-      <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Modifica </p></button>
-      <a href="{% url 'clienti:search_clienti' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+      
 
     </div>
-    </form>
+
+    <div class = 'bottoni_griglia' id='piccolo_div'>
+
+      <a href="{% url 'clienti:modifica_cliente' id %}" class="btn bottone_viola"><p class = 'info_button'> Modifica </p></a>
+      <a href="{% url 'clienti:search_clienti' %}"  class="btn bottone_viola"><p class = 'info_button'> Esci senza salvare </p></a>
+
+    </div>
+
   </div>
+</div>
 
 {% endblock %}
 {% block script %}
 
   <script>
-    $(document).ready(function() {
-
-      $('#id_cognome').blur(codicefiscale);
-      $('#id_nome').blur(codicefiscale);
-      $('#id_sesso').on('change', codicefiscale);
-      $('#id_citta_nascita').blur(codicefiscale);
-      $('#id_data_nascita').blur(codicefiscale);
-
-      function codicefiscale()
-      {   
-        
-        cognome=$('#id_cognome').val();
-        nome  =$('#id_nome').val();
-        datan = $('#id_data_nascita').val();
-        sesso =$('#id_sesso').val();
-        comune = $('#id_citta_nascita').val();
-
-        url = '{% url 'clienti:ajax_codice_fiscale' %}';
-        
-        if (cognome != "" && nome != "" && datan != ""  && sesso != "" && comune != "") {
-          
-          $.ajax({
-              type: 'GET',
-              url: url,
-              data: {
-              "cognome": cognome,
-              "nome": nome,
-              "data": datan,
-              "sesso": sesso,
-              "comune": comune,
-              },
-              success: function (data) {
-      
-                  $('#id_codice_fiscale').val(data.content);
-              
-              },
-              error: function (data){
-
-                  alert(data);
-
-              }
-            });
-        }   
-      }
-    })
   </script>
   
 {% endblock script %}

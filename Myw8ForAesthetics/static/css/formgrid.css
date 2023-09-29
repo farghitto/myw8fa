@@ -16,6 +16,17 @@
     margin-top: 1%;
   }
   
+  .grid_info {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Due colonne con larghezza flessibile */
+    gap: 1rem; /* Spazio tra le celle */
+   
+    margin: 0 auto; /* Centra il form orizzontalmente */
+    margin-top: 1%;
+  }
+
+
+
   .form-control {
     width: 100%; /* Riempi completamente la cella */
     padding: 0.5rem; /* Spaziatura interna */
@@ -28,33 +39,102 @@
 
   }
   
+  .bottoni_griglia
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+ 
+  }
+
   #bottoni_griglia
   {
     display: flex;
     justify-content: center;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 2%;
-    
-    
+    align-items: center;
+
+ 
   }
   
   .form-container
   {
     
-    height: 120vh; /* Altezza al 100% della viewport */
+   
     overflow: auto; /* Aggiunge le barre di scorrimento se il contenuto supera l'area visibile */
     padding-top: 20px; /* Margine interno per separare il contenuto dai bordi */
     padding-left: 6vw;
     padding-right: 6vw;
     box-sizing: border-box;
+    margin-bottom: 100px;
     
   }
 
   .bottone_viola {
+    
+    width: 80%;
+    max-width: 200px;
     margin: 3%;
 }
   
+.bottone_viola_info
+{
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+  background-color: #d7d4de;
+  text-align: center;
+  padding: 4px;
+  vertical-align: middle;
+}
+
+.bottone_viola_info:hover,
+.bottone_viola_info:focus,
+.bottone_viola_info:active{
+  outline: none;
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+  background-color: #d7d4de;
+}
 
 
+.info_text_button
+{
+  font-size: 1.2rem;
+  font-family: Round Hand, cursive;
+  text-align: center;
+  color: #83719c;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
 
+#grande_div{
+
+  width: 70%;
+}
+
+#piccolo_div{
+
+  width: 30%;
+}
+
+.info
+{
+  display: flex;
+  margin-top: 3%;
+}
+
+.info_button
+{
+  
+  font-size: 1.5rem;
+  font-family: Round Hand, cursive;
+  text-align: center;
+  color: #83719c;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+
+p:hover {
+  cursor: default; /* Imposta il cursore in modalità predefinita (senza cambiamenti) */
+}
