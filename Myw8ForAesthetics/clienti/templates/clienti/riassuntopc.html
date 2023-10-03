@@ -165,7 +165,8 @@
         if (lunghezzaarraydati > 1)
         {
             
-            diffprima = (dati[lunghezzaarraydati - 1] - dati[0]).toFixed(2)
+            primoNonNullo = dati.find((elemento) => elemento !== 'None');
+            diffprima = (dati[lunghezzaarraydati - 1] - primoNonNullo).toFixed(2)
             diffultima = (dati[lunghezzaarraydati - 1] - dati[(lunghezzaarraydati - 2)]).toFixed(2)
             
             if (diffprima > 0)

@@ -44,7 +44,7 @@
   .form-container
   {
     
-    margin: 100px; /* Altezza al 100% della viewport */
+    margin-bottom: 100px; /* Altezza al 100% della viewport */
     /* Aggiunge le barre di scorrimento se il contenuto supera l'area visibile */
     padding-top: 20px; /* Margine interno per separare il contenuto dai bordi */
     padding-left: 6vw;

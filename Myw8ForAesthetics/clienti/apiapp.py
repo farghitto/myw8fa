@@ -2,6 +2,8 @@ import requests
 import json
 import datetime
 
+from django.shortcuts import redirect
+
 from django.utils import timezone
 from dateutil.parser import *
 
@@ -10,6 +12,8 @@ from django.conf import settings
 from dateutil.parser import *
 from django.utils.translation import gettext_lazy as _
 import pdb
+
+# metodo per autenticazione dell'app
 
 
 def autenticazione(request):
@@ -25,8 +29,10 @@ def autenticazione(request):
 
     return response.json()
 
+# metodo per trovare lid utente richiamando tutti gli utenti e confrontando il cellulare
 
-def dati_utente(request, mail):
+
+def dati_utente(request, cellulare):
 
     # il token generato è preso dalla session
     token = request.session['token']
@@ -39,9 +45,10 @@ def dati_utente(request, mail):
     response = s.get(indirizzopazienti)
     infoutente = response.json()
     # trovo attraverso la mail dall'utente il paziente sull'app
+
     for utente in infoutente:
 
-        if utente['email'] == mail:
+        if utente['mobile'] == cellulare:
 
             pazienteid = utente['patient']['id']
             lingua = utente['preferred_lang']
@@ -55,13 +62,19 @@ def dati_utente(request, mail):
     return (risposta)
 
 
-def dati_cliente_misure(request, mail):
+def dati_cliente_misure(request, cellulare, id_cliente, id_app, lingua_app):
 
     # entro superutente
     aut = autenticazione(request)
-    datiutente = dati_utente(request, mail)
-    if datiutente['id'] == False:
-        return False
+    if not id_app:
+        datiutente = dati_utente(request, cellulare)
+        if datiutente['id']:
+            registradatiapp(request, id_cliente,
+                            datiutente['id'], datiutente['lingua'])
+        else:
+            return False
+    else:
+        datiutente = {'id': id_app, 'lingua': lingua_app}
     # il token generato è preso dalla session
     token = request.session['token']
     s = requests.Session()
@@ -79,22 +92,26 @@ def dati_cliente_misure(request, mail):
     for misura in infopaziente:
 
         data = datetime.datetime.strptime(misura['date'], "%Y-%m-%dT%H:%M:%SZ")
-
         dato = {'data': data,
                 'valore': misura['value'], 'misura': misura['measurementType']['name']}
-
         datimisuradaritornare.append(dato)
 
     return datimisuradaritornare
 
 
-def dati_cliente_profilo(request, mail):
+def dati_cliente_profilo(request, cellulare,  id_cliente, id_app, lingua_app):
 
     # entro superutente
     aut = autenticazione(request)
-    datiutente = dati_utente(request, mail)
-    if datiutente['id'] == False:
-        return False
+    if not id_app:
+        datiutente = dati_utente(request, cellulare)
+        if datiutente['id']:
+            registradatiapp(request, id_cliente,
+                            datiutente['id'], datiutente['lingua'])
+        else:
+            return False
+    else:
+        datiutente = {'id': id_app, 'lingua': lingua_app}
     # il token generato è preso dalla session
     token = request.session['token']
     s = requests.Session()
@@ -107,7 +124,7 @@ def dati_cliente_profilo(request, mail):
     response = s.get(indirizzodati)
     infopaziente = response.json()
     oggi = timezone.localdate()
-    print(infopaziente['subscription_plans'])
+
     if infopaziente['subscription_plans']:
         for programma in infopaziente['subscription_plans']:
 
@@ -130,10 +147,38 @@ def dati_cliente_profilo(request, mail):
                 programma_attuale = 'Nessun programma attivo'
 
         dati = {'data_scadenza': data_scadenza,
-                'programma_attuale': programma_attuale}
-
+                'programma_attuale': programma_attuale,
+                'data_creazione': infopaziente['user']['creation_date'],
+                'peso_iniziale': infopaziente['initial_weight']
+                }
+        print(dati)
         return dati
 
     else:
 
         return False
+
+# inserisci l'id dell'app nell'applicazione
+
+
+def registradatiapp(request, id_cliente, id_app, lingua_app):
+
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id_cliente)+'/'
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+
+    dati = {
+        'id_utente_app': id_app,
+        'lingua_utente': lingua_app,
+    }
+    response = requests.patch(
+        url_backend, data=dati, headers=headers)
+
+    if response.status_code == 200:
+        # Redirect alla lista dei clienti
+        return True
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    return True

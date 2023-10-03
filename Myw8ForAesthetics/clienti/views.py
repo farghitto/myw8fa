@@ -319,8 +319,10 @@ def info_cliente(request, id):
         for field in form:
             field.field.widget.attrs['disabled'] = 'disabled'
 
-        dati_app = dati_cliente_profilo(request, clienti['email'])
+        dati_app = dati_cliente_profilo(
+            request, clienti['cellulare'], clienti['id'], clienti['id_utente_app'], clienti['lingua_utente'])
         if dati_app:
+            print(dati_app)
             oggi = timezone.localdate()
             differenza_data = dati_app['data_scadenza'] - oggi
             numero_giorni = differenza_data.days
@@ -355,7 +357,8 @@ def info_cliente(request, id):
         for field in form:
             field.field.widget.attrs['disabled'] = 'disabled'
 
-        dati_app = dati_cliente_profilo(request, clienti['email'])
+        dati_app = dati_cliente_profilo(
+            request, clienti['cellulare'], clienti['id'], clienti['id_utente_app'], clienti['lingua_utente'])
         if dati_app:
             oggi = timezone.localdate()
             differenza_data = dati_app['data_scadenza'] - oggi
@@ -390,22 +393,27 @@ def info_cliente(request, id):
         for field in form:
             field.field.widget.attrs['disabled'] = 'disabled'
 
-        dati_app = dati_cliente_profilo(request, clienti['email'])
+        dati_app = dati_cliente_profilo(
+            request, clienti['cellulare'], clienti['id'], clienti['id_utente_app'], clienti['lingua_utente'])
         if dati_app:
             oggi = timezone.localdate()
             differenza_data = dati_app['data_scadenza'] - oggi
             numero_giorni = differenza_data.days
             programma = dati_app['programma_attuale']
             scadenza = dati_app['data_scadenza'].strftime("%d %B, %Y")
+            data_c = datetime.strptime(
+                dati_app['data_creazione'][0:10], "%Y-%m-%d")
+            data_da_confrontare_date = data_c.date()
+            data_creazione = data_da_confrontare_date.strftime("%d %B, %Y")
+
+            peso_iniziale = dati_app['peso_iniziale']
+
         else:
             programma = 'Non disponibile'
             scadenza = 'Non disponibile'
             numero_giorni = 'Non disponibile'
-
-        data_is = datetime.strptime(
-            clienti['data_creazione'][0:10], "%Y-%m-%d")
-        data_da_confrontare_date = data_is.date()
-        data_creazione = data_da_confrontare_date.strftime("%d %B, %Y")
+            data_creazione = dati_app['data_creazione']
+            peso_iniziale = dati_app['data_creazione']
 
         peso_desiderato = clienti['peso_desiderato']
         if peso_desiderato is None:
@@ -415,7 +423,7 @@ def info_cliente(request, id):
             'form': form, 'id': clienti['id'], 'programma': programma,
             'data_creazione': data_creazione, 'giorni': numero_giorni,
             'data_scadenza': scadenza,
-            'peso_desiderato': peso_desiderato, 'peso_iniziale': peso['peso']
+            'peso_desiderato': peso_desiderato, 'peso_iniziale': peso_iniziale
         }
 
         return render(request, 'clienti/infocliente.html',  context)
@@ -747,7 +755,8 @@ def riepilogo_misura(request, id):
         apimisure = response.json()
 
     # misure app
-    misureapp = dati_cliente_misure(request, cliente['email'])
+    misureapp = dati_cliente_misure(
+        request, cliente['cellulare'], cliente['id'], cliente['id_utente_app'], cliente['lingua_utente'])
 
     if misureapp != False:
         misurepergrafico = misureapp
@@ -916,7 +925,8 @@ def riepilogo_misura_elenco(request, id):
         apimisure = response.json()
 
     # misure app
-    misureapp = dati_cliente_misure(request, cliente['email'])
+    misureapp = dati_cliente_misure(
+        request, cliente['cellulare'], cliente['id'], cliente['id_utente_app'], cliente['lingua_utente'])
 
     if misureapp != False:
         misurepergrafico = misureapp
