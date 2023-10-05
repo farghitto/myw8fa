@@ -2,6 +2,7 @@ import string
 import json
 import copy
 import locale
+import requests
 
 
 from django.shortcuts import render, redirect
@@ -16,8 +17,6 @@ from django.utils import timezone
 from datetime import datetime
 
 from codicefiscale import codicefiscale
-
-import requests
 
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
 from .models import Cliente

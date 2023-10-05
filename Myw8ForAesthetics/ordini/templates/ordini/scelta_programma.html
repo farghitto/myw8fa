@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Scelta Programma {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect' style='visibility: hidden'>
+        <p id="text_header" class="text"></p>
+    </div>
+
+{% endblock header%}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/stileordini.css' %}" />
+    
+{% endblock css %}
+{% block scriptlibrerie %}
+  
+{% endblock scriptlibrerie %}
+
+{% block content %}
+<style>
+    .grid-container {
+        grid-template-columns: {% if dati|length <= 4 %} repeat(2, 1fr) {% elif dati|length <= 6 %} repeat(3, 1fr) {% else %} repeat(4, 1fr) {% endif %};    
+    }
+   
+</style>
+<div class="grid-container">
+    {% for item in dati %}
+        <div class="grid-item">
+            <h3>ID: {{ item.id }}</h3>
+            <p>Nome Gruppo: {{ item.nome_gruppo }}</p>
+            <p>Descrizione Gruppo: {{ item.descrizione_gruppo }}</p>
+            <button>{{ item.myw8fa_visibilita }}</button>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+{% block script %}
+   
+
+{% endblock script %}
