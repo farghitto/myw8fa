@@ -1,10 +1,56 @@
 .grid-container {
     display: grid;
-    gap: 10px;
+    gap: 1rem; /* Spazio tra le celle */
+    justify-items: center;
+    margin: 0 auto; /* Centra il form orizzontalmente */
+    margin-top: 13vh;
+    justify-content: center;
+    width: 60%;
+    align-content: center;
 }
 
 .grid-item {
-    border: 1px solid #ccc;
+    
     padding: 10px;
     text-align: center;
 }
+
+.botton_rect {
+    background-color: #d7d4de;
+    border: 0.1rem solid #83719c;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+    width: 25vw;
+    max-width: 470px;
+    height: 20vh;
+    max-height: 177px ;
+    box-shadow: 3px 3px 3px #83719c
+    
+  
+  }
+
+  .text_button_select_client {
+    
+    font-size: clamp(16px, 2.5vw, 35px);
+    font-family: 'Baskerville',cursive;
+    text-align: center;
+    color: #83719c;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+  }
+
+  .container_griglia
+  {
+    height: 100%;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }

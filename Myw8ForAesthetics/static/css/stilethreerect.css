@@ -39,7 +39,7 @@
   }
   
   .container-fluid{
-    background-image: url("static_file/ragazza_sorriso.png");
+   
    /*  background-size: cover; */
     background-size: contain;
     background-position: center;

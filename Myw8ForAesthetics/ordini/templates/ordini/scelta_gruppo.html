@@ -20,7 +20,7 @@
 {% block content %}
 <style>
     .grid-container {
-        grid-template-columns: {% if dati|length <= 4 %} repeat(2, 1fr)  {% else %} repeat(3, 1fr) {% endif %};    
+        grid-template-columns: {% if dati|length <= 4 %} repeat(2, 1fr) {% elif dati|length <= 6 %} repeat(3, 1fr) {% else %} repeat(4, 1fr) {% endif %};    
     }
    
 </style>
@@ -31,7 +31,7 @@
             
                 <a href= "{% url 'ordini:scelta_listino' item.id %}" style="text-decoration: none;" class = 'botton_rect'>
                     
-                    <p class= 'text_button_select_client'>{{ item.nome_programma }}</p>
+                    <p class= 'text_button_select_client'>{{ item.nome_gruppo }}</p>
                     
             </a>
             </div>
