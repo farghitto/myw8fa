@@ -17,6 +17,8 @@
 
         <!-- script -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
         {% block scriptlibrerie %}
 
         {% endblock scriptlibrerie %}
@@ -135,6 +137,15 @@
 
                     <hr class="horizontal dark">
 
+                    <a class="nav_menu_link" href="{% url 'utente:logout' %}">                      
+                        <div class="icon">
+                            <img src={% static '/static_file/logout.png' %} alt="Icona" width="20px" height="20px">
+                        </div>
+                        <div class="nav-link-text">Logout</div>                     
+                    </a>
+
+                    <hr class="horizontal dark">
+
                     <div class="sidenav-footer mx-3 position-sticky bottom-2 ">
                 
                         <h6 class="text-uppercase text-xs font-weight-bolder mt-4">Messaggi</h6>
@@ -220,7 +231,29 @@
     </body>
     {% block script %}
 
+
     {% endblock script %}
+    <script>
+        
+        window.addEventListener('unload', function() {
+           
+            $.ajax({
+                url: "{% url 'utente:logout-auto' %}", // Sostituisci con l'URL della tua view Django
+                type: 'GET',  // Puoi usare GET, POST o qualsiasi altro metodo HTTP necessario
+                async: false,  // Usa async: true per consentire la richiesta asincrona
+                success: function(data) {
+                   
+                },
+                error: function(error) {
+                  
+                }         
+               });
+            
+            debugger;
+        });
+        
+        
+    </script>
 </html>
           
 

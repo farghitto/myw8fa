@@ -174,3 +174,10 @@ EMAIL_HOST_USER = 'myoffice@myw8.it'
 EMAIL_HOST_PASSWORD = 'Myw8italia@mw8'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = False
+
+
+# Imposta la durata dei cookie di sessione su "session" invece che su una scadenza specifica
+
+
+# Imposta la scadenza della sessione a None per renderla "di sessione"
+SESSION_COOKIE_EXPIRE_AT_BROWSER_CLOSE = True
