@@ -180,4 +180,4 @@ EMAIL_USE_SSL = False
 
 
 # Imposta la scadenza della sessione a None per renderla "di sessione"
-SESSION_COOKIE_EXPIRE_AT_BROWSER_CLOSE = True
+

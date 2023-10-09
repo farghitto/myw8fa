@@ -24,46 +24,66 @@ def sceltaprogramma(request, id):
         cliente = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-
-    request.session['cliente_ordine'] = cliente
-    formato = "%Y-%m-%d"
-    data_di_nascita = datetime.strptime(
-        cliente['data_nascita'], formato)
-    data_corrente = datetime.now()
-    eta = data_corrente.year - data_di_nascita.year - \
-        ((data_corrente.month, data_corrente.day) <
-            (data_di_nascita.month, data_di_nascita.day))
-
-    if eta < 18:
-        minorenne = True
+    
+    if  cliente['compilazione_pcu'] == False:
+        
+        request.session['ultimo_utente'] = cliente
+        return redirect('ordini:misura_mancante')
     else:
-        minorenne = False
-    request.session['cliente_ordine_eta'] = minorenne
+        
+        request.session['cliente_ordine'] = cliente
+        formato = "%Y-%m-%d"
+        data_di_nascita = datetime.strptime(
+            cliente['data_nascita'], formato)
+        data_corrente = datetime.now()
+        eta = data_corrente.year - data_di_nascita.year - \
+            ((data_corrente.month, data_corrente.day) <
+                (data_di_nascita.month, data_di_nascita.day))
 
-    url_backend = settings.BASE_URL + 'listini/lista/' + str(minorenne)
-    headers = {"Authorization": f"Token {request.session['auth_token']}"}
-    response = requests.get(url_backend, headers=headers)
-    if response.status_code == 200:
-        listini = response.json()
-    elif response.status_code >= 400:
-        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+        if eta < 18:
+            minorenne = True
+        else:
+            minorenne = False
+        request.session['cliente_ordine_eta'] = minorenne
 
-    context = {'dati': listini, 'minore': minorenne}
+        url_backend = settings.BASE_URL + 'listini/lista/' + str(minorenne)
+        headers = {"Authorization": f"Token {request.session['auth_token']}"}
+        response = requests.get(url_backend, headers=headers)
+        if response.status_code == 200:
+            listini = response.json()
+        elif response.status_code >= 400:
+            return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
-    return render(request, 'ordini/scelta_gruppo.html', context)
+        context = {'dati': listini, 'minore': minorenne}
 
+        return render(request, 'ordini/scelta_gruppo.html', context)
+
+
+    
+        
 
 @handle_exceptions
 def sceltalistino(request, id):
 
-    url_backend = settings.BASE_URL + 'listini/sceltaprogrammi/' + str(id)
+    url_backend = settings.BASE_URL + 'listini/sceltaprogrammi/'
     headers = {"Authorization": f"Token {request.session['auth_token']}"}
-    response = requests.get(url_backend, headers=headers)
+    minore = request.session['cliente_ordine_eta']
+    params = {'minore': minore, 'id': id}
+
+    
+    
+    response = requests.get(url_backend, headers=headers, params=params)
     if response.status_code == 200:
         listini = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-    minore = request.session['cliente_ordine_eta']
+    
     context = {'dati': listini, 'minore': minore}
 
     return render(request, 'ordini/scelta_programma.html', context)
+
+
+
+def misure_mancanti(request):
+    
+     return render(request, 'ordini/misura_mancante.html')

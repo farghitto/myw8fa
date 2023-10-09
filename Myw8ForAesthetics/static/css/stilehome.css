@@ -507,11 +507,13 @@ header {
 .img_error{
 
   width: 22vw;
+  max-width: 378px;
 }
 
 .img_success{
 
   width: 18vw;
+  max-width: 300px;
 }
 
 .image-container {

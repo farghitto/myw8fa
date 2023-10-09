@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Problema {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect'>
+        <p id="text_header" class="text"> Errore </p>
+    </div> 
+{% endblock header%}
+{% block scriptlibrerie %}
+<link rel="stylesheet" href="{% static 'css/formgrid.css' %}" />
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   <div class ='error_conteiner'>
+    <p class = 'errorp'>Impossibile inserire ordine senza l'inserimento di nessuna misura</p>
+    <div class="image-container">
+        <img
+            class ="img_error"      
+            src="{% static 'static_file/paura.png'%}"
+            alt="Immagine"
+                    />
+    </div>
+    
+   
+
+    <div id = 'bottoni_griglia'>
+
+        <a href="{% url 'clienti:nuovamisura'%}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Inserisci </p></a>
+        <a href="{% url 'clienti:search_clienti' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+  
+      </div>
+   </div>
+                
+{% endblock %}
+{% block script %}
+    
+
+{% endblock script %}

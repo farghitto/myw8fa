@@ -10,7 +10,7 @@
 
 {% endblock header%}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/stilethreerect.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/stiletworect.css' %}" />
 {% endblock css %}
 {% block scriptlibrerie %}
   
@@ -19,27 +19,14 @@
 {% block content %}
    
     <div id='conteiner_two_rect'> 
-
-        <a href="{% url 'clienti:nuovamisura' %}" style="text-decoration: none;" class = 'botton_rect'>
-                
-                <p class= 'text_button_select_client'><span>Misure</span></p>
+        <a href="{% url 'clienti:nuovamisura' %}" style="text-decoration: none;" class = 'botton_rect'>           
+            <p class= 'text_button_select_client'><span>Misure</span></p>
                 <img
                 class="button_select_client_img"
                 src="{% static 'static_file/misure.png'%}"
                 alt="Immagine"
                 />
-                <p class= 'hidden_paragraph' style='visibility: hidden'></p>              
-        </a>
-
-        <a href= "{% url 'clienti:nuovoclientepiva' %}" style="text-decoration: none;" class = 'botton_rect'>
-                
-            <p class= 'text_button_select_client'><span>Ordine</span></p>
-            <img
-            class="button_select_client_img"
-            src="{% static 'static_file/ordine.png'%}"
-            alt="Immagine"
-            />
-            <p class= 'hidden_paragraph' style='visibility: hidden'></p>           
+            <p class= 'hidden_paragraph' style='visibility: hidden'></p>              
         </a>
 
         <a href= "{% url 'clienti:search_clienti' %}" style="text-decoration: none;" class = 'botton_rect'>
@@ -50,7 +37,7 @@
                 src="{% static 'static_file/elenco.png'%}"
                 alt="Immagine"
                 />
-                <p class= 'hidden_paragraph' style='visibility: hidden'></p>          
+            <p class= 'hidden_paragraph' style='visibility: hidden'></p>          
         </a>
 
     </div>
