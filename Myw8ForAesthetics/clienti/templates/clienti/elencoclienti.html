@@ -62,7 +62,7 @@
                     <td>
                         <div class="button_conteiner">
                             <a href="{% url 'clienti:info_cliente' elemento.id %}" id= 'button_info' class="bottone_clienti"><p id = 'cliente_text_button'> Informazioni </p></a>
-                            <button id= 'button_accordo' class="bottone_clienti" type="submit"><p id = 'cliente_text_button'> Accordo </p></button>
+                            <a href="{% url 'ordini:scelta_programma' elemento.id %}" id= 'button_info' class="bottone_clienti"><p id = 'cliente_text_button'> Accordo </p></a>
                             <a href="{% url 'clienti:misure_riepilogo_clienti_elenco' elemento.id %}" id= 'button_info' class="bottone_clienti"><p id = 'cliente_text_button'> bmi </p></a>
                         </div>
                     </td>
@@ -74,7 +74,9 @@
             <span class="step-links left">
                 {% if page_obj.has_previous %}               
                     <!--  <a href="?page=1">&laquo; prima</a> -->
-                    <a href="?page={{ page_obj.previous_page_number }}">Precedente</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">
+                        <img src={% static '/static_file/freccia_sinistra.png' %} alt="Icona" width="60px" height="20px">
+                    </a>
                 {% else %}
                     <a href="" style='visibility: hidden'>Precedente</a>
                 {% endif %}
@@ -88,7 +90,9 @@
             
             <span class="step-links right">
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">Successiva</a>
+                    <a href="?page={{ page_obj.next_page_number }}">
+                        <img src={% static '/static_file/freccia_destra.png' %} alt="Icona" width="60px" height="20px">
+                    </a>
                     <!--<a href="?page={{ page_obj.paginator.num_pages }}">ultima &raquo;</a> -->
                 {% else %}
                 <a href="" style='visibility: hidden'>Successiva</a>

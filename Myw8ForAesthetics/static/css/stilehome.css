@@ -533,3 +533,6 @@ header {
   padding: 5%;
 }
 
+body {
+  margin: 8px !important;
+}

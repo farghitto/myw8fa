@@ -431,7 +431,7 @@ def info_cliente(request, id):
 @handle_exceptions
 def modifica_cliente(request, id):
 
-    # prendo l'url il token echiamp il server per il cliente
+    # prendo l'url il token chiamo il server per il cliente
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
 
     headers = {

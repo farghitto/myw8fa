@@ -4,9 +4,13 @@
 
 {% block title %} Scelta Programma {% endblock title %}
 {% block header %}
-    <div id="text_header_rect" class = 'purple_rect' style='visibility: hidden'>
-        <p id="text_header" class="text"></p>
-    </div>
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text">
+        {% if minore %} Listino Kid
+        {% else %} Listino
+        {% endif %} </p>
+</div> 
+
 
 {% endblock header%}
 {% block css %}
