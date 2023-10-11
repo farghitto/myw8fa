@@ -108,8 +108,7 @@ def ModuloPersonal(request, id):
     # grasso corporeo non è obbligatorio! quidi se non è inserita la misurazione
     # la riga non è visualizzata, se è inserita ma non c'è la penultima è visibile
     # il confornto con il primo se esiste altrimenti lo inserisco come primo
-    import pdb
-    pdb.set_trace()
+   
     if primamisura['grasso_corporeo']:
         can.drawRightString(
             265, 557, (str(round(primamisura['grasso_corporeo'], 2))))

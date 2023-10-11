@@ -32,8 +32,6 @@ urlpatterns = [
     path('informazioni/<int:id>/', info_cliente, name='info_cliente'),
     path('modifica/<int:id>/', modifica_cliente, name='modifica_cliente'),
 
-
-
     path('ajax/cf', get_codice_fiscale, name='ajax_codice_fiscale'),
 
 

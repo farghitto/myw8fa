@@ -53,6 +53,12 @@ def sceltamisure(request):
 
     return render(request, 'clienti/sceltamisura.html')
 
+@handle_exceptions
+def sceltadopomisure(request):
+
+    return render(request, 'clienti/sceltadopomisura.html')
+
+
 
 @handle_exceptions
 def get_codice_fiscale(request):
@@ -630,6 +636,8 @@ def crea_misura(request):
 
             if dati_cliente['email'] != form.cleaned_data['email']:
                 informazioni_cliente['email'] = form.cleaned_data['email']
+                
+            
 
             if len(informazioni_cliente) != 0:
 
@@ -689,6 +697,7 @@ def crea_misura(request):
 
 def riepilogo_misura(request, id):
 
+    # richiamare cliente
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
     headers = {"Authorization": f"Token {request.session['auth_token']}"}
     response = requests.get(url_backend, headers=headers)
@@ -710,24 +719,30 @@ def riepilogo_misura(request, id):
         if pesoform != peso_desiderato:
 
             misure = {
-                'peso_desiderato': pesoform
+                'peso_desiderato': pesoform,
+                'compilazione_pcu' : True
             }
-            # Effettua la richiesta Put all'API per aggiornare
-            url_backend = settings.BASE_URL + \
-                'cliente/clienti/'+str(id)+'/'
-            headers = {
-                "Authorization": f"Token {request.session['auth_token']}"}
-            response = requests.patch(
-                url_backend, data=misure, headers=headers)
-
-            if response.status_code == 200:
-
-                # Redirect alla lista dei clienti
-                return redirect('clienti:inviopcu', id=id)
-            elif response.status_code >= 400:
-                return redirect('erroreserver', status_code=response.status_code, text=response.text)
         else:
+            
+            misure = {
+                'compilazione_pcu' : True
+            }
+        # Effettua la richiesta Put all'API per aggiornare
+        url_backend = settings.BASE_URL + \
+            'cliente/clienti/'+str(id)+'/'
+        headers = {
+            "Authorization": f"Token {request.session['auth_token']}"}
+        response = requests.patch(
+            url_backend, data=misure, headers=headers)
+
+        if response.status_code == 200:
+
+            # Redirect alla lista dei clienti
             return redirect('clienti:inviopcu', id=id)
+        elif response.status_code >= 400:
+            return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    
+            
 
     # richiamare misure
     url_backend = settings.BASE_URL + 'cliente/misure/'+str(id)+'/'
@@ -738,14 +753,8 @@ def riepilogo_misura(request, id):
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
-    # richiamare cliente
-    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
-    headers = {"Authorization": f"Token {request.session['auth_token']}"}
-    response = requests.get(url_backend, headers=headers)
-    if response.status_code == 200:
-        cliente = response.json()
-    elif response.status_code >= 400:
-        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    
+   
 
     # richiamare nome misure
     url_backend = settings.BASE_URL + 'cliente/api/campi_misure/'
@@ -848,7 +857,22 @@ def inviopcu(request, id):
                 idemail = 13
                 percorso = ModuloPersonal(request, id)
                 risposta = inviomailallegato(request, percorso, id, idemail)
-                return render(request, 'amministrazione/invioconsuccesso.html')
+                # vedo se è un nuovocliente
+                print(id)
+                url_backend = settings.BASE_URL + 'cliente/nuovocliente/'+str(id)+'/'
+                headers = {"Authorization": f"Token {request.session['auth_token']}"}
+                response = requests.get(url_backend, headers=headers)
+                if response.status_code == 200:
+                    nuovocliente = response.json()
+                elif response.status_code >= 400:
+                    return redirect('erroreserver', status_code=response.status_code, text=response.text)
+        
+                if nuovocliente['misure'] :
+                    
+                     return render(request, 'ordini/email_successo.html', {'id' : id})
+                
+                else:
+                    return render(request, 'amministrazione/invioconsuccesso.html')
 
     form = FormChiave()
     context = {'id': id, 'inserimento': risposta, 'form': form}
