@@ -32,7 +32,9 @@ def login_view(request):
         }
 
         response = requests.post(url, data=data)
-
+        print(response)
+        print(response.content)
+        print(response.status_code)
         if response.status_code == 200:
 
             token = response.json()["token"]
