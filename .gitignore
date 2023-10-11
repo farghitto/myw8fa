@@ -17,6 +17,8 @@ Myw8ForAesthetics/Myw8ForAesthetics/settings.py
 Myw8ForAesthetics/gunicorn_start.bash
 Myw8ForAesthetics/static/admin/
 Myw8ForAesthetics/Myw8ForAesthetics/__pycache__/
+Myw8ForAesthetics/static-serve
+log/
 
 # Compiled Java class files
 *.class
