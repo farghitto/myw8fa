@@ -245,12 +245,13 @@ def crea_cliente_minore(request):
 def search_clienti(request):
 
     form = ClientiSearchForm(request.GET)
-
+    print(0)
     url_backend = settings.BASE_URL + 'cliente/lista'
+    print(1)
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
     }
-
+    print(2)
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         clienti = response.json()
