@@ -180,7 +180,7 @@ button {
 
 @font-face {
   font-family: "Round Hand";
-  src: url("static_file/fonts/SnellBt-Regular.otf") format("opentype");
+  src: url("static_file/fonts/SnellBT-Regular.otf") format("opentype");
 }
 @font-face {
   font-family: "Baskerville";
