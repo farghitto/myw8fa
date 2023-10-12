@@ -251,13 +251,10 @@ def crea_cliente_minore(request):
 def search_clienti(request):
 
     form = ClientiSearchForm(request.GET)
-    print(0)
     url_backend = settings.BASE_URL + 'cliente/lista'
-    print(1)
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
     }
-    print(2)
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         clienti = response.json()
@@ -418,8 +415,8 @@ def info_cliente(request, id):
             programma = 'Non disponibile'
             scadenza = 'Non disponibile'
             numero_giorni = 'Non disponibile'
-            data_creazione = dati_app['data_creazione']
-            peso_iniziale = dati_app['data_creazione']
+            data_creazione = 'Non disponibile'
+            peso_iniziale = 'Non disponibile'
 
         peso_desiderato = clienti['peso_desiderato']
         if peso_desiderato is None:
