@@ -25,25 +25,50 @@ def sceltaprogramma(request, id):
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
     
+    #se il cliente non a il modulo lo deve compilare
     if  cliente['compilazione_pcu'] == False:
         
         request.session['ultimo_utente'] = cliente
         return redirect('ordini:misura_mancante')
     else:
-        
         request.session['cliente_ordine'] = cliente
-        formato = "%Y-%m-%d"
-        data_di_nascita = datetime.strptime(
-            cliente['data_nascita'], formato)
-        data_corrente = datetime.now()
-        eta = data_corrente.year - data_di_nascita.year - \
-            ((data_corrente.month, data_corrente.day) <
-                (data_di_nascita.month, data_di_nascita.day))
+        #richiamo il numero e il tipo di ordini effettuati
+        url_backend = settings.BASE_URL + 'ordini/tipo_ordini/'+str(id)
 
-        if eta < 18:
-            minorenne = True
+        headers = {
+            "Authorization": f"Token {request.session['auth_token']}"
+        }
+        response = requests.get(url_backend, headers=headers)
+        
+        if response.status_code == 200:
+            tipo_ordine = response.json()
+        elif response.status_code >= 400:
+            return redirect('erroreserver', status_code=response.status_code, text=response.text)
+        import pdb;
+        pdb.set_trace()
+        #caso nessun ordine inserito nel sistema per il cliente
+        if tipo_ordine['ordini'] == 'nessuno':
+            a =0
+        #caso un ordine small inserito nel sistema per il cliente
+        elif tipo_ordine['ordini'] == 'solo_test':
+            a =0 
+        #caso un ordine non smal inserito nel sistema per il cliente
+        elif tipo_ordine['ordini'] == 'completo':    
+            a=0
+        #caso piu ordini inseriti nel sistema per il cliente
         else:
-            minorenne = False
+            a=0
+            
+            
+        #se ha un beneficiario vado sui programmi kids
+       
+        
+        
+        
+       
+      
+
+        
         request.session['cliente_ordine_eta'] = minorenne
 
         url_backend = settings.BASE_URL + 'listini/lista/' + str(minorenne)
