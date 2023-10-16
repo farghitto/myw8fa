@@ -30,16 +30,27 @@
 </style>
 <div class = container_griglia>
     <div class="grid-container">
-        {% for item in dati %}
+            {% if visibile.unico %}
             <div class="grid-item">
             
-                <a href= "{% url 'ordini:scelta_pagamento' item.id %}" style="text-decoration: none;" class = 'botton_rect'>
+                <a href= "{% url 'ordini:scelta_listino' id 0 %}" style="text-decoration: none;" class = 'botton_rect'>
                     
-                    <p class= 'text_button_select_client'>{{ item.nome_gruppo }}</p>
+                    <p class= 'text_button_select_client'>Pagamento Anticipato</p>
                     
-            </a>
+                </a>
             </div>
-        {% endfor %}
+            {% endif %}
+            {% if visibile.rateale %}
+            <div class="grid-item">
+            
+                <a href= "{% url 'ordini:scelta_listino' id 1 %}" style="text-decoration: none;" class = 'botton_rect'>
+                    
+                    <p class= 'text_button_select_client'>Pagamento Rateale</p>
+                    
+                </a>
+            </div>
+            {% endif %}
+      
     </div>
 </div>
 {% endblock %}

@@ -13,12 +13,14 @@ myw8fa\myenv
 myw8fa/myenv/
 /myvenv/
 pdf/
-Myw8ForAesthetics/Myw8ForAesthetics/settings.py
+Myw8ForAesthetics/settings.py
 Myw8ForAesthetics/gunicorn_start.bash
 Myw8ForAesthetics/static/admin/
 Myw8ForAesthetics/Myw8ForAesthetics/__pycache__/
 Myw8ForAesthetics/static-serve
 log/
+
+
 
 # Compiled Java class files
 *.class
@@ -55,7 +57,7 @@ Thumbs.db
 *.war
 
 # Large media files
-*.mp4
+
 *.tiff
 *.avi
 *.flv
@@ -65,3 +67,4 @@ Thumbs.db
 
 requirements.txt
 .DS_Store
+Myw8ForAesthetics/Myw8ForAesthetics/settings.py
