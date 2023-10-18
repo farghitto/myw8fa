@@ -4,14 +4,16 @@ from django.conf import settings
 from datetime import datetime
 
 import requests
+import pdb
 
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
+from .form import FormRateale
 # Create your views here.
 
 
 @handle_exceptions
 def sceltagruppo(request, id):
-
+    # id è l'id del cliente
     # chiamo per i dati del clienrte
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
 
@@ -87,6 +89,7 @@ def sceltagruppo(request, id):
 
 @handle_exceptions
 def sceltapagamento(request, id):
+    # id è l'id del gruppo
 
     minore = request.session['cliente_ordine_eta']
     url_backend = settings.BASE_URL + 'listini/pagamenti/'+str(id)
@@ -108,6 +111,8 @@ def sceltapagamento(request, id):
 
 @handle_exceptions
 def sceltalistino(request, id, pg):
+    # id del gruppo
+    # pg è una variabile per la modalita di pagamento
 
     url_backend = settings.BASE_URL + 'listini/sceltaprogrammi/'
     headers = {"Authorization": f"Token {request.session['auth_token']}"}
@@ -129,6 +134,32 @@ def sceltalistino(request, id, pg):
     context = {'dati': listini, 'minore': minore}
 
     return render(request, 'ordini/scelta_programma.html', context)
+
+
+@handle_exceptions
+def riassuntoinfo(request, id):
+
+    # recupero informazioni programma scelto
+    url_backend = settings.BASE_URL + 'listini/programmi/' + str(id)
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        programma = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    form = FormRateale()
+
+    id_cliente = request.session['cliente_ordine']['id']
+    if programma['programma_rateale']:
+        rat = 1
+    else:
+        rat = 0
+
+    context = {'programma': programma, 'form': form,
+               'id_cliente': id_cliente, 'rat': rat}
+
+    return render(request, 'ordini/riassunto_ordine.html', context)
 
 
 def misure_mancanti(request):

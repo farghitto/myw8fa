@@ -32,7 +32,7 @@
         {% for item in dati %}
             <div class="grid-item">
             
-                <a href= "" style="text-decoration: none;" class = 'botton_rect'>
+                <a href= "{% url 'ordini:riassunto_programma' item.id  %}" style="text-decoration: none;" class = 'botton_rect'>
                     
                     <p class= 'text_button_select_client'>{{ item.nome_programma }}</p>
                     

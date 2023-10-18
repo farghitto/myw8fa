@@ -53,11 +53,11 @@ def sceltamisure(request):
 
     return render(request, 'clienti/sceltamisura.html')
 
+
 @handle_exceptions
 def sceltadopomisure(request):
 
     return render(request, 'clienti/sceltadopomisura.html')
-
 
 
 @handle_exceptions
@@ -325,7 +325,6 @@ def info_cliente(request, id):
         dati_app = dati_cliente_profilo(
             request, clienti['cellulare'], clienti['id'], clienti['id_utente_app'], clienti['lingua_utente'])
         if dati_app:
-            print(dati_app)
             oggi = timezone.localdate()
             differenza_data = dati_app['data_scadenza'] - oggi
             numero_giorni = differenza_data.days
@@ -342,7 +341,7 @@ def info_cliente(request, id):
         data_creazione = data_da_confrontare_date.strftime("%d %B, %Y")
 
         peso_desiderato = str(clienti['peso_desiderato'])
-        if peso_desiderato is None:
+        if peso_desiderato is None or peso_desiderato == 'None':
             peso_desiderato = 'Non disponibile'
 
         context = {
@@ -633,8 +632,6 @@ def crea_misura(request):
 
             if dati_cliente['email'] != form.cleaned_data['email']:
                 informazioni_cliente['email'] = form.cleaned_data['email']
-                
-            
 
             if len(informazioni_cliente) != 0:
 
@@ -717,12 +714,12 @@ def riepilogo_misura(request, id):
 
             misure = {
                 'peso_desiderato': pesoform,
-                'compilazione_pcu' : True
+                'compilazione_pcu': True
             }
         else:
-            
+
             misure = {
-                'compilazione_pcu' : True
+                'compilazione_pcu': True
             }
         # Effettua la richiesta Put all'API per aggiornare
         url_backend = settings.BASE_URL + \
@@ -738,8 +735,6 @@ def riepilogo_misura(request, id):
             return redirect('clienti:inviopcu', id=id)
         elif response.status_code >= 400:
             return redirect('erroreserver', status_code=response.status_code, text=response.text)
-    
-            
 
     # richiamare misure
     url_backend = settings.BASE_URL + 'cliente/misure/'+str(id)+'/'
@@ -749,9 +744,6 @@ def riepilogo_misura(request, id):
         misure = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-
-    
-   
 
     # richiamare nome misure
     url_backend = settings.BASE_URL + 'cliente/api/campi_misure/'
@@ -856,18 +848,20 @@ def inviopcu(request, id):
                 risposta = inviomailallegato(request, percorso, id, idemail)
                 # vedo se è un nuovocliente
                 print(id)
-                url_backend = settings.BASE_URL + 'cliente/nuovocliente/'+str(id)+'/'
-                headers = {"Authorization": f"Token {request.session['auth_token']}"}
+                url_backend = settings.BASE_URL + \
+                    'cliente/nuovocliente/'+str(id)+'/'
+                headers = {
+                    "Authorization": f"Token {request.session['auth_token']}"}
                 response = requests.get(url_backend, headers=headers)
                 if response.status_code == 200:
                     nuovocliente = response.json()
                 elif response.status_code >= 400:
                     return redirect('erroreserver', status_code=response.status_code, text=response.text)
-        
-                if nuovocliente['misure'] :
-                    
-                     return render(request, 'ordini/email_successo.html', {'id' : id})
-                
+
+                if nuovocliente['misure']:
+
+                    return render(request, 'ordini/email_successo.html', {'id': id})
+
                 else:
                     return render(request, 'amministrazione/invioconsuccesso.html')
 

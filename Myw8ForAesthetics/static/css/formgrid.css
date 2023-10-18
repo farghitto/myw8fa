@@ -25,6 +25,27 @@
     margin-top: 1%;
   }
 
+  .grid_programma {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Due colonne con larghezza flessibile */
+    gap: 1rem; /* Spazio tra le celle */
+   
+    margin: 0 auto; /* Centra il form orizzontalmente */
+    margin-top: 1%;
+  }
+
+  .grid-form_programma
+  {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Due colonne con larghezza flessibile */
+    gap: 1rem; /* Spazio tra le celle */
+   
+    margin: 0 auto; /* Centra il form orizzontalmente */
+    margin-top: 1%;
+    margin-bottom: 4%;
+    width: 90%
+    
+  }
 
 
   .form-control {
@@ -75,6 +96,16 @@
     width: 80%;
     max-width: 200px;
     margin: 3%;
+}
+
+#bottone_prosegui {
+    
+  width: 40% !important;
+  max-width: none;
+  margin: 1%;
+  margin-top: 1%;
+
+
 }
   
 .bottone_viola_info
@@ -137,4 +168,15 @@
 
 p:hover {
   cursor: default; /* Imposta il cursore in modalità predefinita (senza cambiamenti) */
+}
+
+#programma
+{
+  margin-top:4%;
+
+}
+
+#spazio_vuoto
+{
+  margin-top: 6%;
 }

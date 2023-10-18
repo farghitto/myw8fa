@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Info Clienti {% endblock title %}
+{% block header %}
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text"> Informazioni Programma </p>
+</div> 
+
+{% endblock header%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/formgrid.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+{% endblock scriptlibrerie %}
+
+{% block content %}
+   
+<div class="form-container">
+  
+   
+    <div class ='grid_programma'>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Nome Programma </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Durata </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Importo </p></div>
+        
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> {{programma.nome_programma}} </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> {{programma.durata_programma}} </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button' id = 'totale'> {{programma.importo}} </p></div>
+        
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Programma Kids </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Programma Rateale </p></div>
+        <div  class="bottone_viola_info"><p class = 'info_text_button'> Programma Proseguimento </p></div>
+        
+        <div  class="bottone_viola_info">
+            <p class = 'info_text_button'> {% if programma.programma_kids %} Si {% else %} No {% endif %}
+             </p>
+        </div>
+        <div  class="bottone_viola_info">
+            <p class = 'info_text_button'> {% if programma.programma_rateale %} Si {% else %} No {% endif %}
+            </p>
+        </div>
+        <div  class="bottone_viola_info">
+            <p class = 'info_text_button'> {% if programma.programma_proseguimento %} Si {% else %} No {% endif %}
+            </p>
+        </div>
+    </div>
+   
+    {% if programma.programma_rateale %}
+    <div  class="bottone_viola_info" id ="programma"><p class = 'info_text_button'> Informazioni per il pagamento rateale </p></div>
+    {% else %}
+    <div  class="bottone_viola_info" id ="programma"><p class = 'info_text_button'> Informazioni </p></div>
+    {% endif %}
+    <div class="grid-form_programma" >
+        {% if programma.programma_rateale %}
+        <div class="form-floating mb-3">
+            {% if form.is_bound %}
+            {% if form.acconto.errors %}
+                {% render_field form.acconto class="form-control is-invalid" %}
+                {% for error in form.acconto.errors  %}
+                <div class="invalid-feedback">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% else %}
+                {% render_field form.acconto class="form-control is-valid" %}
+            {% endif %}
+            {% else %}
+                {% render_field form.acconto class="form-control" %}
+            {% endif %}
+            <label class="font-custom" for="{{ form.acconto.id_for_label }}">{{ form.acconto.label_tag }}</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            {% if form.is_bound %}
+            {% if form.rate.errors %}
+                {% render_field form.rate class="form-control is-invalid" %}
+                {% for error in form.rate.errors  %}
+                <div class="invalid-feedback">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% else %}
+                {% render_field form.rate class="form-control is-valid" %}
+            {% endif %}
+            {% else %}
+                {% render_field form.rate class="form-control" %}
+            {% endif %}
+            <label class="font-custom" for="{{ form.rate.id_for_label }}">{{ form.rate.label_tag }}</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            {% if form.is_bound %}
+            {% if form.importo_rata.errors %}
+                {% render_field form.importo_rata class="form-control is-invalid" %}
+                {% for error in form.importo_rata.errors  %}
+                <div class="invalid-feedback">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% else %}
+                {% render_field form.importo_rata class="form-control is-valid" %}
+            {% endif %}
+            {% else %}
+                {% render_field form.importo_rata class="form-control" %}
+            {% endif %}
+            <label class="font-custom" for="{{ form.importo_rata.id_for_label }}">{{ form.importo_rata.label_tag }}</label>
+        </div>
+        {% endif %}
+        <div class="form-floating mb-3">
+            {% if form.is_bound %}
+            {% if form.data_ordine.errors %}
+                {% render_field form.data_ordine class="form-control is-invalid" %}
+                {% for error in form.data_ordine.errors  %}
+                <div class="invalid-feedback">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% else %}
+                {% render_field form.data_ordine class="form-control is-valid" %}
+            {% endif %}
+            {% else %}
+                {% render_field form.data_ordine class="form-control" %}
+            {% endif %}
+            <label class="font-custom" for="{{ form.data_ordine.id_for_label }}">{{ form.data_ordine.label_tag }}</label>
+        </div>
+   
+    </div>    
+   
+    
+    <div id = 'bottoni_griglia'>
+
+        <a href="{% url 'clienti:search_clienti' %}" id= 'bottone_prosegui' class="btn bottone_viola"><p id = 'menu_text_button'> Prosegui </p></a>
+    </div>
+    <div id = 'bottoni_griglia'>
+        <a href="{% url 'clienti:search_clienti' %}" id= 'bottone_prosegui' class="btn bottone_viola"><p id = 'menu_text_button'> Torna alla lista clienti </p></a>
+        <a href="{% url 'ordini:scelta_gruppo' id_cliente %}" id= 'bottone_prosegui' class="btn bottone_viola"><p id = 'menu_text_button'> Torna alla selezione del programma </p></a>
+        <a href="{% url 'ordini:scelta_pagamento' programma.gruppo %}" id= 'bottone_prosegui' class="btn bottone_viola"><p id = 'menu_text_button'> Torna alla modalità di pagamento </p></a>
+        <a href="{% url 'ordini:scelta_listino' programma.gruppo rat %}" id= 'bottone_prosegui' class="btn bottone_viola"><p id = 'menu_text_button'> Torna alla selezione della durata </p></a>
+  
+    </div>
+    
+</div>
+
+{% endblock %}
+{% block script %}
+
+  <script>
+    $(document).ready(function(){
+        $("#id_acconto").blur(calc);
+        $("#id_rate").blur(calc);
+        
+        function calc() {
+            
+            var tot = '{{programma.importo}}'
+            var importo = ((parseFloat(tot, 10)) -parseFloat($('#id_acconto').val(), 10)) / parseFloat($("#id_rate").val(), 10).toFixed(2);
+            $('#id_importo_rata').val(importo)
+            debugger;
+        };
+    })
+ 
+  </script>
+  
+{% endblock script %}
