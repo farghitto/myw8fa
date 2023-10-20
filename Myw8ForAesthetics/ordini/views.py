@@ -139,22 +139,70 @@ def sceltalistino(request, id, pg):
 @handle_exceptions
 def riassuntoinfo(request, id):
 
-    # recupero informazioni programma scelto
     url_backend = settings.BASE_URL + 'listini/programmi/' + str(id)
     headers = {"Authorization": f"Token {request.session['auth_token']}"}
-
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         programma = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-    form = FormRateale()
 
     id_cliente = request.session['cliente_ordine']['id']
     if programma['programma_rateale']:
         rat = 1
     else:
         rat = 0
+
+    if request.method == 'POST':
+        form = FormRateale(request.POST)
+
+        if form.is_valid():
+
+            url_backend = settings.BASE_URL + 'utente/utente/' + \
+                str(request.session['user_id'])
+            headers = {
+                "Authorization": f"Token {request.session['auth_token']}"}
+            response = requests.get(url_backend, headers=headers)
+            if response.status_code == 200:
+                utente = response.json()
+            elif response.status_code >= 400:
+                return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+            dati = {
+                'cliente': request.session['cliente_ordine']['id'],
+
+                'consulente': utente['id'],
+                'utente_inserimento': utente['id'],
+                'ordine_confermato': False,
+                'data_creazione': datetime.now(),
+                'data_ultima_modifica': datetime.now(),
+                'programma': programma['id'],
+                'numero_rate': form.cleaned_data['rate'],
+                'acconto': form.cleaned_data['acconto'],
+                'data_ordine': form.cleaned_data['data_ordine']
+
+            }
+
+            # Effettua la richiesta POST all'API
+            url_backend = settings.BASE_URL + 'ordini/ordini/'
+            headers = {
+                "Authorization": f"Token {request.session['auth_token']}"
+            }
+            response = requests.post(
+                url_backend, data=dati, headers=headers)
+
+            if response.status_code == 201:  # Status code per "Created"
+
+                return redirect('clienti:postcliente')
+            elif response.status_code >= 400:
+                return redirect('erroreserver', status_code=response.status_code, text=response.text)
+        else:
+            context = {'programma': programma, 'form': form,
+                       'id_cliente': id_cliente, 'rat': rat}
+
+            return render(request, 'ordini/riassunto_ordine.html', context)
+
+    form = FormRateale()
 
     context = {'programma': programma, 'form': form,
                'id_cliente': id_cliente, 'rat': rat}
