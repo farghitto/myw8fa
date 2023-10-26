@@ -34,6 +34,9 @@ def inviomailchiave(request, chiave, id, idemail):
     to = cliente['email']
     text_content = "Gentile " + cliente['cognome'] + " " + cliente['nome'] + \
         '\n' + emailAzienda['testo_mail'] + '\n' + chiave  # messaggio
+        
+        
+    
 
     # caso email senza bcc
     if emailAzienda['bcc'] == None:
@@ -149,6 +152,58 @@ def inviomailallegato(request, percorso, id, idemail):
     # caso email con due bcc
     else:
         bcc_addresses = [emailAzienda['bcc'], emailAzienda['bcc2']]
+        email = EmailMessage(subject, text_content,
+                             from_email, [to], bcc=bcc_addresses)
+    email.attach_file(percorso)
+    email.send()
+    try:
+        num_email_inviati = 2
+        ritorno = True
+    except:
+        ritorno = False
+
+    return ritorno
+
+
+
+def inviomailchiaveallegato(request, chiave, percorso, id, idemail):
+
+    # richiamo cliente
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        cliente = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    # richiamo email
+    url_backend = settings.BASE_URL + 'utils/email/' + str(idemail)
+    headers = {"Authorization": f"Token {request.session['auth_token']}"}
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        emailAzienda = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    subject = emailAzienda['testo_oggetto']
+    from_email = emailAzienda['email']
+    to = cliente['email']
+    text_content = "Gentile " + cliente['cognome'] + " " + cliente['nome'] + \
+        '\n' + emailAzienda['testo_mail'] + '\n' + chiave  # messaggio
+        
+    
+    # caso email senza bcc
+    if emailAzienda['bcc'] == None:
+        email = EmailMessage(subject, text_content, from_email, [to])
+    # caso email con bcc
+    elif emailAzienda.bcc2 == None:
+        bcc_addresses = [emailAzienda.bcc]
+        email = EmailMessage(subject, text_content,
+                             from_email, [to], bcc=bcc_addresses)
+    # caso email con due bcc
+    else:
+        bcc_addresses = [emailAzienda.bcc, emailAzienda.bcc2]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
     email.attach_file(percorso)

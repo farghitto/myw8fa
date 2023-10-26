@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.conf import settings
+from django.utils.crypto import get_random_string
 
 from datetime import datetime
 
@@ -7,11 +9,14 @@ import requests
 import pdb
 
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
+from amministrazione.views import inviomailchiave, inviosms, inviomailallegato, inviomailchiaveallegato
 from .form import FormRateale
+from clienti.form import  FormChiave
+from amministrazione.creapdfordini import moduloOrdine
 # Create your views here.
 
 
-@handle_exceptions
+
 def sceltagruppo(request, id):
     # id è l'id del cliente
     # chiamo per i dati del clienrte
@@ -26,7 +31,7 @@ def sceltagruppo(request, id):
         cliente = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-
+    
     # se il cliente non a il modulo lo deve compilare
     if cliente['compilazione_pcu'] == False:
 
@@ -47,20 +52,21 @@ def sceltagruppo(request, id):
         elif response.status_code >= 400:
             return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
+        
         # caso nessun ordine inserito nel sistema per il cliente
         if tipo_ordine['ordini'] == 'nessuno':
             gruppi_visibili = 'primo_ordine'
 
         # caso un ordine small inserito nel sistema per il cliente
         elif tipo_ordine['ordini'] == 'solo_test':
-            a = 0
+            gruppi_visibili = 'ordine_proseguimento'
         # caso un ordine non smal inserito nel sistema per il cliente
         elif tipo_ordine['ordini'] == 'completo':
-            a = 0
+            gruppi_visibili = 'ordine_mantenimento'
         # caso piu ordini inseriti nel sistema per il cliente
         else:
-            a = 0
-
+            gruppi_visibili = 'ordine_mantenimento'
+       
         # se ha un beneficiario vado sui programmi kids
         if cliente['beneficiario_cognome']:
             minorenne = True
@@ -81,7 +87,7 @@ def sceltagruppo(request, id):
             listini = response.json()
         elif response.status_code >= 400:
             return redirect('erroreserver', status_code=response.status_code, text=response.text)
-
+        
         context = {'dati': listini, 'minore': minorenne}
 
         return render(request, 'ordini/scelta_gruppo.html', context)
@@ -136,7 +142,6 @@ def sceltalistino(request, id, pg):
     return render(request, 'ordini/scelta_programma.html', context)
 
 
-@handle_exceptions
 def riassuntoinfo(request, id):
 
     url_backend = settings.BASE_URL + 'listini/programmi/' + str(id)
@@ -193,7 +198,7 @@ def riassuntoinfo(request, id):
 
             if response.status_code == 201:  # Status code per "Created"
 
-                return redirect('clienti:postcliente')
+                return redirect(reverse('ordini:invio_ordine_mail', args=[id_cliente]))
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
         else:
@@ -213,3 +218,54 @@ def riassuntoinfo(request, id):
 def misure_mancanti(request):
 
     return render(request, 'ordini/misura_mancante.html')
+
+
+def invio_ordine(request, id):
+    
+    risposta = False
+    if request.method == 'POST':
+        pdb.set_trace()
+        azione = request.POST.get('azione')
+        chiave = get_random_string(length=10, allowed_chars='0123456789')
+        if azione == 'sms':
+            risposta = inviosms(request, chiave, id)
+            request.session['firma_moduli_ordine'] = chiave
+            # Esegui l'invio SMS
+        elif azione == 'email':
+            # idemail invio ordine
+            idemail = 1
+            percorso =moduloOrdine(request, id)
+            risposta = inviomailchiaveallegato(request, chiave,percorso, id, idemail)
+            request.session['firma_moduli_ordine'] = chiave
+            print(chiave)
+            # Esegui l'invio Email
+        elif azione == 'chiave':
+            chiave_inserita = request.POST.get('chiave')
+            chiave = request.session['firma_moduli_ordine']
+            if chiave == chiave_inserita:
+                # idemail invio ordine firmato
+                idemail = 2
+                percorso = 0
+                risposta = inviomailallegato(request, percorso, id, idemail)
+                # vedo se è un nuovocliente
+                print(id)
+                url_backend = settings.BASE_URL + \
+                    'cliente/nuovocliente/'+str(id)+'/'
+                headers = {
+                    "Authorization": f"Token {request.session['auth_token']}"}
+                response = requests.get(url_backend, headers=headers)
+                if response.status_code == 200:
+                    nuovocliente = response.json()
+                elif response.status_code >= 400:
+                    return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+                if nuovocliente['misure']:
+
+                    return render(request, 'ordini/email_successo.html', {'id': id})
+
+                else:
+                    return render(request, 'amministrazione/invioconsuccesso.html')
+
+    form = FormChiave()
+    context = {'id': id, 'inserimento': risposta, 'form': form}
+    return render(request, 'clienti/invio.html', context)

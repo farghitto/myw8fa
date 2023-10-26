@@ -789,13 +789,11 @@ def ModuloPersonal(request, id):
     if not os.path.exists(cartella_destinazione):
         try:
             os.makedirs(cartella_destinazione)
-            print(f"Cartella '{cartella_destinazione}' creata con successo.")
+            
         except OSError as e:
             print(
                 f"Errore durante la creazione della cartella '{cartella_destinazione}': {e}")
-    else:
-        print(f"La cartella '{cartella_destinazione}' esiste già.")
-
+   
     # Ora puoi aprire il file PDF nella cartella specificata
     nome_file_pdf = f"{data_corrente}-personal.pdf"
     percorso_completo_pdf = os.path.join(cartella_destinazione, nome_file_pdf)

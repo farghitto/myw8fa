@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import sceltagruppo, sceltalistino, sceltapagamento, riassuntoinfo
 from .views import misure_mancanti
+from .views import invio_ordine
 
 app_name = 'ordini'
 
@@ -13,4 +14,5 @@ urlpatterns = [
     path('riassuntoprogramma/<int:id>/',
          riassuntoinfo, name='riassunto_programma'),
     path('sceltalistino/',  misure_mancanti, name='misura_mancante'),
+    path('invioordine/<int:id>',  invio_ordine, name='invio_ordine_mail'),
 ]
