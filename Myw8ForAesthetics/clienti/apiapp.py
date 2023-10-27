@@ -22,7 +22,7 @@ def autenticazione(request):
     s.auth = ('customercare', 'Nuova2507')
     indirizzoautenticazione = settings.GENERAL_WS_PATH + '/authenticate'
     response = s.get(indirizzoautenticazione)
-
+    
     if response.status_code == 200:
 
         request.session['token'] = response.request.headers['Authorization']
@@ -45,7 +45,7 @@ def dati_utente(request, cellulare):
     response = s.get(indirizzopazienti)
     infoutente = response.json()
     # trovo attraverso la mail dall'utente il paziente sull'app
-
+    
     for utente in infoutente:
 
         if utente['mobile'] == cellulare:
@@ -58,7 +58,7 @@ def dati_utente(request, cellulare):
         else:
 
             risposta = {'id': False, 'lingua': False}
-
+    
     return (risposta)
 
 
@@ -66,6 +66,7 @@ def dati_cliente_misure(request, cellulare, id_cliente, id_app, lingua_app):
 
     # entro superutente
     aut = autenticazione(request)
+    
     if not id_app:
         datiutente = dati_utente(request, cellulare)
         if datiutente['id']:
@@ -88,7 +89,7 @@ def dati_cliente_misure(request, cellulare, id_cliente, id_app, lingua_app):
     response = s.get(indirizzodati)
     infopaziente = response.json()
     datimisuradaritornare = []
-
+    
     for misura in infopaziente:
 
         data = datetime.datetime.strptime(misura['date'], "%Y-%m-%dT%H:%M:%SZ")

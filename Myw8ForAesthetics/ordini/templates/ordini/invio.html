@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 
-{% block title %} Invio Personal Check Up {% endblock title %}
+{% block title %} Invio Ordine {% endblock title %}
 {% block header %}
     <div id="text_header_rect" class = 'purple_rect' style='visibility: hidden'>
         <p id="text_header" class="text"></p>
@@ -21,7 +21,7 @@
 {% block content %}
 
 <div class="form-container">
-    <form method="post" action="{% url 'clienti:inviopcu' id %}" novalidate>
+    <form method="post" action="{% url 'ordini:invio_ordine_mail' id %}" novalidate>
         {% csrf_token %}
         {% if inserimento %}
         <div class = 'inserimento'>

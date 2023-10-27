@@ -102,7 +102,7 @@ def crea_cliente(request):
         form = FormCliente(request.POST)
 
         if form.is_valid():
-
+            
             # Prendi i dati dal form
             payload = {
                 'nome': form.cleaned_data['nome'],
@@ -118,6 +118,7 @@ def crea_cliente(request):
                 'email': form.cleaned_data['email'],
                 'sesso': form.cleaned_data['sesso'],
                 'note': form.cleaned_data['note'],
+                
             }
 
             # Effettua la richiesta POST all'API

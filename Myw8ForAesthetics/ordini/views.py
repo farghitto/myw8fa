@@ -224,7 +224,7 @@ def invio_ordine(request, id):
     
     risposta = False
     if request.method == 'POST':
-        pdb.set_trace()
+       
         azione = request.POST.get('azione')
         chiave = get_random_string(length=10, allowed_chars='0123456789')
         if azione == 'sms':
@@ -268,4 +268,4 @@ def invio_ordine(request, id):
 
     form = FormChiave()
     context = {'id': id, 'inserimento': risposta, 'form': form}
-    return render(request, 'clienti/invio.html', context)
+    return render(request, 'ordini/invio.html', context)
