@@ -12,7 +12,7 @@ from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_respons
 from amministrazione.views import inviomailchiave, inviosms, inviomailallegato, inviomailchiaveallegato
 from .form import FormRateale
 from clienti.form import  FormChiave
-from amministrazione.creapdfordini import moduloOrdine
+from amministrazione.creapdfordini import moduloOrdine, moduloOrdineFirmato
 # Create your views here.
 
 
@@ -245,26 +245,11 @@ def invio_ordine(request, id):
             if chiave == chiave_inserita:
                 # idemail invio ordine firmato
                 idemail = 2
-                percorso = 0
+                percorso = moduloOrdineFirmato(request, id)
                 risposta = inviomailallegato(request, percorso, id, idemail)
                 # vedo se è un nuovocliente
-                print(id)
-                url_backend = settings.BASE_URL + \
-                    'cliente/nuovocliente/'+str(id)+'/'
-                headers = {
-                    "Authorization": f"Token {request.session['auth_token']}"}
-                response = requests.get(url_backend, headers=headers)
-                if response.status_code == 200:
-                    nuovocliente = response.json()
-                elif response.status_code >= 400:
-                    return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
-                if nuovocliente['misure']:
-
-                    return render(request, 'ordini/email_successo.html', {'id': id})
-
-                else:
-                    return render(request, 'amministrazione/invioconsuccesso.html')
+                return render(request, 'amministrazione/invioconsuccesso.html')
 
     form = FormChiave()
     context = {'id': id, 'inserimento': risposta, 'form': form}

@@ -34,21 +34,18 @@ def inviomailchiave(request, chiave, id, idemail):
     to = cliente['email']
     text_content = "Gentile " + cliente['cognome'] + " " + cliente['nome'] + \
         '\n' + emailAzienda['testo_mail'] + '\n' + chiave  # messaggio
-        
-        
-    
 
     # caso email senza bcc
     if emailAzienda['bcc'] == None:
         email = EmailMessage(subject, text_content, from_email, [to])
     # caso email con bcc
-    elif emailAzienda.bcc2 == None:
-        bcc_addresses = [emailAzienda.bcc]
+    elif emailAzienda['bcc2'] == None:
+        bcc_addresses = [emailAzienda['bcc']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
     # caso email con due bcc
     else:
-        bcc_addresses = [emailAzienda.bcc, emailAzienda.bcc2]
+        bcc_addresses = [emailAzienda['bcc'], emailAzienda['bcc2']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
 
@@ -165,7 +162,6 @@ def inviomailallegato(request, percorso, id, idemail):
     return ritorno
 
 
-
 def inviomailchiaveallegato(request, chiave, percorso, id, idemail):
 
     # richiamo cliente
@@ -191,19 +187,18 @@ def inviomailchiaveallegato(request, chiave, percorso, id, idemail):
     to = cliente['email']
     text_content = "Gentile " + cliente['cognome'] + " " + cliente['nome'] + \
         '\n' + emailAzienda['testo_mail'] + '\n' + chiave  # messaggio
-        
-    
+
     # caso email senza bcc
     if emailAzienda['bcc'] == None:
         email = EmailMessage(subject, text_content, from_email, [to])
     # caso email con bcc
-    elif emailAzienda.bcc2 == None:
-        bcc_addresses = [emailAzienda.bcc]
+    elif emailAzienda['bcc2'] == None:
+        bcc_addresses = [emailAzienda['bcc2']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
     # caso email con due bcc
     else:
-        bcc_addresses = [emailAzienda.bcc, emailAzienda.bcc2]
+        bcc_addresses = [emailAzienda['bcc'], emailAzienda['bcc2']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
     email.attach_file(percorso)
