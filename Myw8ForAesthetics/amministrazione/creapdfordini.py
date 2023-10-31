@@ -199,8 +199,19 @@ def moduloOrdine(request, id):
     outputStream = open(percorso_completo_pdf, "wb")
     output.write(outputStream)
     outputStream.close()
-
-    return percorso_completo_pdf
+    
+    if not dati['cliente']['privacy']:
+        percorso_privacy = 'static/static_file/privacy.pdf'
+    else:
+        percorso_privacy = False
+      
+    indirizzo_allegati = {
+        'file_ordine' : percorso_completo_pdf,
+        'file_privacy' : percorso_privacy
+    }  
+    
+    print(indirizzo_allegati)
+    return indirizzo_allegati
 
 
 def moduloOrdineFirmato(request, id):
@@ -284,5 +295,106 @@ def moduloOrdineFirmato(request, id):
     outputStream = open(percorso_completo_pdf_firmato, "wb")
     output.write(outputStream)
     outputStream.close()
+    
+    
+    if not dati['cliente']['privacy']:
+        percorso_privacy = ModuloPrivacy(request,  dati['cliente'])
+    else:
+        percorso_privacy = False
+    
+    percorso_benvenuto = 'static/static_file/benvenuto.pdf'
+    
+    indirizzo_allegati = {
+        'file_ordine' : percorso_completo_pdf_firmato,
+        'file_privacy' : percorso_privacy,
+        'percorso_benvenuto' :percorso_benvenuto
+    }  
 
-    return percorso_completo_pdf_firmato
+    return indirizzo_allegati
+
+
+def ModuloPrivacy(request,  dati):
+    
+    packet = io.BytesIO()
+    # create a new PDF with Reportlab
+    can = canvas.Canvas(packet, pagesize=letter)
+    #
+    #can.setFillColorRGB(1,0,0) #choose your font colour
+    can.setFont("Helvetica", 10)
+    #
+    """ if tipo == 'consulente':
+
+        firmatario = get_object_or_404(AnagraficaConsulente, pk = id)
+
+    elif tipo == 'cliente':
+
+        firmatario = get_object_or_404(AnagraficaCliente, pk = id) """
+
+    can.drawString(58,198, 'X')
+    can.drawString(58,114,str( datetime.now().strftime("%d/%m/%Y")))
+    can.drawString(268,114," sottoscritto elettronicamente da " + dati['cognome'] + dati['nome'])
+    can.drawString(270,100,str( "con email inviata a  " + dati['email']))
+
+    can.save()
+
+    packet1 = io.BytesIO()
+    # create a new PDF with Reportlab
+    can1 = canvas.Canvas(packet1, pagesize=letter)
+    #
+    can1.setFont("Helvetica", 10)
+    #
+    can1.drawString(58,583,"sottoscritto elettronicamente da " + dati['cognome'] + dati['nome'])
+    can1.drawString(58,570,str( "con email inviata a  " + dati['email']))
+    can1.drawString(58,557,str( "in data  " + datetime.now().strftime("%d/%m/%Y")))
+
+    can1.save()
+
+    packet.seek(0)
+    new_pdf = PdfReader(packet)
+    # read your existing PDF
+    existing_pdf = PdfReader(open("static/static_file/privacy.pdf", "rb"))
+    output = PdfWriter()
+    # add the "watermark" (which is the new pdf) on the existing page
+    page = existing_pdf.pages[0]
+    output.add_page(page)
+    page = existing_pdf.pages[1]
+    output.add_page(page)
+    page = existing_pdf.pages[2]
+    output.add_page(page)
+    page = existing_pdf.pages[3]
+    page.merge_page(new_pdf.pages[0])
+    output.add_page(page)
+
+    packet1.seek(0)
+    new_pdf = PdfReader(packet1)
+    page = existing_pdf.pages[4]
+    page.merge_page(new_pdf.pages[0])
+    output.add_page(page)
+
+    cartella_destinazione = 'pdf/' + str(dati['codice_fiscale'])
+
+    nome_file_pdf = f"privacy_firmato-{dati['cognome']}.pdf"
+
+    percorso_completo_pdf = os.path.join(cartella_destinazione, nome_file_pdf)
+
+    outputStream = open(percorso_completo_pdf, "wb")
+    output.write(outputStream)
+    outputStream.close()
+    
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(dati['id'])+'/'
+
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+
+    data_cliente = {
+        'privacy' : True
+    }
+    response = requests.patch(
+                    url_backend, data=data_cliente, headers=headers)
+
+    pdb.set_trace()           
+    if response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    
+    return percorso_completo_pdf

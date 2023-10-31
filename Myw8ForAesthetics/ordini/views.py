@@ -247,10 +247,29 @@ def invio_ordine(request, id):
                 idemail = 2
                 percorso = moduloOrdineFirmato(request, id)
                 risposta = inviomailallegato(request, percorso, id, idemail)
-                # vedo se è un nuovocliente
-
-                return render(request, 'amministrazione/invioconsuccesso.html')
+                # vedo se il cliente ha il modulo alimenti compilato
+                url_backend = settings.BASE_URL + \
+                    'cliente/clientedati/'+str(id)+'/'
+                headers = {
+                    "Authorization": f"Token {request.session['auth_token']}"}
+                response = requests.get(url_backend, headers=headers)
+                if response.status_code == 200:
+                    risposta = response.json()
+                elif response.status_code >= 400:
+                    return redirect('erroreserver', status_code=response.status_code, text=response.text)
+                
+                if risposta['esiste']:
+                    return render(request, 'ordini/email_successo.html')
+                else:
+                    return redirect('ordini:modulodati_mancante', id = id )
+                    
 
     form = FormChiave()
     context = {'id': id, 'inserimento': risposta, 'form': form}
     return render(request, 'ordini/invio.html', context)
+
+
+def modulodati_mancante (request, id):
+    
+    
+    return True

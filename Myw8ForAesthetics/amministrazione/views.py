@@ -5,6 +5,7 @@ from django.conf import settings
 import base64
 import requests
 import json
+import pdb
 
 # Create your views here.
 
@@ -151,7 +152,15 @@ def inviomailallegato(request, percorso, id, idemail):
         bcc_addresses = [emailAzienda['bcc'], emailAzienda['bcc2']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
-    email.attach_file(percorso)
+        
+    if percorso['file_privacy']:
+        email.attach_file(percorso['file_ordine'])
+        email.attach_file(percorso['file_privacy'])
+        email.attach_file(percorso['percorso_benvenuto'])
+             
+    else:
+        email.attach_file(percorso['file_ordine'])
+        
     email.send()
     try:
         num_email_inviati = 2
@@ -201,7 +210,15 @@ def inviomailchiaveallegato(request, chiave, percorso, id, idemail):
         bcc_addresses = [emailAzienda['bcc'], emailAzienda['bcc2']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
-    email.attach_file(percorso)
+        
+    if percorso['file_privacy']:
+        email.attach_file(percorso['file_ordine'])
+        email.attach_file(percorso['file_privacy'])     
+    else:
+        email.attach_file(percorso['file_ordine'])
+    
+        
+        
     email.send()
     try:
         num_email_inviati = 2

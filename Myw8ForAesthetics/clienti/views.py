@@ -848,7 +848,6 @@ def inviopcu(request, id):
                 percorso = ModuloPersonal(request, id)
                 risposta = inviomailallegato(request, percorso, id, idemail)
                 # vedo se è un nuovocliente
-                print(id)
                 url_backend = settings.BASE_URL + \
                     'cliente/nuovocliente/'+str(id)+'/'
                 headers = {
