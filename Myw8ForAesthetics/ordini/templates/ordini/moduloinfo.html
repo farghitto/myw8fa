@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Modulo Informazioni {% endblock title %}
+{% block header %}
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text">
+        Informazioni </p>
+</div> 
+
+{% endblock header%}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/stileordini.css' %}" />
+    
+{% endblock css %}
+{% block scriptlibrerie %}
+  
+{% endblock scriptlibrerie %}
+
+{% block content %}
+
+<div class = container_griglia>
+    
+    <div class="form-group">
+        <label class="font-custom" >{{ form.rabbia.label_tag }}</label>
+            {% for radio in form.rabbia %}
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="{{ form.rabbia.name }}" id ={{radio.id_for_label}} {% if forloop.first %}checked{% endif %}>
+              <label class="form-check-label" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+            {% endfor %}
+         
+      
+        {% if form.rabbia.errors %}
+          <div class="invalid-feedback">
+            {{ form.rabbia.errors.0 }}
+          </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label  class="font-custom">{{ form.figli.label_tag }}</label>
+                {% for radio in form.figli %}
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="{{ form.figli.name }}" id ={{radio.id_for_label}}>
+                  <label class="form-check-label" for = {{radio.id_for_label}}>
+                    {{ radio.choice_label }}
+                  </label>
+                </div>
+                {% endfor %}
+             
+          
+            {% if form.rabbia.errors %}
+              <div class="invalid-feedback">
+                {{ form.rabbia.errors.0 }}
+              </div>
+            {% endif %}
+
+        <div class="form-floating mb-3">
+            {% if form.is_bound %}
+              {% if form.sicura.errors %}
+                {% render_field form.sicura class="form-control is-invalid" %}
+                {% for error in form.sicura.errors  %}
+                  <div class="invalid-feedback">
+                    {{ error }}
+                  </div>
+                {% endfor %}
+              {% else %}
+                  {% render_field form.sicura class="form-control is-valid" %}
+              {% endif %}
+            {% else %}
+                {% render_field form.sicura class="form-control" %}
+            {% endif %}
+            <label class="font-custom" for="{{ form.sicura.id_for_label }}">{{ form.sicura.label_tag }}</label>
+          </div>
+</div>
+{% endblock %}
+{% block script %}
+   
+
+{% endblock script %}

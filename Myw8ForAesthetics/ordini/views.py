@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.conf import settings
@@ -11,7 +12,7 @@ import pdb
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
 from amministrazione.views import inviomailchiave, inviosms, inviomailallegato, inviomailchiaveallegato
 from .form import FormRateale
-from clienti.form import  FormChiave
+from clienti.form import  FormChiave, ModuloInformazioniForm
 from amministrazione.creapdfordini import moduloOrdine, moduloOrdineFirmato
 # Create your views here.
 
@@ -271,6 +272,20 @@ def invio_ordine(request, id):
 
 def modulodati_mancante (request, id):
     
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        cliente = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
     
     
-    return True
+    form = ModuloInformazioniForm
+    context ={'form' : form}
+    
+    return render(request, 'ordini/moduloinfo.html', context)

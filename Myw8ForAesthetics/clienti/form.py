@@ -503,70 +503,10 @@ PASTI = (
 
 )
 
-class ModuliAggiuntiviForm(forms.Form):
+class ModuloInformazioniForm(forms.Form):
 
 
-    nome = forms.CharField(
-        max_length=100, 
-        label='Nome:',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Nome:'}),
-        error_messages={'required': 'Il nome è obbligatorio.'})
     
-    cognome = forms.CharField(
-        max_length=100, 
-        label='Cognome:',
-        widget=forms.TextInput( attrs={'class': 'form-control font-custom', 'placeholder': 'Cognome:'}),
-        error_messages={'required': 'Il cognome è obbligatorio.'})
-    
-    citta_nascita = forms.CharField(
-        max_length=100, 
-        label='Città di nascita:',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Città di nascita:'}),
-        error_messages={'required': 'La città di nascita è obbligatoria.'})
-    
-    data_nascita = forms.DateField(
-        label='Data di nascita:',
-        widget=forms.DateInput(attrs={'class': 'form-control font-custom', 'type': 'date', 'placeholder': 'Data di nascita:'}),
-        error_messages={'required': 'La data di nascita è obbligatoria.'})
-    
-    indirizzo = forms.CharField(
-        max_length=100, 
-        label='Indirizzo di residenza:',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Indirizzo:'}),
-        error_messages={'required': "L'indirizzo è obbligatorio."})
-    
-    citta = forms.CharField(
-        max_length=50, 
-        label='Citta:',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Citta:'}),
-        error_messages={'required': 'La città è obbligatorio.'})
-    
-    codice_fiscale = forms.CharField(
-        max_length=16, 
-        label='Codice fiscale:',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Codice fiscale:'}),
-        error_messages={'required': 'il codice fiscale è obbligatorio.'})
-    
-    cellulare = forms.CharField(
-        max_length=20,
-        label='Cellulare:',
-        widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Cellulare:'}),
-        error_messages={'required': 'Il cellulare è obbligatorio.'})
-    
-    email = forms.EmailField(
-        label='Email:',
-        widget=forms.EmailInput(attrs={'class': "form-control font-custom", 'placeholder': 'Email:'}),
-        error_messages={'required': "L'email è obbligatoria.", 'invalid': 'L\'indirizzo email non è valido.'})
-    
-    sesso = forms.CharField(
-        label='Sesso:',
-        widget=forms.Select(choices=[('M', 'M'), ('F', 'F')], attrs={'class': 'form-select font-custom', 'placeholder': 'Sesso:'}),
-        error_messages={'required': 'Il sesso è obbligatorio.'})
-    
-    numero_ordine = forms.CharField(
-        label='Numero ordine',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Numero ordine','readonly':'readonly'}), 
-        error_messages={'required': 'Il numero_ordine è obbligatorio.'})
     
     provincia_nascita = forms.CharField(
         max_length=50,
@@ -634,7 +574,7 @@ class ModuliAggiuntiviForm(forms.Form):
     )
 
     bmi = forms.FloatField(
-        max_length=8,
+       
         label='BMI',
         widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'BMI:'}),
         error_messages={'required': 'Il campo BMI è obbligatorio.'}
@@ -648,21 +588,21 @@ class ModuliAggiuntiviForm(forms.Form):
     )
 
     peso_ottimale = forms.FloatField(
-        max_length=5,
+       
         label='Peso Ottimale',
         widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Peso Ottimale:'}),
         error_messages={'required': 'Il campo peso ottimale è obbligatorio.'}
     )
 
     scostamento_peso = forms.FloatField(
-        max_length=7,
+    
         label='Scostamento Peso',
         widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Scostamento Peso in KG:'}),
         error_messages={'required': 'Il campo Scostamento peso in KG è obbligatorio.'}
     )
 
     peso_desiderato = forms.FloatField(
-        max_length=5,
+      
         label='Peso Desiderato',
         widget=forms.NumberInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Peso Desiderato:'}),
         error_messages={'required': 'Il campo Peso desiderato è obbligatorio.'}
@@ -880,7 +820,7 @@ class ModuliAggiuntiviForm(forms.Form):
     )
 
     litri_acqua = forms.FloatField(
-        max_length=5,
+      
         label='Litri di Acqua Bevuti',
         widget=forms.NumberInput(attrs={'class': 'form-control font-custom','placeholder':'Quanti litri al giorno?'}),
         error_messages={'required': 'Il campo litri bevuti è obbligatorio.'}
@@ -904,14 +844,14 @@ class ModuliAggiuntiviForm(forms.Form):
 
     figli = forms.ChoiceField(
         choices=SCELTA,
-        label='Figli',
-        widget=forms.Select(attrs={'class': 'form-control font-custom','placeholder':'Hai figli?'}),
+        label='Hai figli?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom','placeholder':'Hai figli?'}),
         initial= None,
         error_messages={'required': 'Il campo figli è obbligatorio.'}
     )
 
     numero_figli = forms.IntegerField(
-        max_length=2,
+  
         label='Numero di Figli',
         widget=forms.NumberInput(attrs={'class': 'form-control font-custom','placeholder':'Quanti?'}),        
         #error_messages={'required': 'Il campo numero figli è obbligatorio.'}
@@ -953,7 +893,7 @@ class ModuliAggiuntiviForm(forms.Form):
 
     sicura = forms.ChoiceField(
         choices=SCELTA3,
-        label='Sicura',
+        label='Sei una persona sicura?',
         widget=forms.Select(attrs={'class': 'form-control font-custom','placeholder':'Sei una persona sicura?'}),
         initial= None,
         error_messages={'required': 'Il campo figli è obbligatorio.'}
@@ -1009,10 +949,11 @@ class ModuliAggiuntiviForm(forms.Form):
 
     rabbia = forms.ChoiceField(
         choices=SCELTA3,
-        label='Rabbia',
-        widget=forms.Select(attrs={'class': 'form-control font-custom','placeholder':'Hai figli?'}),
-        initial= None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        label='Ti arrabbi spesso?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom', 'id': 'custom_rabbia_id'}),
+        
+       
+
     )
 
     sfogo = forms.ChoiceField(
@@ -1087,19 +1028,19 @@ class ModuliAggiuntiviForm(forms.Form):
     )
 
     
-    def __init__(self, *args, **kwargs):
+    # def __init__(self, *args, **kwargs):
 
-        super(ModuliAggiuntiviForm,self).__init__(*args, **kwargs)
+    #     super(ModuliAggiuntiviForm,self).__init__(*args, **kwargs)
 
-        self.args = args
-        if 'initial' in kwargs:
-            sesso = kwargs['initial']['sesso']
-        elif 'sesso' in self.args[0] :
-            sesso = self.args[0]['sesso']
+        # self.args = args
+        # if 'initial' in kwargs:
+        #     sesso = kwargs['initial']['sesso']
+        # elif 'sesso' in self.args[0] :
+        #     sesso = self.args[0]['sesso']
 
 
-        else:
-            sesso = 'F'
+        # else:
+        #     sesso = 'F'
 
    
        
@@ -1107,38 +1048,38 @@ class ModuliAggiuntiviForm(forms.Form):
        
 
  
-        #self.fields['alimenti_preferiti'].label = 'Quali alimenti preferisci assumere?'
-        #self.fields['gusti_preferiti'].label = 'Quali gusti preferisci?'
-        #self.fields['patologie'].label = 'Disturbi o patologie attuali?'
+        # #self.fields['alimenti_preferiti'].label = 'Quali alimenti preferisci assumere?'
+        # #self.fields['gusti_preferiti'].label = 'Quali gusti preferisci?'
+        # #self.fields['patologie'].label = 'Disturbi o patologie attuali?'
        
-        self.fields['sicura'].label = ''
-        self.fields['felice'].label = 'Ti senti felice?'
-        self.fields['stress'].label = 'Vivi nello stress?'
-        self.fields['paure'].label = 'Hai paure o fobie?'
-        self.fields['lutti'].label = 'Hai avuto recenti lutti?'
-        self.fields['incubi'].label = 'Hai spesso incubi?'
-        self.fields['stanco'].label = 'Ti senti più stanco?'
-        self.fields['rabbia'].label = 'Ti arrabbi spesso?'
-        self.fields['sfogo'].label = 'La rabbia la sfoghi?'
-        self.fields['colpa'].label = 'Vivi nei sensi di colpa?'
-        self.fields['piangi'].label = 'Piangi spesso?'
-        self.fields['incubi'].label = 'Hai spesso incubi?'
-        self.fields['carattere1'].label = 'Sei più?'
-        self.fields['carattere2'].label =  'Sei più?'
-        self.fields['carattere3'].label =  'Sei più?'
-        self.fields['determinato'].label = 'Quanto sei determinato?'
-        self.fields['amici_dieta'].label = '?'
+        # self.fields['sicura'].label = ''
+        # self.fields['felice'].label = 'Ti senti felice?'
+        # self.fields['stress'].label = 'Vivi nello stress?'
+        # self.fields['paure'].label = 'Hai paure o fobie?'
+        # self.fields['lutti'].label = 'Hai avuto recenti lutti?'
+        # self.fields['incubi'].label = 'Hai spesso incubi?'
+        # self.fields['stanco'].label = 'Ti senti più stanco?'
+        # self.fields['rabbia'].label = 'Ti arrabbi spesso?'
+        # self.fields['sfogo'].label = 'La rabbia la sfoghi?'
+        # self.fields['colpa'].label = 'Vivi nei sensi di colpa?'
+        # self.fields['piangi'].label = 'Piangi spesso?'
+        # self.fields['incubi'].label = 'Hai spesso incubi?'
+        # self.fields['carattere1'].label = 'Sei più?'
+        # self.fields['carattere2'].label =  'Sei più?'
+        # self.fields['carattere3'].label =  'Sei più?'
+        # self.fields['determinato'].label = 'Quanto sei determinato?'
+        # self.fields['amici_dieta'].label = '?'
 
 
 
-        if sesso == 'M':
+        # if sesso == 'M':
 
-            self.fields['patologie'].queryset = PatologieClienti.objects.filter(patologia_sesso__in= ['T', 'U'])
+        #     self.fields['patologie'].queryset = PatologieClienti.objects.filter(patologia_sesso__in= ['T', 'U'])
 
 
-            self.fields['menopausa'].initial =  '0'
-            self.fields['gravidanza'].initial = '0'
-        else:
+        #     self.fields['menopausa'].initial =  '0'
+        #     self.fields['gravidanza'].initial = '0'
+        # else:
 
-            self.fields['patologie'].queryset = PatologieClienti.objects.filter(patologia_sesso__in= ['T', 'D'])
+        #     self.fields['patologie'].queryset = PatologieClienti.objects.filter(patologia_sesso__in= ['T', 'D'])
 
