@@ -272,4 +272,5 @@ def invio_ordine(request, id):
 def modulodati_mancante (request, id):
     
     
+    
     return True
