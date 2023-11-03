@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.conf import settings
 from django.utils.crypto import get_random_string
+from django.core.paginator import Paginator
 
 from datetime import datetime
 
@@ -12,10 +13,9 @@ import pdb
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
 from amministrazione.views import inviomailchiave, inviosms, inviomailallegato, inviomailchiaveallegato
 from .form import FormRateale
-from clienti.form import  FormChiave, ModuloInformazioniForm
+from clienti.form import FormChiave, ModuloInformazioniForm
 from amministrazione.creapdfordini import moduloOrdine, moduloOrdineFirmato
 # Create your views here.
-
 
 
 def sceltagruppo(request, id):
@@ -32,7 +32,7 @@ def sceltagruppo(request, id):
         cliente = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-    
+
     # se il cliente non a il modulo lo deve compilare
     if cliente['compilazione_pcu'] == False:
 
@@ -53,7 +53,6 @@ def sceltagruppo(request, id):
         elif response.status_code >= 400:
             return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
-        
         # caso nessun ordine inserito nel sistema per il cliente
         if tipo_ordine['ordini'] == 'nessuno':
             gruppi_visibili = 'primo_ordine'
@@ -67,7 +66,7 @@ def sceltagruppo(request, id):
         # caso piu ordini inseriti nel sistema per il cliente
         else:
             gruppi_visibili = 'ordine_mantenimento'
-       
+
         # se ha un beneficiario vado sui programmi kids
         if cliente['beneficiario_cognome']:
             minorenne = True
@@ -88,7 +87,7 @@ def sceltagruppo(request, id):
             listini = response.json()
         elif response.status_code >= 400:
             return redirect('erroreserver', status_code=response.status_code, text=response.text)
-        
+
         context = {'dati': listini, 'minore': minorenne}
 
         return render(request, 'ordini/scelta_gruppo.html', context)
@@ -222,10 +221,10 @@ def misure_mancanti(request):
 
 
 def invio_ordine(request, id):
-    
+
     risposta = False
     if request.method == 'POST':
-       
+
         azione = request.POST.get('azione')
         chiave = get_random_string(length=10, allowed_chars='0123456789')
         if azione == 'sms':
@@ -235,8 +234,9 @@ def invio_ordine(request, id):
         elif azione == 'email':
             # idemail invio ordine
             idemail = 1
-            percorso =moduloOrdine(request, id)
-            risposta = inviomailchiaveallegato(request, chiave,percorso, id, idemail)
+            percorso = moduloOrdine(request, id)
+            risposta = inviomailchiaveallegato(
+                request, chiave, percorso, id, idemail)
             request.session['firma_moduli_ordine'] = chiave
             print(chiave)
             # Esegui l'invio Email
@@ -258,20 +258,19 @@ def invio_ordine(request, id):
                     risposta = response.json()
                 elif response.status_code >= 400:
                     return redirect('erroreserver', status_code=response.status_code, text=response.text)
-                
+
                 if risposta['esiste']:
                     return render(request, 'ordini/email_successo.html')
                 else:
-                    return redirect('ordini:modulodati_mancante', id = id )
-                    
+                    return redirect('ordini:modulodati_mancante', id=id)
 
     form = FormChiave()
     context = {'id': id, 'inserimento': risposta, 'form': form}
     return render(request, 'ordini/invio.html', context)
 
 
-def modulodati_mancante (request, id):
-    
+def modulodati_mancante(request, id):
+
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
 
     headers = {
@@ -283,9 +282,37 @@ def modulodati_mancante (request, id):
         cliente = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-    
-    
+
     form = ModuloInformazioniForm
-    context ={'form' : form}
-    
+    context = {'form': form}
+
     return render(request, 'ordini/moduloinfo.html', context)
+
+
+def elenco_ordini(request):
+
+    id_utente = request.session['user_id']
+    url_backend = settings.BASE_URL + 'ordini/ordini_lista/' + str(id_utente)
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        ordini = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    # Imposta il numero di elementi da visualizzare per pagina
+    paginator = Paginator(ordini, 8)  # 8 elementi per pagina
+    # Ottieni il numero di pagina dalla query string
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+        'elementi': ordini,
+
+    }
+    # dataordine, cliente, programmaexit
+
+    return render(request, 'ordini/lista_ordini.html', context)
