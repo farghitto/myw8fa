@@ -392,9 +392,10 @@ def ModuloPrivacy(request,  dati):
     }
     response = requests.patch(
                     url_backend, data=data_cliente, headers=headers)
-
-    pdb.set_trace()           
+       
     if response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    
+    
     
     return percorso_completo_pdf

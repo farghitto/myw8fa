@@ -801,5 +801,11 @@ def ModuloPersonal(request, id):
     outputStream = open(percorso_completo_pdf, "wb")
     output.write(outputStream)
     outputStream.close()
+    
+    indirizzo_allegati = {
+        'file_ordine' : percorso_completo_pdf,
+        'file_privacy' : None,
+        
+    }  
 
-    return percorso_completo_pdf
+    return indirizzo_allegati

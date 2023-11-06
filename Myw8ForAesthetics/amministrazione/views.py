@@ -152,7 +152,7 @@ def inviomailallegato(request, percorso, id, idemail):
         bcc_addresses = [emailAzienda['bcc'], emailAzienda['bcc2']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
-        
+    
     if percorso['file_privacy']:
         email.attach_file(percorso['file_ordine'])
         email.attach_file(percorso['file_privacy'])

@@ -1,4 +1,5 @@
 from multiprocessing import context
+from turtle import pd
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.conf import settings
@@ -313,6 +314,7 @@ def elenco_ordini(request):
         'elementi': ordini,
 
     }
+    
     # dataordine, cliente, programmaexit
 
     return render(request, 'ordini/lista_ordini.html', context)
