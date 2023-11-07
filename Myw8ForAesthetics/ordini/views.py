@@ -312,9 +312,25 @@ def elenco_ordini(request):
     context = {
         'page_obj': page_obj,
         'elementi': ordini,
-
     }
-    
+
     # dataordine, cliente, programmaexit
 
     return render(request, 'ordini/lista_ordini.html', context)
+
+
+def info_ordine(request, id):
+
+    url_backend = settings.BASE_URL + 'ordini/ordine/' + str(id)
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        ordini = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    context = {'ordini': ordini}
+    
+    return render(request, 'ordini/informazione_ordine.html', context)

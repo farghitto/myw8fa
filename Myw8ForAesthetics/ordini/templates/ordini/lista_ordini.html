@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% load custom_filters %}
 
 
 {% block title %} Elenco Ordini {% endblock title %}
@@ -41,14 +42,15 @@
                         <p id = 'table_text_button'> {{ elemento.cliente.nome }} {{ elemento.cliente.cognome}}</p>
                     </td>
                     {% endif %}
-                    <td><p id = 'table_text_button'>{{ elemento.data_ordine}}</p></td>
+                    
                     <td><p id = 'table_text_button'>{{ elemento.pagamenti.importo}}</p></td>
                     <td><p id = 'table_text_button'>{{ elemento.pagamenti.tipo_pagamento}}</p></td>
                     <td><p id = 'table_text_button'>{{ elemento.pagamenti.stato_ordine}}</p></td>
+                    <td><p id = 'table_text_button'>{{ elemento.data_ordine|custom_date_format}}</p></td>
                   
                     <td>
                         <div class="button_conteiner">
-                            <a href="{% url 'clienti:info_cliente' elemento.id %}" id= 'button_info' class="bottone_ordine"><p id = 'ordine_text_button'> Informazioni </p></a>
+                            <a href="{% url 'ordini:info_ordine' elemento.id %}" id= 'button_info' class="bottone_ordine"><p id = 'ordine_text_button'> Informazioni </p></a>
                             
                         </div>
                     </td>
