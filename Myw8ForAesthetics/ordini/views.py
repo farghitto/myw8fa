@@ -285,8 +285,11 @@ def modulodati_mancante(request, id):
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
     form = ModuloInformazioniForm
-    context = {'form': form}
-
+    context = {
+        'form': form,
+        'cliente' : cliente
+        }
+    print(cliente)
     return render(request, 'ordini/moduloinfo.html', context)
 
 

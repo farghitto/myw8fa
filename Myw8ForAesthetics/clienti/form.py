@@ -15,6 +15,14 @@ class FormCliente(forms.Form):
                                     widget=forms.TextInput(
                                         attrs={'class': 'form-control font-custom', 'placeholder': 'citta_nascita'}),
                                     error_messages={'required': 'La città di nascita è obbligatoria.'})
+    provincia_nascita = forms.CharField(max_length=50,label='Provincia di Nascita',
+                                    widget=forms.TextInput(
+                                        attrs={'class': 'form-control font-custom', 'placeholder': 'Provincia di nascita'}),
+                                    error_messages={'required': 'Il campo Provincia di nascita è obbligatorio.'})
+    stato_nascita = forms.CharField(max_length=50,label='Stato di Nascita',
+                                    widget=forms.TextInput(
+                                        attrs={'class': 'form-control font-custom', 'placeholder': 'Stato di nascita:'}),
+                                    error_messages={'required': 'Il campo Stato di nascita è obbligatorio.'})
     data_nascita = forms.DateField(label='Data di nascita:',
                                    widget=forms.DateInput(
                                        attrs={'class': 'form-control font-custom', 'type': 'date'}),
@@ -27,10 +35,18 @@ class FormCliente(forms.Form):
                           widget=forms.NumberInput(
                               attrs={'class': 'form-control font-custom', 'placeholder': 'cap'}),
                           error_messages={'required': 'Il cap è obbligatorio.'})
-    citta = forms.CharField(max_length=100, label='Citta:',
+    citta = forms.CharField(max_length=100, label='Citta di Residenza:',
                             widget=forms.TextInput(
                                 attrs={'class': 'form-control font-custom', 'placeholder': 'citta'}),
                             error_messages={'required': 'La città è obbligatorio.'})
+    provincia = forms.CharField(max_length=50,label='Provincia di Residenza',
+                            widget=forms.TextInput(
+                                attrs={'class': 'form-control font-custom', 'placeholder': 'Provincia di Residenza:'}),
+                            error_messages={'required': 'Il campo Provincia di Residenza è obbligatorio.'})
+    stato = forms.CharField(max_length=50,label='Stato di Residenza',
+                            widget=forms.TextInput(
+                                attrs={'class': 'form-control font-custom', 'placeholder': 'Stato di Residenza:'}),
+                            error_messages={'required': 'Il campo Stato di Residenza è obbligatorio.'})
     codice_fiscale = forms.CharField(max_length=16, label='Codice fiscale:',
                                      widget=forms.TextInput(
                                          attrs={'class': 'form-control font-custom', 'placeholder': 'codice_fiscale'}),
@@ -67,6 +83,14 @@ class FormClientePiva(forms.Form):
                                     widget=forms.TextInput(
                                         attrs={'class': 'form-control font-custom', 'placeholder': 'citta_nascita'}),
                                     error_messages={'required': 'La città di nascita è obbligatoria.'})
+    provincia_nascita = forms.CharField(max_length=50,label='Provincia di Nascita',
+                                    widget=forms.TextInput(
+                                        attrs={'class': 'form-control font-custom', 'placeholder': 'Provincia di nascita'}),
+                                    error_messages={'required': 'Il campo Provincia di nascita è obbligatorio.'})
+    stato_nascita = forms.CharField(max_length=50,label='Stato di Nascita',
+                                    widget=forms.TextInput(
+                                        attrs={'class': 'form-control font-custom', 'placeholder': 'Stato di nascita:'}),
+                                    error_messages={'required': 'Il campo Stato di nascita è obbligatorio.'})
     data_nascita = forms.DateField(label='Data di nascita:',
                                    widget=forms.DateInput(
                                        attrs={'class': 'form-control font-custom', 'type': 'date'}),
@@ -79,10 +103,18 @@ class FormClientePiva(forms.Form):
                           widget=forms.NumberInput(
                               attrs={'class': 'form-control font-custom', 'placeholder': 'cap'}),
                           error_messages={'required': 'Il cap è obbligatorio.'})
-    citta = forms.CharField(max_length=100, label='Citta:',
+    citta = forms.CharField(max_length=100, label='Citta di Residenza:',
                             widget=forms.TextInput(
                                 attrs={'class': 'form-control font-custom', 'placeholder': 'citta'}),
                             error_messages={'required': 'La città è obbligatorio.'})
+    provincia = forms.CharField(max_length=50,label='Provincia di Residenza',
+                            widget=forms.TextInput(
+                                attrs={'class': 'form-control font-custom', 'placeholder': 'Provincia di Residenza:'}),
+                            error_messages={'required': 'Il campo Provincia di Residenza è obbligatorio.'})
+    stato = forms.CharField(max_length=50,label='Stato di Residenza',
+                            widget=forms.TextInput(
+                                attrs={'class': 'form-control font-custom', 'placeholder': 'Stato di Residenza:'}),
+                            error_messages={'required': 'Il campo Stato di Residenza è obbligatorio.'})
     codice_fiscale = forms.CharField(max_length=16, label='Codice fiscale:',
                                      widget=forms.TextInput(
                                          attrs={'class': 'form-control font-custom', 'placeholder': 'codice_fiscale'}),
@@ -172,6 +204,14 @@ class FormClienteMinore(forms.Form):
                                     widget=forms.TextInput(
                                         attrs={'class': 'form-control font-custom', 'placeholder': 'citta_nascita'}),
                                     error_messages={'required': 'La città di nascita è obbligatoria.'})
+    provincia_nascita = forms.CharField(max_length=50,label='Provincia di Nascita',
+                                    widget=forms.TextInput(
+                                        attrs={'class': 'form-control font-custom', 'placeholder': 'Provincia di nascita'}),
+                                    error_messages={'required': 'Il campo Provincia di nascita è obbligatorio.'})
+    stato_nascita = forms.CharField(max_length=50,label='Stato di Nascita',
+                                    widget=forms.TextInput(
+                                        attrs={'class': 'form-control font-custom', 'placeholder': 'Stato di nascita:'}),
+                                    error_messages={'required': 'Il campo Stato di nascita è obbligatorio.'})
     data_nascita = forms.DateField(label='Data di nascita:',
                                    widget=forms.DateInput(
                                        attrs={'class': 'form-control font-custom', 'type': 'date'}),
@@ -188,6 +228,14 @@ class FormClienteMinore(forms.Form):
                             widget=forms.TextInput(
                                 attrs={'class': 'form-control font-custom', 'placeholder': 'citta'}),
                             error_messages={'required': 'La città è obbligatorio.'})
+    provincia = forms.CharField(max_length=50,label='Provincia di Residenza',
+                            widget=forms.TextInput(
+                                attrs={'class': 'form-control font-custom', 'placeholder': 'Provincia di Residenza:'}),
+                            error_messages={'required': 'Il campo Provincia di Residenza è obbligatorio.'})
+    stato = forms.CharField(max_length=50,label='Stato di Residenza',
+                            widget=forms.TextInput(
+                                attrs={'class': 'form-control font-custom', 'placeholder': 'Stato di Residenza:'}),
+                            error_messages={'required': 'Il campo Stato di Residenza è obbligatorio.'})
     codice_fiscale = forms.CharField(max_length=16, label='Codice fiscale:',
                                      widget=forms.TextInput(
                                          attrs={'class': 'form-control font-custom', 'placeholder': 'codice_fiscale'}),
@@ -357,8 +405,8 @@ SCELTA = (
 
 SCELTA3 = (
 
-    (0, 'No'),
-    (1, 'Si'),
+    (0, 'Si'),
+    (1, 'No'),
     (2, 'A volte')
 )
 
@@ -506,35 +554,8 @@ PASTI = (
 class ModuloInformazioniForm(forms.Form):
 
 
-    
-    
-    provincia_nascita = forms.CharField(
-        max_length=50,
-        label='Provincia di Nascita',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Provincia di nascita'}),
-        error_messages={'required': 'Il campo Provincia di nascita è obbligatorio.'}
-    )
+       
 
-    stato_nascita = forms.CharField(
-        max_length=50,
-        label='Stato di Nascita',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Stato di nascita:'}),
-        error_messages={'required': 'Il campo Stato di nascita è obbligatorio.'}
-    )
-
-    provincia = forms.CharField(
-        max_length=50,
-        label='Provincia di Residenza',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Provincia di Residenza:'}),
-        error_messages={'required': 'Il campo Provincia di Residenza è obbligatorio.'}
-    )
-
-    stato = forms.CharField(
-        max_length=50,
-        label='Stato di Residenza',
-        widget=forms.TextInput(attrs={'class': 'form-control font-custom', 'placeholder': 'Stato di Residenza:'}),
-        error_messages={'required': 'Il campo Stato di Residenza è obbligatorio.'}
-    )
 
     professione = forms.CharField(
         max_length=50,
@@ -546,7 +567,7 @@ class ModuloInformazioniForm(forms.Form):
     stato_civile = forms.ChoiceField(
         choices= CIVILE,
         label='Stato Civile',
-        widget=forms.Select(attrs={'class': 'form-select font-custom', 'placeholder': 'Stato civile:'}),
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom', 'placeholder': 'Stato civile:', 'id': 'rabbia_id'}),
         initial=None,
         error_messages={'required': 'Il campo Stato civile è obbligatorio.'}
     )

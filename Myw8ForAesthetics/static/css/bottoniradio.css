@@ -1,0 +1,116 @@
+:root {
+    --primary: #d7d4de;
+    --secondary: #83719c;
+  }
+
+
+  /*Hide inputs */
+  .form-check-input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  } 
+ 
+  /* Styles */
+  .labelradio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Baskerville',cursive;
+    padding: 0.5rem 1rem 0.5rem 2rem;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.25, 0.25, 0.5, 1.9);
+    &::before {
+      content: "";
+      position: absolute;
+      
+      background: transparent;
+  
+      z-index: -1;
+      transition: all 0.25s cubic-bezier(0.25, 0.25, 0.5, 1.9);
+      input[type="radio"] + & {
+        border-radius: 1rem;
+      }
+    }
+  }
+  /* Checked */
+  input:checked + label {
+    padding-left: 1em;
+    color: var(--secondary);
+    &::before {
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+      border: 0;
+      box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .margingruop
+  {
+    margin: 0.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-check {
+   
+    min-height: 1.5rem;
+    padding-left: 0.3em;
+    margin-bottom: 0.125rem;
+}
+
+.form-check-inline {
+  display: inline-block;
+  margin: 0;
+
+}
+
+.grid_programma {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Due colonne con larghezza flessibile */
+  gap: 1rem; /* Spazio tra le celle */
+ 
+  margin: 0 auto; /* Centra il form orizzontalmente */
+  margin-top: 1%;
+}
+
+.bottone_viola_info
+{
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+  background-color: #d7d4de;
+  text-align: center;
+  padding: 4px;
+  vertical-align: middle;
+}
+
+.bottone_viola_info:hover,
+.bottone_viola_info:focus,
+.bottone_viola_info:active{
+  outline: none;
+  border: 0.1rem solid #83719c;
+  border-radius: 1rem;
+  background-color: #d7d4de;
+}
+
+.info_text_button
+{
+  font-size: 1.2rem;
+  font-family: 'Baskerville',cursive;
+  text-align: center;
+  color: #83719c;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Due colonne con larghezza flessibile */
+  gap: 1rem; /* Spazio tra le celle */
+ 
+  margin: 0 auto; /* Centra il form orizzontalmente */
+  margin-top: 1%;
+}

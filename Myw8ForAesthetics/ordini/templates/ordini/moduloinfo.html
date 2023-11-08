@@ -3,6 +3,7 @@
 {% load widget_tweaks %}
 
 
+
 {% block title %} Modulo Informazioni {% endblock title %}
 {% block header %}
 <div id="text_header_rect" class = 'purple_rect'>
@@ -13,6 +14,8 @@
 {% endblock header%}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/stileordini.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bottoniradio.css' %}" />
+   
     
 {% endblock css %}
 {% block scriptlibrerie %}
@@ -22,61 +25,85 @@
 {% block content %}
 
 <div class = container_griglia>
+
+  <div class ='grid_programma'>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Cliente </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Codice Fiscale </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Indirizzo </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Citta di residenza </p></div>
     
-    <div class="form-group">
-        <label class="font-custom" >{{ form.rabbia.label_tag }}</label>
-            {% for radio in form.rabbia %}
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="{{ form.rabbia.name }}" id ={{radio.id_for_label}} {% if forloop.first %}checked{% endif %}>
-              <label class="form-check-label" for = {{radio.id_for_label}}>
+    {% if beneficiario_cognome%}
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.beneficiario_cognome}} {{cliente.beneficiario_nome}} </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.beneficiario_codice_fiscale}} </p></div>
+    {% else %}
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.cognome}} {{cliente.nome}} </p></div>
+      <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.codice_fiscale}} </p></div>
+    {% endif %}
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.indirizzo}} {{cliente.numero_civico|default_if_none:""}} </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.citta}} ({{cliente.provincia_residenza}}), {{cliente.stato_residenza}} </p></div>
+    
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Data di nascita </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Citta di nascita </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Cellulare </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> Email </p></div>
+    
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.data_nascita}}</p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.citta_nascita}} ({{cliente.provincia_nascita}}), {{cliente.stato_nascita}} </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.cellulare}} </p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.email}}</p></div>
+</div>
+
+<div class="form-container">
+  <form  method="post" novalidate>{% csrf_token %}
+    <div class="grid-form">
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.professione.errors %}
+            {% render_field form.professione class="form-control is-invalid" %}
+            {% for error in form.professione.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.professione class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.professione class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.professione.id_for_label }}">{{ form.professione.label_tag }}</label>
+      </div>
+
+      <div class="form-group margingruop">
+        <label class="font-custom " >{{ form.stato_civile.label_tag }}</label>
+        <div>
+          {% for radio in form.stato_civile %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.stato_civile.name }}" id ={{radio.id_for_label}} {% comment %} {% if forloop.first %}checked{% endif %} {% endcomment %}>
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
             </div>
-            {% endfor %}
-         
-      
-        {% if form.rabbia.errors %}
-          <div class="invalid-feedback">
-            {{ form.rabbia.errors.0 }}
-          </div>
-        {% endif %}
+          {% endfor %}
+          {% if form.stato_civile.errors %}
+            <div class="invalid-feedback">
+              {{ form.stato_civile.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
 
-        <div class="form-group">
-            <label  class="font-custom">{{ form.figli.label_tag }}</label>
-                {% for radio in form.figli %}
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="{{ form.figli.name }}" id ={{radio.id_for_label}}>
-                  <label class="form-check-label" for = {{radio.id_for_label}}>
-                    {{ radio.choice_label }}
-                  </label>
-                </div>
-                {% endfor %}
-             
-          
-            {% if form.rabbia.errors %}
-              <div class="invalid-feedback">
-                {{ form.rabbia.errors.0 }}
-              </div>
-            {% endif %}
+ 
 
-        <div class="form-floating mb-3">
-            {% if form.is_bound %}
-              {% if form.sicura.errors %}
-                {% render_field form.sicura class="form-control is-invalid" %}
-                {% for error in form.sicura.errors  %}
-                  <div class="invalid-feedback">
-                    {{ error }}
-                  </div>
-                {% endfor %}
-              {% else %}
-                  {% render_field form.sicura class="form-control is-valid" %}
-              {% endif %}
-            {% else %}
-                {% render_field form.sicura class="form-control" %}
-            {% endif %}
-            <label class="font-custom" for="{{ form.sicura.id_for_label }}">{{ form.sicura.label_tag }}</label>
-          </div>
+    </div>
+  </form>
 </div>
+
+
+
+          
+
 {% endblock %}
 {% block script %}
    

@@ -1,6 +1,6 @@
 .grid-form {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Due colonne con larghezza flessibile */
+    grid-template-columns: repeat(4, 1fr); /* Due colonne con larghezza flessibile */
     gap: 1rem; /* Spazio tra le celle */
    
     margin: 0 auto; /* Centra il form orizzontalmente */

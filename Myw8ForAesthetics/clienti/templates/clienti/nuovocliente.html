@@ -61,24 +61,6 @@
 
       <div class="form-floating mb-3">
         {% if form.is_bound %}
-          {% if form.citta_nascita.errors %}
-            {% render_field form.citta_nascita class="form-control is-invalid" %}
-            {% for error in form.citta_nascita.errors  %}
-              <div class="invalid-feedback">
-                {{ error }}
-              </div>
-            {% endfor %}
-          {% else %}
-              {% render_field form.citta_nascita class="form-control is-valid" %}
-          {% endif %}
-        {% else %}
-            {% render_field form.citta_nascita class="form-control" %}
-        {% endif %}
-        <label class="font-custom" for="{{ form.citta_nascita.id_for_label }}">{{ form.citta_nascita.label_tag }}</label>
-      </div>
-
-      <div class="form-floating mb-3">
-        {% if form.is_bound %}
           {% if form.data_nascita.errors %}
             {% render_field form.data_nascita class="form-control is-invalid" %}
             {% for error in form.data_nascita.errors  %}
@@ -111,6 +93,60 @@
             {% render_field form.sesso class="form-control" %}
         {% endif %}
         <label class="font-custom" for="{{ form.sesso.id_for_label }}">{{ form.sesso.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.citta_nascita.errors %}
+            {% render_field form.citta_nascita class="form-control is-invalid" %}
+            {% for error in form.citta_nascita.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.citta_nascita class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.citta_nascita class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.citta_nascita.id_for_label }}">{{ form.citta_nascita.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.provincia_nascita.errors %}
+            {% render_field form.provincia_nascita class="form-control is-invalid" %}
+            {% for error in form.provincia_nascita.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.provincia_nascita class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.provincia_nascita class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.provincia_nascita.id_for_label }}">{{ form.provincia_nascita.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.stato_nascita.errors %}
+            {% render_field form.stato_nascita class="form-control is-invalid" %}
+            {% for error in form.stato_nascita.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.stato_nascita class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.stato_nascita class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.stato_nascita.id_for_label }}">{{ form.stato_nascita.label_tag }}</label>
       </div>
 
       <div class="form-floating mb-3">
@@ -151,6 +187,60 @@
 
       <div class="form-floating mb-3">
         {% if form.is_bound %}
+          {% if form.citta.errors %}
+            {% render_field form.citta class="form-control is-invalid" %}
+            {% for error in form.citta.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.citta class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.citta class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.citta.id_for_label }}">{{ form.citta.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.provincia.errors %}
+            {% render_field form.provincia class="form-control is-invalid" %}
+            {% for error in form.provincia.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.provincia class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.provincia class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.provincia.id_for_label }}">{{ form.provincia.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
+          {% if form.stato.errors %}
+            {% render_field form.stato class="form-control is-invalid" %}
+            {% for error in form.stato.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.stato class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.stato class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.stato.id_for_label }}">{{ form.stato.label_tag }}</label>
+      </div> 
+      
+      <div class="form-floating mb-3">
+        {% if form.is_bound %}
           {% if form.cap.errors %}
             {% render_field form.cap class="form-control is-invalid" %}
             {% for error in form.cap.errors  %}
@@ -166,24 +256,6 @@
         {% endif %}
         <label class="font-custom" for="{{ form.cap.id_for_label }}">{{ form.cap.label_tag }}</label>
       </div>
-
-      <div class="form-floating mb-3">
-        {% if form.is_bound %}
-          {% if form.citta.errors %}
-            {% render_field form.citta class="form-control is-invalid" %}
-            {% for error in form.citta.errors  %}
-              <div class="invalid-feedback">
-                {{ error }}
-              </div>
-            {% endfor %}
-          {% else %}
-              {% render_field form.citta class="form-control is-valid" %}
-          {% endif %}
-        {% else %}
-            {% render_field form.citta class="form-control" %}
-        {% endif %}
-        <label class="font-custom" for="{{ form.citta.id_for_label }}">{{ form.citta.label_tag }}</label>
-      </div>   
 
       <div class="form-floating mb-3">
       
