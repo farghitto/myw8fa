@@ -284,11 +284,12 @@ def modulodati_mancante(request, id):
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
-    form = ModuloInformazioniForm
+    form = ModuloInformazioniForm(initial={
+                                  'altezza': cliente['altezza'], 'peso_desiderato': cliente['peso_desiderato']})
     context = {
         'form': form,
-        'cliente' : cliente
-        }
+        'cliente': cliente
+    }
     print(cliente)
     return render(request, 'ordini/moduloinfo.html', context)
 
@@ -335,5 +336,5 @@ def info_ordine(request, id):
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
     context = {'ordini': ordini}
-    
+
     return render(request, 'ordini/informazione_ordine.html', context)

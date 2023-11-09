@@ -38,11 +38,14 @@
   input:checked + label {
     padding-left: 1em;
     color: var(--secondary);
+    border: 0.1rem solid #83719c;
+    border-radius: 1rem;
     &::before {
       width: 100%;
       height: 100%;
       background: var(--primary);
       border: 0;
+      border-radius: 1rem;
       box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
     }
   }

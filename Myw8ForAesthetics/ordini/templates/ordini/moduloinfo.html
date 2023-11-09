@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
-
+{% load custom_filters %}
 
 
 {% block title %} Modulo Informazioni {% endblock title %}
@@ -24,7 +24,7 @@
 
 {% block content %}
 
-<div class = container_griglia>
+<div class = 'container_griglia m-5' >
 
   <div class ='grid_programma'>
     <div  class="bottone_viola_info"><p class = 'info_text_button'> Cliente </p></div>
@@ -47,7 +47,7 @@
     <div  class="bottone_viola_info"><p class = 'info_text_button'> Cellulare </p></div>
     <div  class="bottone_viola_info"><p class = 'info_text_button'> Email </p></div>
     
-    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.data_nascita}}</p></div>
+    <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.data_nascita|formato_data}}</p></div>
     <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.citta_nascita}} ({{cliente.provincia_nascita}}), {{cliente.stato_nascita}} </p></div>
     <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.cellulare}} </p></div>
     <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.email}}</p></div>
@@ -75,12 +75,12 @@
         <label class="font-custom" for="{{ form.professione.id_for_label }}">{{ form.professione.label_tag }}</label>
       </div>
 
-      <div class="form-group margingruop">
+      <div class="form-group margingruop ">
         <label class="font-custom " >{{ form.stato_civile.label_tag }}</label>
         <div>
           {% for radio in form.stato_civile %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.stato_civile.name }}" id ={{radio.id_for_label}} {% comment %} {% if forloop.first %}checked{% endif %} {% endcomment %}>
+              <input class="form-check-input" type="radio" name="{{ form.stato_civile.name }}" id ="{{radio.id_for_label}}">
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -94,7 +94,214 @@
         </div>
       </div>
 
- 
+      <div class="form-group margingruop">
+        <label class="font-custom " >{{ form.maggiorenne.label_tag }}</label>
+        <div>
+          {% for radio in form.maggiorenne %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.maggiorenne.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.maggiorenne.errors %}
+            <div class="invalid-feedback">
+              {{ form.maggiorenne.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+       
+      </div> 
+
+      {% comment %} fine riga {% endcomment %}
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.altezza.errors %}
+            {% render_field form.altezza class="form-control is-invalid" %}
+            {% for error in form.altezza.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.altezza class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.altezza class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.altezza.id_for_label }}">{{ form.altezza.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.peso_attuale.errors %}
+            {% render_field form.peso_attuale class="form-control is-invalid" %}
+            {% for error in form.peso_attuale.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.peso_attuale class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.peso_attuale class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.peso_attuale.id_for_label }}">{{ form.peso_attuale.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.bmi.errors %}
+            {% render_field form.bmi class="form-control is-invalid" %}
+            {% for error in form.bmi.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.bmi class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.bmi class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.bmi.id_for_label }}">{{ form.bmi.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+       
+      </div> 
+
+      {% comment %} fine riga {% endcomment %}
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.stato_attuale.errors %}
+            {% render_field form.stato_attuale class="form-control is-invalid" %}
+            {% for error in form.stato_attuale.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.stato_attuale class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.stato_attuale class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.stato_attuale.id_for_label }}">{{ form.stato_attuale.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.peso_ottimale.errors %}
+            {% render_field form.peso_ottimale class="form-control is-invalid" %}
+            {% for error in form.peso_ottimale.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.peso_ottimale class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.peso_ottimale class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.peso_ottimale.id_for_label }}">{{ form.peso_ottimale.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.scostamento_peso.errors %}
+            {% render_field form.scostamento_peso class="form-control is-invalid" %}
+            {% for error in form.scostamento_peso.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.scostamento_peso class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.scostamento_peso class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.scostamento_peso.id_for_label }}">{{ form.scostamento_peso.label_tag }}</label>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.peso_desiderato.errors %}
+            {% render_field form.peso_desiderato class="form-control is-invalid" %}
+            {% for error in form.peso_desiderato.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.peso_desiderato class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field form.peso_desiderato class="form-control" %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.peso_desiderato.id_for_label }}">{{ form.peso_desiderato.label_tag }}</label>
+      </div>
+
+      {% comment %} fine riga {% endcomment %}
+      <div class="form-floating mt-2 mb-2">
+       
+      </div> 
+
+      <div class="form-floating mt-2 mb-2" style="text-align:center">
+        {% if cliente.sesso == 'F'%}
+          <img src="/static/static_file/corpo_donna.jpg" alt="Girl in a jacket" size = "100%">
+        {% else %}
+          <img src="/static/static_file/corpo_uomo.jpg"  alt="Girl in a jacket" size = "100%">
+        {% endif %}
+      </div> 
+
+      <div class="form-group margingruop ">
+        <label class="font-custom " >{{ form.struttura_fisica.label_tag }}</label>
+        <div>
+          {% for radio in form.struttura_fisica %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.struttura_fisica.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.struttura_fisica.errors %}
+            <div class="invalid-feedback">
+              {{ form.struttura_fisica.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group margingruop ">
+        <label class="font-custom " >{{ form.struttura_desiderata.label_tag }}</label>
+        <div>
+          {% for radio in form.struttura_desiderata %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.struttura_desiderata.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.struttura_desiderata.errors %}
+            <div class="invalid-feedback">
+              {{ form.struttura_desiderata.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+       {% comment %} fine riga {% endcomment %}
 
     </div>
   </form>
@@ -106,6 +313,64 @@
 
 {% endblock %}
 {% block script %}
-   
+<script>
+  $(document).ready(function(){
+
+    $("#id_peso_attuale").focusout(calc);
+
+    function calc() {
+
+      if (($("#id_peso_attuale").val() != '') && ($("#id_altezza").val() != ''))
+      {
+          peso = $("#id_peso_attuale").val().replace(',','.')
+          altezza = $("#id_altezza").val().replace(',','.')
+          peso = parseFloat(peso)
+          altezza = parseFloat(altezza)
+
+          bmiox = (1.3*peso)/(Math.pow((altezza/100), 2.5))
+          debugger;
+          sesso = '{{cliente.sesso}}'
+          if(sesso == 'M')
+          {
+              bmi_ottimale = 24.9
+          }
+          else
+          {
+              bmi_ottimale = 23.8
+          }
+         peso_ottimale = bmi_ottimale * (Math.pow(altezza/100, 2)) 
+
+          $('#id_bmi').val(bmiox.toFixed(2));
+          $('#id_peso_ottimale').val(peso_ottimale.toFixed(2));
+          $('#id_scostamento_peso').val((peso - peso_ottimale).toFixed(2)); 
+
+          var data = {
+              "sesso": sesso,
+              "bmi": bmiox.toFixed(2),
+              };
+
+          $.ajax({
+
+              type: 'GET',
+              url: "{% url 'amministrazione:ajax_calcola_stato' %}",
+              data: data,
+
+              success: function (data) {
+
+
+                  $('#id_stato_attuale').val(data.data);
+
+              },
+              error: function (data){
+
+              
+              } 
+            });
+          
+      }
+
+    };
+  })
+</script>
 
 {% endblock script %}
