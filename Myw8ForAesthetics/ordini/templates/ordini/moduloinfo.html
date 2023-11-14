@@ -53,7 +53,7 @@
     <div  class="bottone_viola_info"><p class = 'info_text_button'> {{cliente.email}}</p></div>
 </div>
 
-<div class="form-container">
+<div class="form-container" style = 'margin-bottom:  15%'>
   <form  method="post" novalidate>{% csrf_token %}
     <div class="grid-form">
 
@@ -303,6 +303,63 @@
 
        {% comment %} fine riga {% endcomment %}
 
+       <div class="form-group margingruop">
+        <label class="font-custom " >{{ form.pressione_arteriosa.label_tag }}</label>
+        <div>
+          {% for radio in form.pressione_arteriosa %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.pressione_arteriosa.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.pressione_arteriosa.errors %}
+            <div class="invalid-feedback">
+              {{ form.pressione_arteriosa.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group margingruop">
+        <label class="font-custom " >{{ form.diabete.label_tag }}</label>
+        <div>
+          {% for radio in form.diabete %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.diabete.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.diabete.errors %}
+            <div class="invalid-feedback">
+              {{ form.diabete.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group margingruop">
+        <label class="font-custom " >{{ form.tipo_diabete.label_tag }}</label>
+        <div>
+          {% for radio in form.tipo_diabete %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.tipo_diabete.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.tipo_diabete.errors %}
+            <div class="invalid-feedback">
+              {{ form.tipo_diabete.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
     </div>
   </form>
 </div>
@@ -317,59 +374,68 @@
   $(document).ready(function(){
 
     $("#id_peso_attuale").focusout(calc);
-
+    $("#id_diabete_0").change(attiva_diabete);
+    
     function calc() {
 
       if (($("#id_peso_attuale").val() != '') && ($("#id_altezza").val() != ''))
       {
-          peso = $("#id_peso_attuale").val().replace(',','.')
-          altezza = $("#id_altezza").val().replace(',','.')
-          peso = parseFloat(peso)
-          altezza = parseFloat(altezza)
+        peso = $("#id_peso_attuale").val().replace(',','.')
+        altezza = $("#id_altezza").val().replace(',','.')
+        peso = parseFloat(peso)
+        altezza = parseFloat(altezza)
+        bmiox = (1.3*peso)/(Math.pow((altezza/100), 2.5))
+        debugger;
+        sesso = '{{cliente.sesso}}'
+        if(sesso == 'M')
+        {
+            bmi_ottimale = 24.9
+        }
+        else
+        {
+            bmi_ottimale = 23.8
+        }
+        peso_ottimale = bmi_ottimale * (Math.pow(altezza/100, 2)) 
 
-          bmiox = (1.3*peso)/(Math.pow((altezza/100), 2.5))
-          debugger;
-          sesso = '{{cliente.sesso}}'
-          if(sesso == 'M')
-          {
-              bmi_ottimale = 24.9
-          }
-          else
-          {
-              bmi_ottimale = 23.8
-          }
-         peso_ottimale = bmi_ottimale * (Math.pow(altezza/100, 2)) 
+        $('#id_bmi').val(bmiox.toFixed(2));
+        $('#id_peso_ottimale').val(peso_ottimale.toFixed(2));
+        $('#id_scostamento_peso').val((peso - peso_ottimale).toFixed(2)); 
 
-          $('#id_bmi').val(bmiox.toFixed(2));
-          $('#id_peso_ottimale').val(peso_ottimale.toFixed(2));
-          $('#id_scostamento_peso').val((peso - peso_ottimale).toFixed(2)); 
+        var data = {
+            "sesso": sesso,
+            "bmi": bmiox.toFixed(2),
+            };
 
-          var data = {
-              "sesso": sesso,
-              "bmi": bmiox.toFixed(2),
-              };
+        $.ajax({
 
-          $.ajax({
+            type: 'GET',
+            url: "{% url 'amministrazione:ajax_calcola_stato' %}",
+            data: data,
 
-              type: 'GET',
-              url: "{% url 'amministrazione:ajax_calcola_stato' %}",
-              data: data,
+            success: function (data) {
 
-              success: function (data) {
+                $('#id_stato_attuale').val(data.data);
+            },
+            error: function (data){            
+            } 
+        });          
+      }
+    };
 
+    function attiva_diabete() {
+      debugger;
 
-                  $('#id_stato_attuale').val(data.data);
-
-              },
-              error: function (data){
-
-              
-              } 
-            });
-          
+      if (($("#id_diabete").val() == '1'))
+      {
+          $('#id_tipo_diabete').prop('disabled', false);
+      }
+      else
+      {
+          $('#id_tipo_diabete').prop('disabled', true);
+          $('#id_tipo_diabete').val('');
       }
 
-    };
+  };
   })
 </script>
 

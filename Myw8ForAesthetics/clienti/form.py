@@ -659,7 +659,7 @@ class ModuloInformazioniForm(forms.Form):
     pressione_arteriosa = forms.ChoiceField(
         choices=PRESSIONE,
         label='Pressione Arteriosa',
-        widget=forms.Select(
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Pressione Arteriosa:'}),
         initial=None,
         error_messages={
@@ -668,8 +668,8 @@ class ModuloInformazioniForm(forms.Form):
 
     diabete = forms.ChoiceField(
         choices=SCELTA,
-        label='Diabete',
-        widget=forms.Select(
+        label='Soffri di diabete?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Soffri di diabete?'}),
         initial=None,
         error_messages={'required': 'Il campo Diabete è obbligatorio.'}
@@ -679,7 +679,7 @@ class ModuloInformazioniForm(forms.Form):
         choices=SCELTADIABETE,
         required=False,
         label='Tipo Diabete',
-        widget=forms.Select(
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Che tipo diabete:'}),
         initial=None
     )
