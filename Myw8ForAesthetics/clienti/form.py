@@ -637,7 +637,7 @@ class ModuloInformazioniForm(forms.Form):
 
     struttura_fisica = forms.ChoiceField(
         choices=FISICO,
-        label='Struttura Fisica',
+        label='In quale struttura fisica ti riconosci?',
         widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
                                         'placeholder': 'In quale struttura fisica ti riconosci?'}),
         initial=None,
@@ -648,7 +648,7 @@ class ModuloInformazioniForm(forms.Form):
 
     struttura_desiderata = forms.ChoiceField(
         choices=FISICO,
-        label='Struttura Desiderata',
+        label='Quale struttura ti piacerebbe avere?',
         widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
                                         'placeholder': 'Quale struttura ti piacerebbe avere?'}),
         initial=None,
@@ -658,7 +658,7 @@ class ModuloInformazioniForm(forms.Form):
 
     pressione_arteriosa = forms.ChoiceField(
         choices=PRESSIONE,
-        label='Pressione Arteriosa',
+        label='Pressione Arteriosa:',
         widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Pressione Arteriosa:'}),
         initial=None,
@@ -678,7 +678,7 @@ class ModuloInformazioniForm(forms.Form):
     tipo_diabete = forms.ChoiceField(
         choices=SCELTADIABETE,
         required=False,
-        label='Tipo Diabete',
+        label='Che tipo diabete:',
         widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Che tipo diabete:'}),
         initial=None
@@ -686,8 +686,8 @@ class ModuloInformazioniForm(forms.Form):
 
     menopausa = forms.ChoiceField(
         choices=SCELTA,
-        label='Menopausa',
-        widget=forms.Select(
+        label='Sei in menopausa?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Sei in menopausa?'}),
         initial=None,
         required=False
@@ -695,8 +695,8 @@ class ModuloInformazioniForm(forms.Form):
 
     gravidanza = forms.ChoiceField(
         choices=SCELTA,
-        label='Gravidanza',
-        widget=forms.Select(attrs={'class': 'form-control font-custom',
+        label='Hai una gravidanza in corso?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
                             'placeholder': 'Hai una gravidanza in corso?'}),
         initial=None,
         required=False
@@ -704,8 +704,8 @@ class ModuloInformazioniForm(forms.Form):
 
     mesi_gravidanza = forms.ChoiceField(
         choices=MESIGRAVIDANZA,
-        label='Mesi di Gravidanza',
-        widget=forms.Select(
+        label='In che mese sei?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'In che mese sei?'}),
         initial=None,
         required=False
@@ -713,8 +713,8 @@ class ModuloInformazioniForm(forms.Form):
 
     rapporto_corpo = forms.ChoiceField(
         choices=SCELTA3,
-        label='Rapporto Corpo',
-        widget=forms.Select(attrs={'class': 'form-control font-custom',
+        label='Hai un buon rapporto con il tuo corpo?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
                             'placeholder': 'Hai un buon rapporto con il tuo corpo?'}),
         initial=None,
         error_messages={'required': 'Il campo Rapporto corpo è obbligatorio.'}
@@ -722,8 +722,8 @@ class ModuloInformazioniForm(forms.Form):
 
     droghe = forms.ChoiceField(
         choices=SCELTA,
-        label='Droghe',
-        widget=forms.Select(
+        label='Fai uso di droghe?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Fai uso di droghe?'}),
         initial=None,
         error_messages={'required': 'Il campo uso di droghe è obbligatorio.'}
@@ -731,8 +731,8 @@ class ModuloInformazioniForm(forms.Form):
 
     allergie = forms.ChoiceField(
         choices=SCELTA,
-        label='Allergie',
-        widget=forms.Select(
+        label='Soffri di allergie?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Soffri di allergie?'}),
         initial=None,
         error_messages={'required': 'Il campo allergie è obbligatorio.'}
@@ -740,7 +740,7 @@ class ModuloInformazioniForm(forms.Form):
 
     allergie_elenco = forms.CharField(
         max_length=300,
-        label='Elenco Allergie',
+        label='Quali?',
         widget=forms.Textarea(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Quali?'}),
         required=False
@@ -748,8 +748,8 @@ class ModuloInformazioniForm(forms.Form):
 
     farmaci = forms.ChoiceField(
         choices=SCELTA,
-        label='Farmaci',
-        widget=forms.Select(
+        label='Assumi farmaci?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Assumi farmaci?'}),
         initial=None,
         error_messages={'required': 'Il campo farmaci è obbligatorio.'}
@@ -757,7 +757,7 @@ class ModuloInformazioniForm(forms.Form):
 
     farmaci_elenco = forms.CharField(
         max_length=100,
-        label='Elenco Farmaci',
+        label='Quali?',
         widget=forms.Textarea(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Quali?'}),
         required=False
@@ -766,7 +766,7 @@ class ModuloInformazioniForm(forms.Form):
     sport = forms.ChoiceField(
         choices=SCELTA,
         label='Sport',
-        widget=forms.Select(
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Pratichi sport?'}),
         initial=None,
         error_messages={'required': 'Il campo sport è obbligatorio.'}
@@ -774,7 +774,7 @@ class ModuloInformazioniForm(forms.Form):
 
     sport_praticato = forms.CharField(
         max_length=30,
-        label='Sport Praticato',
+        label='Quali?',
         widget=forms.Textarea(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Quali?'}),
         required=False
@@ -783,7 +783,7 @@ class ModuloInformazioniForm(forms.Form):
     sport_praticato_giorni = forms.ChoiceField(
         choices=GIORNI,
         label='Giorni di Sport Praticato',
-        widget=forms.Select(attrs={'class': 'form-control font-custom',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
                             'placeholder': 'Quante volte alla settimana?'}),
         required=False
     )

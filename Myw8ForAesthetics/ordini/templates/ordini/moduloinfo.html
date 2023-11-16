@@ -263,7 +263,7 @@
         {% endif %}
       </div> 
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop centro_griglia">
         <label class="font-custom " >{{ form.struttura_fisica.label_tag }}</label>
         <div>
           {% for radio in form.struttura_fisica %}
@@ -282,7 +282,7 @@
         </div>
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop centro_griglia">
         <label class="font-custom " >{{ form.struttura_desiderata.label_tag }}</label>
         <div>
           {% for radio in form.struttura_desiderata %}
@@ -346,7 +346,7 @@
         <div>
           {% for radio in form.tipo_diabete %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.tipo_diabete.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.tipo_diabete.name }}" id ="{{radio.id_for_label}}" disabled >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -359,6 +359,245 @@
           {% endif %}
         </div>
       </div>
+
+      <div class="form-group margingruop ">
+        <label class="font-custom " >{{ form.rapporto_corpo.label_tag }}</label>
+        <div>
+          {% for radio in form.rapporto_corpo %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.rapporto_corpo.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.rapporto_corpo.errors %}
+            <div class="invalid-feedback">
+              {{ form.rapporto_corpo.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+       {% comment %} fine riga {% endcomment %}
+
+       <div class="form-group margingruop centro_griglia">
+        <label class="font-custom " >{{ form.droghe.label_tag }}</label>
+        <div >
+          {% for radio in form.droghe %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.droghe.name }}" id ="{{radio.id_for_label}}" >
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.droghe.errors %}
+            <div class="invalid-feedback">
+              {{ form.droghe.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+       {% if cliente.sesso == 'M' %}
+       <div class="form-group margingruop centro_griglia">
+        <label class="font-custom " >{{ form.menopausa.label_tag }}</label>
+        <div>
+          {% for radio in form.menopausa %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.menopausa.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.menopausa.errors %}
+            <div class="invalid-feedback">
+              {{ form.menopausa.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group margingruop centro_griglia">
+        <label class="font-custom " >{{ form.gravidanza.label_tag }}</label>
+        <div>
+          {% for radio in form.gravidanza %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.gravidanza.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.gravidanza.errors %}
+            <div class="invalid-feedback">
+              {{ form.gravidanza.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group margingruop centro_griglia">
+        <label class="font-custom " >{{ form.mesi_gravidanza.label_tag }}</label>
+        <div class= 'grid_gravidanza'>
+          {% for radio in form.mesi_gravidanza %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.mesi_gravidanza.name }}" id ="{{radio.id_for_label}}" disabled >
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.mesi_gravidanza.errors %}
+            <div class="invalid-feedback">
+              {{ form.mesi_gravidanza.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      
+      {% comment %} fine riga {% endcomment %}
+        
+      <div class="form-group margingruop ">
+        <label class="font-custom " >{{ form.allergie.label_tag }}</label>
+        <div>
+          {% for radio in form.allergie %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.allergie.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.allergie.errors %}
+            <div class="invalid-feedback">
+              {{ form.allergie.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.allergie_elenco.errors %}
+            {% render_field form.allergie_elenco|attr:"disabled" class="form-control is-invalid"  %}
+            {% for error in form.allergie_elenco.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.allergie_elenco|attr:"disabled" class="form-control is-valid"  %}
+          {% endif %}
+        {% else %}
+            {% render_field form.allergie_elenco|attr:"disabled" class="form-control"  %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.allergie_elenco.id_for_label }}">{{ form.allergie_elenco.label_tag }}</label>
+      </div>
+
+      <div class="form-group margingruop ">
+        <label class="font-custom " >{{ form.farmaci.label_tag }}</label>
+        <div>
+          {% for radio in form.farmaci %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.farmaci.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.farmaci.errors %}
+            <div class="invalid-feedback">
+              {{ form.farmaci.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+        {% if form.is_bound %}
+          {% if form.farmaci_elenco.errors %}
+            {% render_field form.farmaci_elenco|attr:"disabled" class="form-control is-invalid"  %}
+            {% for error in form.farmaci_elenco.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.farmaci_elenco|attr:"disabled" class="form-control is-valid"  %}
+          {% endif %}
+        {% else %}
+            {% render_field form.farmaci_elenco|attr:"disabled" class="form-control"  %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.farmaci_elenco.id_for_label }}">{{ form.farmaci_elenco.label_tag }}</label>
+      </div>
+
+      {% comment %} fine riga {% endcomment %}
+
+      <div class="form-group margingruop ">
+        <label class="font-custom " >{{ form.sport.label_tag }}</label>
+        <div>
+          {% for radio in form.sport %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.sport.name }}" id ="{{radio.id_for_label}}">
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.sport.errors %}
+            <div class="invalid-feedback">
+              {{ form.sport.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-floating mt-2 mb-2 centro_griglia">
+        {% if form.is_bound %}
+          {% if form.sport_praticato.errors %}
+            {% render_field form.sport_praticato|attr:"disabled" class="form-control is-invalid"  %}
+            {% for error in form.sport_praticato.errors  %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+              {% render_field form.sport_praticato|attr:"disabled" class="form-control is-valid"  %}
+          {% endif %}
+        {% else %}
+            {% render_field form.sport_praticato|attr:"disabled" class="form-control"  %}
+        {% endif %}
+        <label class="font-custom" for="{{ form.sport_praticato.id_for_label }}">{{ form.sport_praticato.label_tag }}</label>
+      </div>
+
+      <div class="form-group margingruop centro_griglia">
+        <label class="font-custom " >{{ form.sport_praticato_giorni.label_tag }}</label>
+        <div class = grid_sport>
+          {% for radio in form.sport_praticato_giorni %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.sport_praticato_giorni.name }}" id ="{{radio.id_for_label}}" disabled>
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.sport_praticato_giorni.errors %}
+            <div class="invalid-feedback">
+              {{ form.sport_praticato_giorni.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-floating mt-2 mb-2">
+       
+      </div> 
+      {% comment %} fine riga {% endcomment %}
 
     </div>
   </form>
@@ -374,7 +613,85 @@
   $(document).ready(function(){
 
     $("#id_peso_attuale").focusout(calc);
-    $("#id_diabete_0").change(attiva_diabete);
+    $("#id_diabete_0").change(function () {
+      // Verifica se il pulsante radio è selezionato
+        if ($(this).prop('checked')) {
+          // L'azione che desideri eseguire quando il pulsante radio è selezionato
+          diabete('attiva')
+        }
+      });
+
+    $("#id_diabete_1").change(function () {
+        // Verifica se il pulsante radio è selezionato
+          if ($(this).prop('checked')) {
+            // L'azione che desideri eseguire quando il pulsante radio è selezionato
+            diabete('disattiva')
+          }
+      });
+
+    $("#id_gravidanza_0").change(function () {
+      // Verifica se il pulsante radio è selezionato
+        if ($(this).prop('checked')) {
+          // L'azione che desideri eseguire quando il pulsante radio è selezionato
+          gravidanza('attiva')
+        }
+      });
+
+    $("#id_gravidanza_1").change(function () {
+        // Verifica se il pulsante radio è selezionato
+          if ($(this).prop('checked')) {
+            // L'azione che desideri eseguire quando il pulsante radio è selezionato
+            gravidanza('disattiva')
+          }
+      });
+  
+    $("#id_allergie_0").change(function () {
+      // Verifica se il pulsante radio è selezionato
+        if ($(this).prop('checked')) {
+          // L'azione che desideri eseguire quando il pulsante radio è selezionato
+          allergia('attiva')
+        }
+      });
+
+    $("#id_allergie_1").change(function () {
+        // Verifica se il pulsante radio è selezionato
+          if ($(this).prop('checked')) {
+            // L'azione che desideri eseguire quando il pulsante radio è selezionato
+            allergia('disattiva')
+          }
+      });
+
+    $("#id_farmaci_0").change(function () {
+      // Verifica se il pulsante radio è selezionato
+        if ($(this).prop('checked')) {
+          // L'azione che desideri eseguire quando il pulsante radio è selezionato
+          farmaci('attiva')
+        }
+      });
+
+    $("#id_farmaci_1").change(function () {
+        // Verifica se il pulsante radio è selezionato
+          if ($(this).prop('checked')) {
+            // L'azione che desideri eseguire quando il pulsante radio è selezionato
+            farmaci('disattiva')
+          }
+      });
+
+      $("#id_sport_0").change(function () {
+        // Verifica se il pulsante radio è selezionato
+          if ($(this).prop('checked')) {
+            // L'azione che desideri eseguire quando il pulsante radio è selezionato
+            sport('attiva')
+          }
+        });
+  
+      $("#id_sport_1").change(function () {
+          // Verifica se il pulsante radio è selezionato
+            if ($(this).prop('checked')) {
+              // L'azione che desideri eseguire quando il pulsante radio è selezionato
+              sport('disattiva')
+            }
+        });
     
     function calc() {
 
@@ -422,20 +739,135 @@
       }
     };
 
-    function attiva_diabete() {
-      debugger;
-
-      if (($("#id_diabete").val() == '1'))
+    function diabete(str) {
+      
+      if (str == 'attiva')
       {
-          $('#id_tipo_diabete').prop('disabled', false);
+          $('#id_tipo_diabete_0').prop('disabled', false);
+          $('#id_tipo_diabete_1').prop('disabled', false);
       }
       else
       {
-          $('#id_tipo_diabete').prop('disabled', true);
-          $('#id_tipo_diabete').val('');
+          $('#id_tipo_diabete_0').prop('disabled', true);
+          $('#id_tipo_diabete_0').prop('checked', false);
+          $('#id_tipo_diabete_1').prop('disabled', true);
+          $('#id_tipo_diabete_1').prop('checked', false);
       }
+    };
 
+    function gravidanza(str) {
+      
+      if (str == 'attiva')
+      {
+          $('#id_mesi_gravidanza_0').prop('disabled', false);
+          $('#id_mesi_gravidanza_1').prop('disabled', false);
+          $('#id_mesi_gravidanza_2').prop('disabled', false);
+          $('#id_mesi_gravidanza_3').prop('disabled', false);
+          $('#id_mesi_gravidanza_4').prop('disabled', false);
+          $('#id_mesi_gravidanza_5').prop('disabled', false);
+          $('#id_mesi_gravidanza_6').prop('disabled', false);
+          $('#id_mesi_gravidanza_7').prop('disabled', false);
+          $('#id_mesi_gravidanza_8').prop('disabled', false);
+          $('#id_mesi_gravidanza_9').prop('disabled', false);
+      }
+      else
+      {
+          $('#id_mesi_gravidanza_0').prop('disabled', true);
+          $('#id_mesi_gravidanza_0').prop('checked', false);
+          $('#id_mesi_gravidanza_1').prop('disabled', true);
+          $('#id_mesi_gravidanza_1').prop('checked', false);
+          $('#id_mesi_gravidanza_2').prop('disabled', true);
+          $('#id_mesi_gravidanza_2').prop('checked', false);
+          $('#id_mesi_gravidanza_3').prop('disabled', true);
+          $('#id_mesi_gravidanza_3').prop('checked', false);
+          $('#id_mesi_gravidanza_4').prop('disabled', true);
+          $('#id_mesi_gravidanza_4').prop('checked', false);
+          $('#id_mesi_gravidanza_5').prop('disabled', true);
+          $('#id_mesi_gravidanza_5').prop('checked', false);
+          $('#id_mesi_gravidanza_6').prop('disabled', true);
+          $('#id_mesi_gravidanza_6').prop('checked', false);
+          $('#id_mesi_gravidanza_7').prop('disabled', true);
+          $('#id_mesi_gravidanza_7').prop('checked', false);
+          $('#id_mesi_gravidanza_8').prop('disabled', true);
+          $('#id_mesi_gravidanza_8').prop('checked', false);
+          $('#id_mesi_gravidanza_9').prop('disabled', true);
+          $('#id_mesi_gravidanza_9').prop('checked', false);
+      }
+    };
+
+    function allergia(str) {
+       
+      if (str == 'attiva')
+      {
+          $('#id_allergie_elenco').prop('disabled', false);
+          
+      }
+      else
+      {
+          $('#id_allergie_elenco').prop('disabled', true);
+          $('#id_allergie_elenco').val("")
+          
+       };
+    };
+
+    function farmaci(str) {
+      
+     if (str == 'attiva')
+     {
+         $('#id_farmaci_elenco').prop('disabled', false);
+         
+     }
+     else
+     {
+         $('#id_farmaci_elenco').prop('disabled', true);
+         $('#id_farmaci_elenco').val("")
+         
+      };
+   };
+
+   function sport(str) {
+    
+   if (str == 'attiva')
+   {
+       $('#id_sport_praticato').prop('disabled', false);
+       $('#id_sport_praticato_giorni_0').prop('disabled', false);
+       $('#id_sport_praticato_giorni_1').prop('disabled', false);
+       $('#id_sport_praticato_giorni_2').prop('disabled', false);
+       $('#id_sport_praticato_giorni_3').prop('disabled', false);
+       $('#id_sport_praticato_giorni_4').prop('disabled', false);
+       $('#id_sport_praticato_giorni_5').prop('disabled', false);
+       $('#id_sport_praticato_giorni_6').prop('disabled', false);
+       $('#id_sport_praticato_giorni_7').prop('disabled', false);
+          
+   }
+       
+   
+   else
+   {
+      $('#id_sport_praticato').prop('disabled', true);
+      $('#id_sport_praticato').val("")
+      $('#id_sport_praticato_giorni_0').prop('disabled', true);
+      $('#id_sport_praticato_giorni_0').prop('checked', false);
+      $('#id_sport_praticato_giorni_1').prop('disabled', true);
+      $('#id_sport_praticato_giorni_1').prop('checked', false);
+      $('#id_sport_praticato_giorni_2').prop('disabled', true);
+      $('#id_sport_praticato_giorni_2').prop('checked', false);
+      $('#id_sport_praticato_giorni_3').prop('disabled', true);
+      $('#id_sport_praticato_giorni_3').prop('checked', false);
+      $('#id_sport_praticato_giorni_4').prop('disabled', true);
+      $('#id_sport_praticato_giorni_4').prop('checked', false);
+      $('#id_sport_praticato_giorni_5').prop('disabled', true);
+      $('#id_sport_praticato_giorni_5').prop('checked', false);
+      $('#id_sport_praticato_giorni_6').prop('disabled', true);
+      $('#id_sport_praticato_giorni_6').prop('checked', false);
+      $('#id_sport_praticato_giorni_7').prop('disabled', true);
+      $('#id_sport_praticato_giorni_7').prop('checked', false);
+      
+    };
   };
+    
+
+
   })
 </script>
 
