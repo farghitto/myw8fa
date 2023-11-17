@@ -697,7 +697,7 @@ class ModuloInformazioniForm(forms.Form):
         choices=SCELTA,
         label='Hai una gravidanza in corso?',
         widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
-                            'placeholder': 'Hai una gravidanza in corso?'}),
+                                        'placeholder': 'Hai una gravidanza in corso?'}),
         initial=None,
         required=False
     )
@@ -715,7 +715,7 @@ class ModuloInformazioniForm(forms.Form):
         choices=SCELTA3,
         label='Hai un buon rapporto con il tuo corpo?',
         widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
-                            'placeholder': 'Hai un buon rapporto con il tuo corpo?'}),
+                                        'placeholder': 'Hai un buon rapporto con il tuo corpo?'}),
         initial=None,
         error_messages={'required': 'Il campo Rapporto corpo è obbligatorio.'}
     )
@@ -784,15 +784,15 @@ class ModuloInformazioniForm(forms.Form):
         choices=GIORNI,
         label='Giorni di Sport Praticato',
         widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
-                            'placeholder': 'Quante volte alla settimana?'}),
+                                        'placeholder': 'Quante volte alla settimana?'}),
         required=False
     )
 
     gruppo_sanguigno = forms.ChoiceField(
         choices=GRUPPO,
-        label='Gruppo Sanguigno',
-        widget=forms.Select(attrs={'class': 'form-control font-custom',
-                            'placeholder': 'Quale è il tuo gruppo sanguigno?'}),
+        label='Quale è il tuo gruppo sanguigno?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
+                                        'placeholder': 'Quale è il tuo gruppo sanguigno?'}),
         initial=None,
         error_messages={
             'required': 'Il campo gruppo sanguigno è obbligatorio.'}
@@ -800,8 +800,8 @@ class ModuloInformazioniForm(forms.Form):
 
     insonnia = forms.ChoiceField(
         choices=SCELTA3,
-        label='Insonnia',
-        widget=forms.Select(
+        label='Soffri di insonnia?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Soffri di insonnia?'}),
         initial=None,
         error_messages={'required': 'Il campo insonnia è obbligatorio.'}
@@ -809,17 +809,26 @@ class ModuloInformazioniForm(forms.Form):
 
     stitichezza = forms.ChoiceField(
         choices=SCELTA3,
-        label='Stitichezza',
-        widget=forms.Select(attrs={
-                            'class': 'form-control font-custom', 'placeholder': 'Soffri di stitichezza?'}),
+        label='Soffri di stitichezza?',
+        widget=forms.RadioSelect(attrs={
+            'class': 'form-control font-custom', 'placeholder': 'Soffri di stitichezza?'}),
         initial=None,
         error_messages={'required': 'Il campo stitichezza è obbligatorio.'}
+    )
+
+    fame_nervosa = forms.ChoiceField(
+        choices=SCELTA3,
+        label='Soffri di fame nervosa?',
+        widget=forms.RadioSelect(attrs={
+            'class': 'form-control font-custom', 'placeholder': 'Soffri di fame nervosa?'}),
+        initial=None,
+        error_messages={'required': 'Il campo fame nervosa è obbligatorio.'}
     )
 
     fumo = forms.ChoiceField(
         choices=SCELTA,
         label='Fumo',
-        widget=forms.Select(
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Fumi?'}),
         initial=None,
         error_messages={'required': 'Il campo stitichezza è obbligatorio.'}
@@ -837,23 +846,15 @@ class ModuloInformazioniForm(forms.Form):
         max_length=3,
         label='Delta Numero di Sigarette',
         widget=forms.TextInput(attrs={
-                               'class': 'form-control font-custom', 'placeholder': 'Differenza media nazionale?'}),
-        required=False
-    )
-
-    fame_nervosa = forms.ChoiceField(
-        choices=SCELTA3,
-        label='Fame Nervosa',
-        widget=forms.Select(attrs={
-                            'class': 'form-control font-custom', 'placeholder': 'Soffri di fame nervosa?'}),
-        initial=None,
-        error_messages={'required': 'Il campo fame nervosa è obbligatorio.'}
+                               'class': 'form-control font-custom', 'placeholder': 'Differenza media nazionale?'}, ),
+        required=False,
+        disabled=True
     )
 
     gengive = forms.ChoiceField(
         choices=SCELTA3,
-        label='Gengive',
-        widget=forms.Select(
+        label='Problemi di gengive?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Problemi di gengive?'}),
         initial=None,
         error_messages={'required': 'Il campo gengive è obbligatorio.'}
@@ -861,8 +862,8 @@ class ModuloInformazioniForm(forms.Form):
 
     tatuaggi = forms.ChoiceField(
         choices=SCELTA,
-        label='Tatuaggi',
-        widget=forms.Select(
+        label='Hai tatuaggi?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai tatuaggi?'}),
         initial=None,
         error_messages={'required': 'Il campo tatuaggi è obbligatorio.'}
@@ -870,8 +871,8 @@ class ModuloInformazioniForm(forms.Form):
 
     bevi_acqua = forms.ChoiceField(
         choices=SCELTA,
-        label='Bevi Acqua',
-        widget=forms.Select(
+        label='Bevi molta acqua?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Bevi molta acqua?'}),
         initial=None,
         error_messages={'required': 'Il campo bevi è obbligatorio.'}
@@ -879,7 +880,7 @@ class ModuloInformazioniForm(forms.Form):
 
     litri_acqua = forms.FloatField(
 
-        label='Litri di Acqua Bevuti',
+        label='Quanti litri al giorno?',
         widget=forms.NumberInput(attrs={
                                  'class': 'form-control font-custom', 'placeholder': 'Quanti litri al giorno?'}),
         error_messages={'required': 'Il campo litri bevuti è obbligatorio.'}
