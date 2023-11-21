@@ -273,24 +273,64 @@ def invio_ordine(request, id):
 def modulodati_mancante(request, id):
 
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
-
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
     }
-
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         cliente = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
+    url_backend = settings.BASE_URL + 'cliente/listapatologie/'
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        patologie = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+    patologie_da_mostrare = []
+
+    for patologia in patologie:
+        if patologia['patologia_sesso'] == 'T':
+            patologie_da_mostrare.append(patologia)
+        else:
+            if patologia['patologia_sesso'] == cliente['sesso']:
+                patologie_da_mostrare.append(patologia)
+
+    choices_patologie = [(patologia['id'], patologia['nome'])
+                         for patologia in patologie_da_mostrare]
+
+    if request.method == 'POST':
+        form = ModuloInformazioniForm(request.POST)
+
+        if form.is_valid():
+
+            a = 0
+        else:
+            form.fields['patologie'].choices = choices_patologie
+            context = {
+                'form': form,
+                'cliente': cliente,
+                'patologie': choices_patologie
+            }
+
+            print("Dati del form non validi:", request.POST)
+
+            return render(request, 'ordini/moduloinfo.html', context)
+
     form = ModuloInformazioniForm(initial={
                                   'altezza': cliente['altezza'], 'peso_desiderato': cliente['peso_desiderato']})
+    form.fields['patologie'].choices = choices_patologie
     context = {
         'form': form,
-        'cliente': cliente
+        'cliente': cliente,
+        'patologie': choices_patologie
     }
-    print(cliente)
+
     return render(request, 'ordini/moduloinfo.html', context)
 
 

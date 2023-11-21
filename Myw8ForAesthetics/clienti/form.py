@@ -397,15 +397,15 @@ class FormChiave(forms.Form):
 
 SCELTA = (
 
-    (1, 'Si'),
-    (0, 'No')
+    ('Si', 'Si'),
+    ('No', 'No')
 )
 
 SCELTA3 = (
 
-    (0, 'Si'),
-    (1, 'No'),
-    (2, 'A volte')
+    ('Si', 'Si'),
+    ('No', 'No'),
+    ('A volte', 'A volte')
 )
 
 CIVILE = (
@@ -498,20 +498,20 @@ SAPORI = (
 
 CAR1 = (
 
-    (1, 'Individualista'),
-    (0, 'Altruista')
+    ('Individualista', 'Individualista'),
+    ('Altruista', 'Altruista')
 )
 
 CAR2 = (
 
-    (1, 'Estroverso'),
-    (0, 'Introverso')
+    ('Estroverso', 'Estroverso'),
+    ('Introverso', 'Introverso')
 )
 
 CAR3 = (
 
-    (1, 'Ottimista'),
-    (0, 'Pessimista')
+    ('Ottimista', 'Ottimista'),
+    ('Pessimista', 'Pessimista')
 )
 
 SFOGO = (
@@ -681,7 +681,7 @@ class ModuloInformazioniForm(forms.Form):
         label='Che tipo diabete:',
         widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Che tipo diabete:'}),
-        initial=None
+        initial=None,
     )
 
     menopausa = forms.ChoiceField(
@@ -888,9 +888,9 @@ class ModuloInformazioniForm(forms.Form):
 
     filosofia_alimentare = forms.ChoiceField(
         choices=ALIMENTAZIONE,
-        label='Filosofia Alimentare',
-        widget=forms.Select(attrs={'class': 'form-control font-custom',
-                            'placeholder': 'In quale filosofia alimentare ti riconosci?'}),
+        label='In quale filosofia alimentare ti riconosci?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
+                                        'placeholder': 'In quale filosofia alimentare ti riconosci?'}),
         initial=None,
         error_messages={
             'required': 'Il campo filosofia alimentare è obbligatorio.'}
@@ -898,9 +898,9 @@ class ModuloInformazioniForm(forms.Form):
 
     maiale = forms.ChoiceField(
         choices=SCELTA,
-        label='Maiale',
-        widget=forms.Select(attrs={
-                            'class': 'form-control font-custom', 'placeholder': 'Mangi carne di Maiale?'}),
+        label='Mangi carne di Maiale?',
+        widget=forms.RadioSelect(attrs={
+            'class': 'form-control font-custom', 'placeholder': 'Mangi carne di Maiale?'}),
         initial=None,
         error_messages={'required': 'Il campo mangi maiale è obbligatorio.'}
     )
@@ -916,17 +916,18 @@ class ModuloInformazioniForm(forms.Form):
 
     numero_figli = forms.IntegerField(
 
-        label='Numero di Figli',
+        label='Quanti?',
         widget=forms.NumberInput(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Quanti?'}),
-        # error_messages={'required': 'Il campo numero figli è obbligatorio.'}
+        required=False,
+
     )
 
     pasto_condiviso = forms.ChoiceField(
         choices=PASTI,
-        label='Pasto Condiviso',
-        widget=forms.Select(attrs={'class': 'form-control font-custom',
-                            'placeholder': 'In genere mangiate tutti insieme a?'})
+        label='In genere mangiate tutti insieme a?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
+                                        'placeholder': 'In genere mangiate tutti insieme a?'})
 
     )
 
@@ -942,11 +943,17 @@ class ModuloInformazioniForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(),
     )
 
+    patologie = forms.MultipleChoiceField(
+        choices=[],
+        label='Disturbi o patologie attuali?',
+        widget=forms.CheckboxSelectMultiple(),
+    )
+
     problemi_cardiaci = forms.ChoiceField(
         choices=SCELTA,
-        label='Problemi Cardiaci',
-        widget=forms.Select(attrs={'class': 'form-control font-custom',
-                            'placeholder': 'Hai o hai avuto problemi cardiaci?'}),
+        label='Hai o hai avuto problemi cardiaci?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
+                                        'placeholder': 'Hai o hai avuto problemi cardiaci?'}),
         initial=None,
         error_messages={'required': 'Il campo figli è obbligatorio.'}
     )
@@ -962,64 +969,64 @@ class ModuloInformazioniForm(forms.Form):
     sicura = forms.ChoiceField(
         choices=SCELTA3,
         label='Sei una persona sicura?',
-        widget=forms.Select(attrs={
-                            'class': 'form-control font-custom', 'placeholder': 'Sei una persona sicura?'}),
+        widget=forms.RadioSelect(attrs={
+            'class': 'form-control font-custom', 'placeholder': 'Sei una persona sicura?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     felice = forms.ChoiceField(
         choices=SCELTA3,
-        label='Felice',
-        widget=forms.Select(
+        label='Ti senti felice?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     stress = forms.ChoiceField(
         choices=SCELTA3,
-        label='Stress',
-        widget=forms.Select(
+        label='Vivi nello stress?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     paure = forms.ChoiceField(
         choices=SCELTA3,
-        label='Paure',
-        widget=forms.Select(
+        label='Hai paure o fobie?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     lutti = forms.ChoiceField(
         choices=SCELTA,
-        label='Lutti',
-        widget=forms.Select(
+        label='Hai avuto lutti recenti?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     incubi = forms.ChoiceField(
         choices=SCELTA3,
-        label='Incubi',
-        widget=forms.Select(
+        label='Hai spesso incubi?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     stanco = forms.ChoiceField(
         choices=GIORNATA,
-        label='Stanco',
-        widget=forms.Select(
+        label='Ti senti più stanco?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     rabbia = forms.ChoiceField(
@@ -1027,81 +1034,81 @@ class ModuloInformazioniForm(forms.Form):
         label='Ti arrabbi spesso?',
         widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'id': 'custom_rabbia_id'}),
-
-
+        error_messages={'required': 'Il campo è obbligatorio.'}
 
     )
 
     sfogo = forms.ChoiceField(
         choices=SFOGO,
-        label='Sfogo',
-        widget=forms.Select(
+        label='La rabbia la sfoghi?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     colpa = forms.ChoiceField(
         choices=SCELTA,
-        label='Colpa',
-        widget=forms.Select(
+        label='Vivi nei sensi di colpa?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     piangi = forms.ChoiceField(
         choices=SCELTA,
-        label='Piangi',
-        widget=forms.Select(
+        label='Piangi spesso?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Hai figli?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     carattere1 = forms.ChoiceField(
         choices=CAR1,
-        label='Carattere 1',
-        widget=forms.Select(
+        label='Sei più?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Sei più?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     carattere2 = forms.ChoiceField(
         choices=CAR2,
-        label='Carattere 2',
-        widget=forms.Select(
+        label='Sei più?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Sei più?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     carattere3 = forms.ChoiceField(
         choices=CAR3,
-        label='Carattere 3',
-        widget=forms.Select(
+        label='Sei più?',
+        widget=forms.RadioSelect(
             attrs={'class': 'form-control font-custom', 'placeholder': 'Sei più?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     determinato = forms.ChoiceField(
         choices=DETERMINATO,
-        label='Determinato',
-        widget=forms.Select(attrs={
-                            'class': 'form-control font-custom', 'placeholder': 'Quanto sei determinato?'}),
+        label='Quanto sei determinato?',
+        widget=forms.RadioSelect(attrs={
+            'class': 'form-control font-custom', 'placeholder': 'Quanto sei determinato?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'}
     )
 
     amici_dieta = forms.ChoiceField(
         choices=SCELTA,
-        label='Amici Dieta',
-        widget=forms.Select(attrs={'class': 'form-control font-custom',
-                            'placeholder': 'Dirai ai tuoi amici o colleghi che sei a dieta?'}),
+        label='Dirai ai tuoi amici o colleghi che sei a dieta?',
+        widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
+                                        'placeholder': 'Dirai ai tuoi amici o colleghi che sei a dieta?'}),
         initial=None,
-        error_messages={'required': 'Il campo figli è obbligatorio.'}
+        error_messages={'required': 'Il campo è obbligatorio.'},
+
     )
 
     note = forms.CharField(
@@ -1111,48 +1118,3 @@ class ModuloInformazioniForm(forms.Form):
             attrs={'class': 'form-control font-custom', 'placeholder': 'Note'}),
         required=False
     )
-
-    # def __init__(self, *args, **kwargs):
-
-    #     super(ModuliAggiuntiviForm,self).__init__(*args, **kwargs)
-
-    # self.args = args
-    # if 'initial' in kwargs:
-    #     sesso = kwargs['initial']['sesso']
-    # elif 'sesso' in self.args[0] :
-    #     sesso = self.args[0]['sesso']
-
-    # else:
-    #     sesso = 'F'
-
-    # #self.fields['alimenti_preferiti'].label = 'Quali alimenti preferisci assumere?'
-    # #self.fields['gusti_preferiti'].label = 'Quali gusti preferisci?'
-    # #self.fields['patologie'].label = 'Disturbi o patologie attuali?'
-
-    # self.fields['sicura'].label = ''
-    # self.fields['felice'].label = 'Ti senti felice?'
-    # self.fields['stress'].label = 'Vivi nello stress?'
-    # self.fields['paure'].label = 'Hai paure o fobie?'
-    # self.fields['lutti'].label = 'Hai avuto recenti lutti?'
-    # self.fields['incubi'].label = 'Hai spesso incubi?'
-    # self.fields['stanco'].label = 'Ti senti più stanco?'
-    # self.fields['rabbia'].label = 'Ti arrabbi spesso?'
-    # self.fields['sfogo'].label = 'La rabbia la sfoghi?'
-    # self.fields['colpa'].label = 'Vivi nei sensi di colpa?'
-    # self.fields['piangi'].label = 'Piangi spesso?'
-    # self.fields['incubi'].label = 'Hai spesso incubi?'
-    # self.fields['carattere1'].label = 'Sei più?'
-    # self.fields['carattere2'].label =  'Sei più?'
-    # self.fields['carattere3'].label =  'Sei più?'
-    # self.fields['determinato'].label = 'Quanto sei determinato?'
-    # self.fields['amici_dieta'].label = '?'
-
-    # if sesso == 'M':
-
-    #     self.fields['patologie'].queryset = PatologieClienti.objects.filter(patologia_sesso__in= ['T', 'U'])
-
-    #     self.fields['menopausa'].initial =  '0'
-    #     self.fields['gravidanza'].initial = '0'
-    # else:
-
-    #     self.fields['patologie'].queryset = PatologieClienti.objects.filter(patologia_sesso__in= ['T', 'D'])

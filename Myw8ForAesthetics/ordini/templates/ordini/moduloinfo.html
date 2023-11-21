@@ -57,7 +57,7 @@
   <form  method="post" novalidate>{% csrf_token %}
     <div class="grid-form">
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating">
         {% if form.is_bound %}
           {% if form.professione.errors %}
             {% render_field form.professione class="form-control is-invalid" %}
@@ -75,12 +75,13 @@
         <label class="font-custom" for="{{ form.professione.id_for_label }}">{{ form.professione.label_tag }}</label>
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.stato_civile.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.stato_civile.label_tag }}</label>
         <div>
           {% for radio in form.stato_civile %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.stato_civile.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.stato_civile.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+               {% if radio.choice_label == form.stato_civile.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -94,12 +95,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop">
+      <div class="form-group margingruop {% if form.maggiorenne.errors %} non_valido_contorno {% endif %}">
         <label class="font-custom " >{{ form.maggiorenne.label_tag }}</label>
         <div>
           {% for radio in form.maggiorenne %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.maggiorenne.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.maggiorenne.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.maggiorenne.value %}checked{% endif %}  {% if radio.choice_label == form.amici_dieta.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -113,12 +115,12 @@
         </div>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating">
        
       </div> 
 
       {% comment %} fine riga {% endcomment %}
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
         {% if form.is_bound %}
           {% if form.altezza.errors %}
             {% render_field form.altezza class="form-control is-invalid" %}
@@ -136,7 +138,7 @@
         <label class="font-custom" for="{{ form.altezza.id_for_label }}">{{ form.altezza.label_tag }}</label>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
         {% if form.is_bound %}
           {% if form.peso_attuale.errors %}
             {% render_field form.peso_attuale class="form-control is-invalid" %}
@@ -154,7 +156,7 @@
         <label class="font-custom" for="{{ form.peso_attuale.id_for_label }}">{{ form.peso_attuale.label_tag }}</label>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
         {% if form.is_bound %}
           {% if form.bmi.errors %}
             {% render_field form.bmi class="form-control is-invalid" %}
@@ -172,13 +174,13 @@
         <label class="font-custom" for="{{ form.bmi.id_for_label }}">{{ form.bmi.label_tag }}</label>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
        
       </div> 
 
       {% comment %} fine riga {% endcomment %}
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
         {% if form.is_bound %}
           {% if form.stato_attuale.errors %}
             {% render_field form.stato_attuale class="form-control is-invalid" %}
@@ -196,7 +198,7 @@
         <label class="font-custom" for="{{ form.stato_attuale.id_for_label }}">{{ form.stato_attuale.label_tag }}</label>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
         {% if form.is_bound %}
           {% if form.peso_ottimale.errors %}
             {% render_field form.peso_ottimale class="form-control is-invalid" %}
@@ -214,7 +216,7 @@
         <label class="font-custom" for="{{ form.peso_ottimale.id_for_label }}">{{ form.peso_ottimale.label_tag }}</label>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
         {% if form.is_bound %}
           {% if form.scostamento_peso.errors %}
             {% render_field form.scostamento_peso class="form-control is-invalid" %}
@@ -232,7 +234,7 @@
         <label class="font-custom" for="{{ form.scostamento_peso.id_for_label }}">{{ form.scostamento_peso.label_tag }}</label>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
         {% if form.is_bound %}
           {% if form.peso_desiderato.errors %}
             {% render_field form.peso_desiderato class="form-control is-invalid" %}
@@ -251,11 +253,11 @@
       </div>
 
       {% comment %} fine riga {% endcomment %}
-      <div class="form-floating mt-2 mb-2">
+      <div class="form-floating ">
        
       </div> 
 
-      <div class="form-floating mt-2 mb-2" style="text-align:center">
+      <div class="form-floating " style="text-align:center">
         {% if cliente.sesso == 'F'%}
           <img src="/static/static_file/corpo_donna.jpg" alt="Girl in a jacket" size = "100%">
         {% else %}
@@ -263,12 +265,13 @@
         {% endif %}
       </div> 
 
-      <div class="form-group margingruop centro_griglia">
+      <div class="form-group margingruop {% if form.struttura_fisica.errors %} non_valido_contorno {% endif %} centro_griglia">
         <label class="font-custom " >{{ form.struttura_fisica.label_tag }}</label>
         <div>
           {% for radio in form.struttura_fisica %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.struttura_fisica.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.struttura_fisica.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.struttura_fisica.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -282,12 +285,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop centro_griglia">
+      <div class="form-group margingruop {% if form.struttura_desiderata.errors %} non_valido_contorno {% endif %} centro_griglia">
         <label class="font-custom " >{{ form.struttura_desiderata.label_tag }}</label>
         <div>
           {% for radio in form.struttura_desiderata %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.struttura_desiderata.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.struttura_desiderata.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.struttura_desiderata.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -303,12 +307,13 @@
 
        {% comment %} fine riga {% endcomment %}
 
-       <div class="form-group margingruop">
+       <div class="form-group margingruop {% if form.pressione_arteriosa.errors %} non_valido_contorno {% endif %}">
         <label class="font-custom " >{{ form.pressione_arteriosa.label_tag }}</label>
         <div>
           {% for radio in form.pressione_arteriosa %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.pressione_arteriosa.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.pressione_arteriosa.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.pressione_arteriosa.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -322,12 +327,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop">
+      <div class="form-group margingruop {% if form.diabete.errors %} non_valido_contorno {% endif %}">
         <label class="font-custom " >{{ form.diabete.label_tag }}</label>
         <div>
           {% for radio in form.diabete %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.diabete.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.diabete.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.diabete.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -346,7 +352,8 @@
         <div>
           {% for radio in form.tipo_diabete %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.tipo_diabete.name }}" id ="{{radio.id_for_label}}" disabled >
+              <input class="form-check-input" type="radio" name="{{ form.tipo_diabete.name }}" id ="{{radio.id_for_label}}" 
+               {% if radio.choice_label == form.tipo_diabete.value %}checked{% endif %}  disabled >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -360,12 +367,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.rapporto_corpo.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.rapporto_corpo.label_tag }}</label>
         <div>
           {% for radio in form.rapporto_corpo %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.rapporto_corpo.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.rapporto_corpo.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.rapporto_corpo.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -381,12 +389,13 @@
 
        {% comment %} fine riga {% endcomment %}
 
-       <div class="form-group margingruop centro_griglia">
+       <div class="form-group margingruop {% if form.droghe.errors %} non_valido_contorno {% endif %} centro_griglia">
         <label class="font-custom " >{{ form.droghe.label_tag }}</label>
         <div >
           {% for radio in form.droghe %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.droghe.name }}" id ="{{radio.id_for_label}}" >
+              <input class="form-check-input" type="radio" name="{{ form.droghe.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.droghe.value %}checked{% endif %}  >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -401,12 +410,13 @@
       </div>
 
        {% if cliente.sesso == 'M' %}
-       <div class="form-group margingruop centro_griglia">
+       <div class="form-group margingruop {% if form.menopausa.errors %} non_valido_contorno {% endif %} centro_griglia">
         <label class="font-custom " >{{ form.menopausa.label_tag }}</label>
         <div>
           {% for radio in form.menopausa %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.menopausa.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.menopausa.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.menopausa.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -420,12 +430,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop centro_griglia">
+      <div class="form-group margingruop {% if form.gravidanza.errors %} non_valido_contorno {% endif %} centro_griglia">
         <label class="font-custom " >{{ form.gravidanza.label_tag }}</label>
         <div>
           {% for radio in form.gravidanza %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.gravidanza.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.gravidanza.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.gravidanza.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -439,12 +450,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop centro_griglia">
+      <div class="form-group margingruop {% if form.mesi_gravidanza.errors %} non_valido_contorno {% endif %} centro_griglia">
         <label class="font-custom " >{{ form.mesi_gravidanza.label_tag }}</label>
         <div class= 'grid_gravidanza'>
           {% for radio in form.mesi_gravidanza %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.mesi_gravidanza.name }}" id ="{{radio.id_for_label}}" disabled >
+              <input class="form-check-input" type="radio" name="{{ form.mesi_gravidanza.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.mesi_gravidanza.value %}checked{% endif %}  disabled >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -462,12 +474,13 @@
       
       {% comment %} fine riga {% endcomment %}
         
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.allergie.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.allergie.label_tag }}</label>
         <div>
           {% for radio in form.allergie %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.allergie.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.allergie.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.allergie.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -481,30 +494,20 @@
         </div>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
-        {% if form.is_bound %}
-          {% if form.allergie_elenco.errors %}
-            {% render_field form.allergie_elenco|attr:"disabled" class="form-control is-invalid"  %}
-            {% for error in form.allergie_elenco.errors  %}
-              <div class="invalid-feedback">
-                {{ error }}
-              </div>
-            {% endfor %}
-          {% else %}
-              {% render_field form.allergie_elenco|attr:"disabled" class="form-control is-valid"  %}
-          {% endif %}
-        {% else %}
-            {% render_field form.allergie_elenco|attr:"disabled" class="form-control"  %}
-        {% endif %}
+      <div class="form-floating ">  
+
+        {% render_field form.allergie_elenco|attr:"disabled" class="form-control"  %}       
         <label class="font-custom" for="{{ form.allergie_elenco.id_for_label }}">{{ form.allergie_elenco.label_tag }}</label>
+      
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.farmaci.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.farmaci.label_tag }}</label>
         <div>
           {% for radio in form.farmaci %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.farmaci.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.farmaci.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.farmaci.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -518,32 +521,20 @@
         </div>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
-        {% if form.is_bound %}
-          {% if form.farmaci_elenco.errors %}
-            {% render_field form.farmaci_elenco|attr:"disabled" class="form-control is-invalid"  %}
-            {% for error in form.farmaci_elenco.errors  %}
-              <div class="invalid-feedback">
-                {{ error }}
-              </div>
-            {% endfor %}
-          {% else %}
-              {% render_field form.farmaci_elenco|attr:"disabled" class="form-control is-valid"  %}
-          {% endif %}
-        {% else %}
-            {% render_field form.farmaci_elenco|attr:"disabled" class="form-control"  %}
-        {% endif %}
+      <div class="form-floating ">
+        {% render_field form.farmaci_elenco|attr:"disabled" class="form-control"  %}
         <label class="font-custom" for="{{ form.farmaci_elenco.id_for_label }}">{{ form.farmaci_elenco.label_tag }}</label>
       </div>
 
       {% comment %} fine riga {% endcomment %}
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.sport.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.sport.label_tag }}</label>
         <div>
           {% for radio in form.sport %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.sport.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.sport.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.sport.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -557,30 +548,20 @@
         </div>
       </div>
 
-      <div class="form-floating mt-2 mb-2 centro_griglia">
-        {% if form.is_bound %}
-          {% if form.sport_praticato.errors %}
-            {% render_field form.sport_praticato|attr:"disabled" class="form-control is-invalid"  %}
-            {% for error in form.sport_praticato.errors  %}
-              <div class="invalid-feedback">
-                {{ error }}
-              </div>
-            {% endfor %}
-          {% else %}
-              {% render_field form.sport_praticato|attr:"disabled" class="form-control is-valid"  %}
-          {% endif %}
-        {% else %}
-            {% render_field form.sport_praticato|attr:"disabled" class="form-control"  %}
-        {% endif %}
+      <div class="form-floating  centro_griglia">
+        
+        {% render_field form.sport_praticato|attr:"disabled" class="form-control"  %}
         <label class="font-custom" for="{{ form.sport_praticato.id_for_label }}">{{ form.sport_praticato.label_tag }}</label>
+      
       </div>
 
-      <div class="form-group margingruop centro_griglia">
+      <div class="form-group margingruop {% if form.sport_praticato_giorni.errors %} non_valido_contorno {% endif %} centro_griglia">
         <label class="font-custom " >{{ form.sport_praticato_giorni.label_tag }}</label>
         <div class = grid_sport>
           {% for radio in form.sport_praticato_giorni %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.sport_praticato_giorni.name }}" id ="{{radio.id_for_label}}" disabled>
+              <input class="form-check-input" type="radio" name="{{ form.sport_praticato_giorni.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.sport_praticato_giorni.value %}checked{% endif %}  disabled>
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -594,17 +575,34 @@
         </div>
       </div>
 
-      <div class="form-floating mt-2 mb-2">
-       
-      </div> 
+      <div class="form-group margingruop {% if form.filosofia_alimentare.errors %} non_valido_contorno {% endif %} ">
+        <label class="font-custom " >{{ form.filosofia_alimentare.label_tag }}</label>
+        <div>
+          {% for radio in form.filosofia_alimentare %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.filosofia_alimentare.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.filosofia_alimentare.value %}checked{% endif %} >
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.filosofia_alimentare.errors %}
+            <div class="invalid-feedback">
+              {{ form.filosofia_alimentare.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
       {% comment %} fine riga {% endcomment %}
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.gruppo_sanguigno.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.gruppo_sanguigno.label_tag }}</label>
         <div>
           {% for radio in form.gruppo_sanguigno %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.gruppo_sanguigno.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.gruppo_sanguigno.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.gruppo_sanguigno.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -618,12 +616,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.insonnia.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.insonnia.label_tag }}</label>
         <div>
           {% for radio in form.insonnia %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.insonnia.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.insonnia.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.insonnia.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -637,12 +636,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.stitichezza.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.stitichezza.label_tag }}</label>
         <div>
           {% for radio in form.stitichezza %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.stitichezza.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.stitichezza.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.stitichezza.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -656,12 +656,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.fame_nervosa.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.fame_nervosa.label_tag }}</label>
         <div>
           {% for radio in form.fame_nervosa %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.fame_nervosa.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.fame_nervosa.name }}" id ="{{radio.id_for_label}}" 
+               {% if radio.choice_label == form.fame_nervosa.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -677,12 +678,13 @@
 
       {% comment %} fine riga {% endcomment %}
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.fumo.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.fumo.label_tag }}</label>
         <div>
           {% for radio in form.fumo %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.fumo.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.fumo.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.fumo.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -696,55 +698,49 @@
         </div>
       </div>
 
-      <div class="form-floating mt-2 mb-2 centro_griglia">
-        {% if form.is_bound %}
-          {% if form.numero_sigarette.errors %}
-            {% render_field form.numero_sigarette|attr:"disabled" class="form-control is-invalid"  %}
-            {% for error in form.numero_sigarette.errors  %}
-              <div class="invalid-feedback">
-                {{ error }}
-              </div>
-            {% endfor %}
-          {% else %}
-              {% render_field form.numero_sigarette|attr:"disabled" class="form-control is-valid"  %}
-          {% endif %}
-        {% else %}
-            {% render_field form.numero_sigarette|attr:"disabled" class="form-control"  %}
-        {% endif %}
+      <div class="form-floating  centro_griglia">
+        
+        {% render_field form.numero_sigarette|attr:"disabled" class="form-control"  %}
         <label class="font-custom" for="{{ form.numero_sigarette.id_for_label }}">{{ form.numero_sigarette.label_tag }}</label>
-      </div>
-
-      <div class="form-floating mt-2 mb-2 centro_griglia">
-        {% if form.is_bound %}
-          {% if form.delta_numero_sigarette.errors %}
-            {% render_field form.delta_numero_sigarette class="form-control is-invalid"  %}
-            {% for error in form.delta_numero_sigarette.errors  %}
-              <div class="invalid-feedback">
-                {{ error }}
-              </div>
-            {% endfor %}
-          {% else %}
-              {% render_field form.delta_numero_sigarette class="form-control is-valid"  %}
-          {% endif %}
-        {% else %}
-            {% render_field form.delta_numero_sigarette class="form-control"  %}
-        {% endif %}
-        <label class="font-custom" for="{{ form.delta_numero_sigarette.id_for_label }}">{{ form.delta_numero_sigarette.label_tag }}</label>
-      </div>
-
       
+      </div>
 
-      <div class="form-floating mt-2 mb-2">
-       
-      </div> 
+      <div class="form-floating  centro_griglia">
+        
+        {% render_field form.delta_numero_sigarette class="form-control"  %}
+        <label class="font-custom" for="{{ form.delta_numero_sigarette.id_for_label }}">{{ form.delta_numero_sigarette.label_tag }}</label>
+      
+      </div>
+
+      <div class="form-group margingruop {% if form.maiale.errors %} non_valido_contorno {% endif %} ">
+        <label class="font-custom " >{{ form.maiale.label_tag }}</label>
+        <div>
+          {% for radio in form.maiale %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.maiale.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.maiale.value %}checked{% endif %} >
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.maiale.errors %}
+            <div class="invalid-feedback">
+              {{ form.maiale.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
       {% comment %} fine riga {% endcomment %}
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.gengive.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.gengive.label_tag }}</label>
         <div>
           {% for radio in form.gengive %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.gengive.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.gengive.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.gengive.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -758,12 +754,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.tatuaggi.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.tatuaggi.label_tag }}</label>
         <div>
           {% for radio in form.tatuaggi %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.tatuaggi.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.tatuaggi.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.tatuaggi.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -777,12 +774,13 @@
         </div>
       </div>
 
-      <div class="form-group margingruop ">
+      <div class="form-group margingruop {% if form.bevi_acqua.errors %} non_valido_contorno {% endif %} ">
         <label class="font-custom " >{{ form.bevi_acqua.label_tag }}</label>
         <div>
           {% for radio in form.bevi_acqua %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.bevi_acqua.name }}" id ="{{radio.id_for_label}}">
+              <input class="form-check-input" type="radio" name="{{ form.bevi_acqua.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.bevi_acqua.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
@@ -796,7 +794,7 @@
         </div>
       </div>
 
-      <div class="form-floating mt-2 mb-2 centro_griglia">
+      <div class="form-floating  centro_griglia">
         {% if form.is_bound %}
           {% if form.litri_acqua.errors %}
             {% render_field form.litri_acqua class="form-control is-invalid"  %}
@@ -814,8 +812,501 @@
         <label class="font-custom" for="{{ form.litri_acqua.id_for_label }}">{{ form.litri_acqua.label_tag }}</label>
         
       </div>
+      {% comment %} fine riga {% endcomment %}
 
+
+      <div class="form-group margingruop {% if form.figli.errors %} non_valido_contorno {% endif %} ">
+        <label class="font-custom " >{{ form.figli.label_tag }}</label>
+        <div>
+          {% for radio in form.figli %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.figli.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.figli.value %}checked{% endif %} >
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.figli.errors %}
+            <div class="invalid-feedback">
+              {{ form.figli.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-floating  centro_griglia">
+        
+      {% render_field form.numero_figli|attr:"disabled" class="form-control"  %}
+      <label class="font-custom" for="{{ form.numero_figli.id_for_label }}">{{ form.numero_figli.label_tag }}</label>
+      
     </div>
+
+      <div class="form-group margingruop centro_griglia">
+        <label class="font-custom " >{{ form.pasto_condiviso.label_tag }}</label>
+        <div class = grid_sport>
+          {% for radio in form.pasto_condiviso %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="{{ form.pasto_condiviso.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+               {% if radio.choice_label == form.pasto_condiviso.value %}checked{% endif %}  disabled>
+              <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+                {{ radio.choice_label }}
+              </label>
+            </div>
+          {% endfor %}
+          {% if form.pasto_condiviso.errors %}
+            <div class="invalid-feedback">
+              {{ form.pasto_condiviso.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-floating ">
+       
+      </div> 
+
+      {% comment %} fine riga {% endcomment %}
+
+  
+
+    <div class="form-group margingruop {% if form.alimenti_preferiti.errors %} non_valido_contorno {% endif %}" style="grid-column: span 2;">
+      <label class="font-custom">{{ form.alimenti_preferiti.label_tag }}</label>
+      <div class ='grid_alimenti'>
+          {% for checkbox in form.alimenti_preferiti %}
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="{{ form.alimenti_preferiti.name }}" id="{{ checkbox.id_for_label }}" value="{{ checkbox.choice_label}}"
+                  {% if  checkbox.choice_label in form.alimenti_preferiti.value %}checked{% endif %}>
+                  <label class="form-check-label labelradio" for="{{ checkbox.id_for_label }}">
+                      {{ checkbox.choice_label }}
+                      
+                  </label>
+              </div>
+          {% endfor %}
+          {% if form.alimenti_preferiti.errors %}
+              <div class="invalid-feedback">
+                  {{ form.alimenti_preferiti.errors.0 }}
+              </div>
+          {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.gusti_preferiti.errors %} non_valido_contorno {% endif %} " style="grid-column: span 2;">
+      <label class="font-custom">{{ form.gusti_preferiti.label_tag }}</label>
+      <div >
+          {% for checkbox in form.gusti_preferiti %}
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="{{ form.gusti_preferiti.name }}" id="{{ checkbox.id_for_label }}" value="{{ checkbox.choice_label}}"
+                  {% if  checkbox.choice_label in form.gusti_preferiti.value %}checked{% endif %}>
+                  <label class="form-check-label labelradio" for="{{ checkbox.id_for_label }}">
+                      {{ checkbox.choice_label }}
+                  </label>
+              </div>
+          {% endfor %}
+          {% if form.gusti_preferiti.errors %}
+              <div class="invalid-feedback">
+                  {{ form.gusti_preferiti.errors.0 }}
+              </div>
+          {% endif %}
+      </div>
+    </div>
+
+  
+     {% comment %} fine riga {% endcomment %}
+
+     <div class="form-group margingruop {% if form.patologie.errors %} non_valido_contorno {% endif %} " style="grid-column: span 4;">
+      <label class="font-custom">{{ form.patologie.label_tag }}</label>
+      <div class = 'grid_patologie' >
+          {% for checkbox in form.patologie %}
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="{{ form.patologie.name }}" id="{{ checkbox.id_for_label }}" value="{{ checkbox.choice_label}}">
+                  <label class="form-check-label labelradio" for="{{ checkbox.id_for_label }}">
+                      {{ checkbox.choice_label }}
+                  </label>
+              </div>
+          {% endfor %}
+          {% if form.patologie.errors %}
+              <div class="invalid-feedback">
+                  {{ form.patologie.errors.0 }}
+              </div>
+          {% endif %}
+      </div>
+    </div>
+
+    {% comment %} fine riga {% endcomment %}
+    <div class="form-group margingruop {% if form.problemi_cardiaci.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.problemi_cardiaci.label_tag }}</label>
+      <div>
+        {% for radio in form.problemi_cardiaci %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.problemi_cardiaci.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.problemi_cardiaci.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.problemi_cardiaci.errors %}
+          <div class="invalid-feedback">
+            {{ form.problemi_cardiaci.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-floating  centro_griglia">
+     
+      {% render_field form.problem_cardiaci_tipo|attr:"disabled" class="form-control"  %}
+      <label class="font-custom" for="{{ form.problem_cardiaci_tipo.id_for_label }}">{{ form.problem_cardiaci_tipo.label_tag }}</label>
+    
+    </div>
+
+    <div class="form-group margingruop {% if form.sicura.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.sicura.label_tag }}</label>
+      <div>
+        {% for radio in form.sicura %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.sicura.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+            {% if radio.choice_label == form.sicura.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.sicura.errors %}
+          <div class="invalid-feedback">
+            {{ form.sicura.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.felice.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.felice.label_tag }}</label>
+      <div>
+        {% for radio in form.felice %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.felice.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+            {% if radio.choice_label == form.felice.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.felice.errors %}
+          <div class="invalid-feedback">
+            {{ form.felice.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% comment %} fine riga {% endcomment %}
+
+    <div class="form-group margingruop {% if form.stress.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.stress.label_tag }}</label>
+      <div>
+        {% for radio in form.stress %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.stress.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.stress.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.stress.errors %}
+          <div class="invalid-feedback">
+            {{ form.stress.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.paure.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.paure.label_tag }}</label>
+      <div>
+        {% for radio in form.paure %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.paure.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.paure.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.paure.errors %}
+          <div class="invalid-feedback">
+            {{ form.paure.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.lutti.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.lutti.label_tag }}</label>
+      <div>
+        {% for radio in form.lutti %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.lutti.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.lutti.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.lutti.errors %}
+          <div class="invalid-feedback">
+            {{ form.lutti.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.incubi.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.incubi.label_tag }}</label>
+      <div>
+        {% for radio in form.incubi %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.incubi.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.incubi.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.incubi.errors %}
+          <div class="invalid-feedback">
+            {{ form.incubi.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+     {% comment %} fine riga {% endcomment %}
+
+     <div class="form-group margingruop {% if form.stanco.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.stanco.label_tag }}</label>
+      <div>
+        {% for radio in form.stanco %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.stanco.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.stanco.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.stanco.errors %}
+          <div class="invalid-feedback">
+            {{ form.stanco.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.rabbia.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.rabbia.label_tag }}</label>
+      <div>
+        {% for radio in form.rabbia %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.rabbia.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.rabbia.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.rabbia.errors %}
+          <div class="invalid-feedback">
+            {{ form.rabbia.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.sfogo.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.sfogo.label_tag }}</label>
+      <div>
+        {% for radio in form.sfogo %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.sfogo.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.sfogo.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.sfogo.errors %}
+          <div class="invalid-feedback">
+            {{ form.sfogo.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.colpa.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.colpa.label_tag }}</label>
+      <div>
+        {% for radio in form.colpa %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.colpa.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+            {% if radio.choice_label == form.colpa.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.colpa.errors %}
+          <div class="invalid-feedback">
+            {{ form.colpa.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+     {% comment %} fine riga {% endcomment %}
+
+     <div class="form-group margingruop {% if form.piangi.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.piangi.label_tag }}</label>
+      <div>
+        {% for radio in form.piangi %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.piangi.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.piangi.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.piangi.errors %}
+          <div class="invalid-feedback">
+            {{ form.piangi.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.carattere1.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.carattere1.label_tag }}</label>
+      <div>
+        {% for radio in form.carattere1 %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.carattere1.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+            {% if radio.choice_label == form.carattere1.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.carattere1.errors %}
+          <div class="invalid-feedback">
+            {{ form.carattere1.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.carattere2.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.carattere2.label_tag }}</label>
+      <div>
+        {% for radio in form.carattere2 %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.carattere2.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"
+             {% if radio.choice_label == form.carattere2.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.carattere2.errors %}
+          <div class="invalid-feedback">
+            {{ form.carattere2.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.carattere3.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.carattere3.label_tag }}</label>
+      <div>
+        {% for radio in form.carattere3 %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.carattere3.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+            {% if radio.choice_label == form.carattere3.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.carattere3.errors %}
+          <div class="invalid-feedback">
+            {{ form.carattere3.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+     {% comment %} fine riga {% endcomment %}
+
+     <div class="form-group margingruop {% if form.determinato.errors %} non_valido_contorno {% endif %} ">
+      <label class="font-custom " >{{ form.determinato.label_tag }}</label>
+      <div class = 'grid_carattere'>
+        {% for radio in form.determinato %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.determinato.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+            {% if radio.choice_label == form.determinato.value %}checked{% endif %} >
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+        {% if form.determinato.errors %}
+          <div class="invalid-feedback">
+            {{ form.determinato.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-group margingruop {% if form.amici_dieta.errors %} non_valido_contorno {% endif %}">
+      <label class="font-custom " >{{ form.amici_dieta.label_tag }}</label>
+      <div>
+        {% for radio in form.amici_dieta %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="{{ form.amici_dieta.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}"  
+            {% if radio.choice_label == form.amici_dieta.value %}checked{% endif %}>
+            <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
+              {{ radio.choice_label }}
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+      {% if form.amici_dieta.errors %}
+        <div class="non_valido">
+          {{ form.amici_dieta.errors.0 }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="form-floating  centro_griglia">
+     
+      {% render_field form.note class="form-control"  %}
+      <label class="font-custom" for="{{ form.note.id_for_label }}">{{ form.note.label_tag }}</label>
+    
+    </div>
+  </div>
+  
+
+      <div id = 'bottoni_griglia'>
+
+        <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Continua </p></button>
+        <a href="{% url 'clienti:search_clienti' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+  
+      </div>
+
+
+    
   </form>
 </div>
 
@@ -925,22 +1416,37 @@
           }
         });
 
-    $("#id_litri_0").change(function () {
+    $("#id_figli_0").change(function () {
       // Verifica se il pulsante radio è selezionato
         if ($(this).prop('checked')) {
           // L'azione che desideri eseguire quando il pulsante radio è selezionato
-          acqua('attiva')
+          figli('attiva')
         }
       });
 
-    $("#id_litri_1").change(function () {
+    $("#id_figli_1").change(function () {
         // Verifica se il pulsante radio è selezionato
           if ($(this).prop('checked')) {
             // L'azione che desideri eseguire quando il pulsante radio è selezionato
-            acqua('disattiva')
+            figli('disattiva')
           }
         });
     
+      $("#id_problemi_cardiaci_0").change(function () {
+        // Verifica se il pulsante radio è selezionato
+          if ($(this).prop('checked')) {
+            // L'azione che desideri eseguire quando il pulsante radio è selezionato
+            problemi_cardiaci('attiva')
+          }
+        });
+  
+      $("#id_problemi_cardiaci_1").change(function () {
+          // Verifica se il pulsante radio è selezionato
+            if ($(this).prop('checked')) {
+              // L'azione che desideri eseguire quando il pulsante radio è selezionato
+              problemi_cardiaci('disattiva')
+            }
+          });
 
     $("#id_numero_sigarette").keyup(fumocalc);
 
@@ -1080,23 +1586,23 @@
 
     function sport(str) {
       
-    if (str == 'attiva')
-    {
-        $('#id_sport_praticato').prop('disabled', false);
-        $('#id_sport_praticato_giorni_0').prop('disabled', false);
-        $('#id_sport_praticato_giorni_1').prop('disabled', false);
-        $('#id_sport_praticato_giorni_2').prop('disabled', false);
-        $('#id_sport_praticato_giorni_3').prop('disabled', false);
-        $('#id_sport_praticato_giorni_4').prop('disabled', false);
-        $('#id_sport_praticato_giorni_5').prop('disabled', false);
-        $('#id_sport_praticato_giorni_6').prop('disabled', false);
-        $('#id_sport_praticato_giorni_7').prop('disabled', false);
-            
-    }
+      if (str == 'attiva')
+      {
+          $('#id_sport_praticato').prop('disabled', false);
+          $('#id_sport_praticato_giorni_0').prop('disabled', false);
+          $('#id_sport_praticato_giorni_1').prop('disabled', false);
+          $('#id_sport_praticato_giorni_2').prop('disabled', false);
+          $('#id_sport_praticato_giorni_3').prop('disabled', false);
+          $('#id_sport_praticato_giorni_4').prop('disabled', false);
+          $('#id_sport_praticato_giorni_5').prop('disabled', false);
+          $('#id_sport_praticato_giorni_6').prop('disabled', false);
+          $('#id_sport_praticato_giorni_7').prop('disabled', false);
+              
+      }
         
     
-    else
-    {
+      else
+      {
         $('#id_sport_praticato').prop('disabled', true);
         $('#id_sport_praticato').val("")
         $('#id_sport_praticato_giorni_0').prop('disabled', true);
@@ -1135,18 +1641,46 @@
       };
     };
 
-    function acqua(str) {
+    function figli(str) {
         
       if (str == 'attiva')
       {
-          $('#id_litri_acqua').prop('disabled', false);
+          $('#id_numero_figli').prop('disabled', false);
+          $('#id_pasto_condiviso_0').prop('disabled', false);
+          $('#id_pasto_condiviso_1').prop('disabled', false);
+          $('#id_pasto_condiviso_2').prop('disabled', false);
+          $('#id_pasto_condiviso_3').prop('disabled', false);
+          $('#id_pasto_condiviso_4').prop('disabled', false);
           
       }
       else
       {
-          $('#id_litri_acqua').prop('disabled', true);
-          $('#id_litri_acqua').val("");
+          $('#id_numero_figli').prop('disabled', true);
+          $('#id_numero_figli').val("");
+          $('#id_pasto_condiviso_0').prop('disabled', true);
+          $('#id_pasto_condiviso_0').prop('checked', false);
+          $('#id_pasto_condiviso_1').prop('disabled', true);
+          $('#id_pasto_condiviso_1').prop('checked', false);
+          $('#id_pasto_condiviso_2').prop('disabled', true);
+          $('#id_pasto_condiviso_2').prop('checked', false);
+          $('#id_pasto_condiviso_3').prop('disabled', true);
+          $('#id_pasto_condiviso_3').prop('checked', false);
+          $('#id_pasto_condiviso_4').prop('disabled', true);
+          $('#id_pasto_condiviso_4').prop('checked', false);
           
+      };
+    };
+
+    function problemi_cardiaci(str) {
+        
+      if (str == 'attiva')
+      {
+          $('#id_problem_cardiaci_tipo').prop('disabled', false);      
+      }
+      else
+      {
+          $('#id_problem_cardiaci_tipo').prop('disabled', true);
+          $('#id_problem_cardiaci_tipo').val("")
       };
     };
 
