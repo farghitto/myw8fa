@@ -1,5 +1,8 @@
+import pdb
 from django import forms
-
+from django.shortcuts import redirect
+from django.conf import settings
+import requests
 
 class FormCliente(forms.Form):
 
@@ -394,7 +397,10 @@ class FormChiave(forms.Form):
                              widget=forms.TextInput(
                                  attrs={'class': 'form-control font-custom', 'placeholder': 'chiave'}), error_messages={'required': 'Il cap è obbligatorio.'})
 
-
+class ChoiceFieldNoValidation(forms.MultipleChoiceField):
+    def validate(self, value):
+        pass
+    
 SCELTA = (
 
     ('Si', 'Si'),
@@ -927,7 +933,8 @@ class ModuloInformazioniForm(forms.Form):
         choices=PASTI,
         label='In genere mangiate tutti insieme a?',
         widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
-                                        'placeholder': 'In genere mangiate tutti insieme a?'})
+                                        'placeholder': 'In genere mangiate tutti insieme a?'}),
+        required=False
 
     )
 
@@ -941,13 +948,19 @@ class ModuloInformazioniForm(forms.Form):
         choices=SAPORI,
         label='Gusti Preferiti',
         widget=forms.CheckboxSelectMultiple(),
+        
     )
 
-    patologie = forms.MultipleChoiceField(
+    patologie = ChoiceFieldNoValidation(
         choices=[],
         label='Disturbi o patologie attuali?',
         widget=forms.CheckboxSelectMultiple(),
+        required=False, 
+      
     )
+    
+
+    
 
     problemi_cardiaci = forms.ChoiceField(
         choices=SCELTA,
@@ -1118,3 +1131,19 @@ class ModuloInformazioniForm(forms.Form):
             attrs={'class': 'form-control font-custom', 'placeholder': 'Note'}),
         required=False
     )
+
+
+class AlimentiForm(forms.Form):
+    def __init__(self, alimenti, *args, **kwargs):
+        super(AlimentiForm, self).__init__(*args, **kwargs)
+
+        for alimento in alimenti:
+            
+            self.fields[f'alimento_{alimento["id"]}'] =  forms.ChoiceField(
+                choices=SCELTA,
+                label=alimento['nome'],
+                widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
+                                        'placeholder': alimento['nome']}),
+                initial=None,
+                error_messages={'required': 'Il campo è obbligatorio.'},
+            )

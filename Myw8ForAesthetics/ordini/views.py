@@ -1,3 +1,4 @@
+from distutils.command import clean
 from multiprocessing import context
 from turtle import pd
 from django.shortcuts import render, redirect
@@ -14,7 +15,7 @@ import pdb
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
 from amministrazione.views import inviomailchiave, inviosms, inviomailallegato, inviomailchiaveallegato
 from .form import FormRateale
-from clienti.form import FormChiave, ModuloInformazioniForm
+from clienti.form import FormChiave, ModuloInformazioniForm, AlimentiForm
 from amministrazione.creapdfordini import moduloOrdine, moduloOrdineFirmato
 # Create your views here.
 
@@ -306,20 +307,20 @@ def modulodati_mancante(request, id):
 
     if request.method == 'POST':
         form = ModuloInformazioniForm(request.POST)
+       
 
         if form.is_valid():
 
-            a = 0
+            print (form.cleaned_data)
+            #passa al server per il salvataggio mettiamo un dato conferma al modulo che quando arrivano le mail firmate lo mette si
+            return redirect('ordini:moduloalimenti_mancante', id=id)
+            
         else:
             form.fields['patologie'].choices = choices_patologie
             context = {
                 'form': form,
-                'cliente': cliente,
-                'patologie': choices_patologie
+                'cliente': cliente,    
             }
-
-            print("Dati del form non validi:", request.POST)
-
             return render(request, 'ordini/moduloinfo.html', context)
 
     form = ModuloInformazioniForm(initial={
@@ -328,11 +329,54 @@ def modulodati_mancante(request, id):
     context = {
         'form': form,
         'cliente': cliente,
-        'patologie': choices_patologie
+        
     }
 
     return render(request, 'ordini/moduloinfo.html', context)
 
+
+def moduloalimenti_mancante(request, id):
+
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        cliente = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    
+    url_backend = settings.BASE_URL + 'cliente/listaalimenti/'
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        alimenti = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+    
+    lista_di_alimenti = alimenti
+    
+    if request.method == 'POST':
+        form = AlimentiForm(request.POST, alimenti=lista_di_alimenti)
+        if form.is_valid():
+            # Fai qualcosa con i dati del form
+            selected_alimenti = [alimento for alimento in lista_di_alimenti if form.cleaned_data[f'alimento_{alimento.id}']]
+            # Resto della tua logica...
+    else:
+        form = AlimentiForm(alimenti=lista_di_alimenti)
+
+    context = {
+        'form': form,
+        'fields': form.fields.items()
+    }
+
+    return render(request, 'ordini/moduloalimenti.html', context)
+    
+    
+    
 
 def elenco_ordini(request):
 

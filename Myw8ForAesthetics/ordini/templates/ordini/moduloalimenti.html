@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load custom_filters %}
+
+
+{% block title %} Modulo Alimenti {% endblock title %}
+{% block header %}
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text">
+        Alimenti </p>
+</div> 
+
+{% endblock header%}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/stileordini.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bottoniradio.css' %}" />
+   
+    
+{% endblock css %}
+{% block scriptlibrerie %}
+  
+{% endblock scriptlibrerie %}
+
+{% block content %}
+
+
+<div class="form-container" style = 'margin-bottom:  15%'>
+  <form  method="post" novalidate>{% csrf_token %}
+    <div class="grid-form">
+
+      
+      
+       
+        {% for field_name, field in form.fields.items %}
+
+    
+        <div class="form-group margingruop {% if field.errors %} non_valido_contorno {% endif %} ">
+          <label class="font-custom " >{{ field.label }}</label>
+          {% for choice_value, choice_label in field.choices %}
+          <input class="form-check-input" type="radio" name="{{ field_name }}" id="{{ field_name }}_{{ choice_value }}" value="{{ choice_value }}" {% if field.value == choice_value %}checked{% endif %}>
+          <label class="form-check-label labelradio" for="{{ field_name }}_{{ choice_value }}">
+            {{ choice_label }}
+          </label>
+        {% endfor %}
+            {% if field.errors %}
+              <div class="invalid-feedback">
+                {{ field.errors.0 }}
+              </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+
+
+      
+  </div>
+  
+
+      <div id = 'bottoni_griglia'>
+
+        <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Continua </p></button>
+        <a href="{% url 'clienti:search_clienti' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+  
+      </div>
+
+
+    
+  </form>
+</div>
+
+
+
+          
+
+{% endblock %}
+{% block script %}
+<script>
+  
+</script>
+
+{% endblock script %}
