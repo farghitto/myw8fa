@@ -15,6 +15,7 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/stileordini.css' %}" />
     <link rel="stylesheet" href="{% static 'css/bottoniradio.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bottonicheck.css' %}" />
    
     
 {% endblock css %}
@@ -27,45 +28,39 @@
 
 <div class="form-container" style = 'margin-bottom:  15%'>
   <form  method="post" novalidate>{% csrf_token %}
-    <div class="grid-form">
-
-      
-      
-       
-        {% for field_name, field in form.fields.items %}
-
     
-        <div class="form-group margingruop {% if field.errors %} non_valido_contorno {% endif %} ">
-          <label class="font-custom " >{{ field.label }}</label>
-          {% for choice_value, choice_label in field.choices %}
-          <input class="form-check-input" type="radio" name="{{ field_name }}" id="{{ field_name }}_{{ choice_value }}" value="{{ choice_value }}" {% if field.value == choice_value %}checked{% endif %}>
-          <label class="form-check-label labelradio" for="{{ field_name }}_{{ choice_value }}">
-            {{ choice_label }}
-          </label>
-        {% endfor %}
-            {% if field.errors %}
-              <div class="invalid-feedback">
-                {{ field.errors.0 }}
+
+      {% regroup alimenti by classe_alimenti as alimenti_per_classe %}
+
+      {% for classe_alimenti_group in alimenti_per_classe %}
+      <label class="purple_rect font_gruppi mt-3" >{{ classe_alimenti_group.grouper }}</label>
+      <div class="grid-form">
+      
+        {% for alimento in classe_alimenti_group.list|dictsort:'nome' %}
+          <div class="form-group alimentigruop  ">
+            <label class="font_alimento " >{{ alimento.nome }}</label>
+            <div>
+              <div class="button r" id="button-1">
+                <input type="checkbox" name="alimenti_selezionati"  value="{{ alimento.id }}" class="checkbox" />
+                <div class="knobs"></div>
+                <div class="layer"></div>
               </div>
-            {% endif %}
-          </div>
-          {% endfor %}
-        </div>
-
-
-      
-  </div>
-  
-
-      <div id = 'bottoni_griglia'>
-
-        <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Continua </p></button>
-        <a href="{% url 'clienti:search_clienti' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
-  
+            </div>
+          </div>  
+         
+        {% endfor %}
       </div>
+   
+          
+      {% endfor %}  
 
 
-    
+    <div id = 'bottoni_griglia'>
+
+      <button id= 'button_crea' class="bottone_viola" type="submit"><p id = 'menu_text_button'> Continua </p></button>
+      <a href="{% url 'clienti:search_clienti' %}" id= 'button_esci' class="btn bottone_viola"><p id = 'menu_text_button'> Esci senza salvare </p></a>
+
+    </div>
   </form>
 </div>
 

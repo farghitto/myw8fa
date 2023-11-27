@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.conf import settings
 import requests
 
+
 class FormCliente(forms.Form):
 
     nome = forms.CharField(max_length=100, label='Nome:',
@@ -397,10 +398,12 @@ class FormChiave(forms.Form):
                              widget=forms.TextInput(
                                  attrs={'class': 'form-control font-custom', 'placeholder': 'chiave'}), error_messages={'required': 'Il cap è obbligatorio.'})
 
+
 class ChoiceFieldNoValidation(forms.MultipleChoiceField):
     def validate(self, value):
         pass
-    
+
+
 SCELTA = (
 
     ('Si', 'Si'),
@@ -948,19 +951,16 @@ class ModuloInformazioniForm(forms.Form):
         choices=SAPORI,
         label='Gusti Preferiti',
         widget=forms.CheckboxSelectMultiple(),
-        
+
     )
 
     patologie = ChoiceFieldNoValidation(
         choices=[],
         label='Disturbi o patologie attuali?',
         widget=forms.CheckboxSelectMultiple(),
-        required=False, 
-      
-    )
-    
+        required=False,
 
-    
+    )
 
     problemi_cardiaci = forms.ChoiceField(
         choices=SCELTA,
@@ -1138,12 +1138,11 @@ class AlimentiForm(forms.Form):
         super(AlimentiForm, self).__init__(*args, **kwargs)
 
         for alimento in alimenti:
-            
-            self.fields[f'alimento_{alimento["id"]}'] =  forms.ChoiceField(
-                choices=SCELTA,
+
+            self.fields[f'alimento_{alimento["id"]}'] = forms.CharField(
+
                 label=alimento['nome'],
-                widget=forms.RadioSelect(attrs={'class': 'form-control font-custom',
-                                        'placeholder': alimento['nome']}),
+    
                 initial=None,
                 error_messages={'required': 'Il campo è obbligatorio.'},
             )

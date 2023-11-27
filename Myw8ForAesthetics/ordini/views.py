@@ -307,19 +307,18 @@ def modulodati_mancante(request, id):
 
     if request.method == 'POST':
         form = ModuloInformazioniForm(request.POST)
-       
 
         if form.is_valid():
 
-            print (form.cleaned_data)
-            #passa al server per il salvataggio mettiamo un dato conferma al modulo che quando arrivano le mail firmate lo mette si
+            print(form.cleaned_data)
+            # passa al server per il salvataggio mettiamo un dato conferma al modulo che quando arrivano le mail firmate lo mette si
             return redirect('ordini:moduloalimenti_mancante', id=id)
-            
+
         else:
             form.fields['patologie'].choices = choices_patologie
             context = {
                 'form': form,
-                'cliente': cliente,    
+                'cliente': cliente,
             }
             return render(request, 'ordini/moduloinfo.html', context)
 
@@ -329,7 +328,7 @@ def modulodati_mancante(request, id):
     context = {
         'form': form,
         'cliente': cliente,
-        
+
     }
 
     return render(request, 'ordini/moduloinfo.html', context)
@@ -346,7 +345,7 @@ def moduloalimenti_mancante(request, id):
         cliente = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-    
+
     url_backend = settings.BASE_URL + 'cliente/listaalimenti/'
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
@@ -356,27 +355,21 @@ def moduloalimenti_mancante(request, id):
         alimenti = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-    
+
     lista_di_alimenti = alimenti
-    
+
     if request.method == 'POST':
-        form = AlimentiForm(request.POST, alimenti=lista_di_alimenti)
-        if form.is_valid():
-            # Fai qualcosa con i dati del form
-            selected_alimenti = [alimento for alimento in lista_di_alimenti if form.cleaned_data[f'alimento_{alimento.id}']]
-            # Resto della tua logica...
-    else:
-        form = AlimentiForm(alimenti=lista_di_alimenti)
+        
+        alimenti_selezionati = request.POST.getlist('alimenti_selezionati')
 
     context = {
-        'form': form,
-        'fields': form.fields.items()
+
+        'alimenti': lista_di_alimenti
+
     }
 
     return render(request, 'ordini/moduloalimenti.html', context)
-    
-    
-    
+
 
 def elenco_ordini(request):
 
