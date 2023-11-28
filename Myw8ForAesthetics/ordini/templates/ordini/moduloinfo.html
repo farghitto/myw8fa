@@ -347,23 +347,18 @@
         </div>
       </div>
 
-      <div class="form-group margingruop">
+      <div class="form-group margingruop {% if form.tipo_diabete.errors %} non_valido_contorno {% endif %}">
         <label class="font-custom " >{{ form.tipo_diabete.label_tag }}</label>
         <div>
           {% for radio in form.tipo_diabete %}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="{{ form.tipo_diabete.name }}" id ="{{radio.id_for_label}}" 
-               {% if radio.choice_label == form.tipo_diabete.value %}checked{% endif %}  disabled >
+              <input class="form-check-input" type="radio" name="{{ form.tipo_diabete.name }}" id ="{{radio.id_for_label}}" value="{{ radio.choice_label}}" 
+              {% if radio.choice_label == form.tipo_diabete.value %}checked{% endif %} >
               <label class="form-check-label labelradio" for = {{radio.id_for_label}}>
                 {{ radio.choice_label }}
               </label>
             </div>
           {% endfor %}
-          {% if form.tipo_diabete.errors %}
-            <div class="invalid-feedback">
-              {{ form.tipo_diabete.errors.0 }}
-            </div>
-          {% endif %}
         </div>
       </div>
 
@@ -469,6 +464,9 @@
           {% endif %}
         </div>
       </div>
+      {% else %}
+        <input type="hidden" name="{{ form.menopausa.name }}" value="M">
+        <input type="hidden" name="{{ form.gravidanza.name }}" value="M">
       {% endif %}
 
       
@@ -1320,6 +1318,8 @@
 <script>
   $(document).ready(function(){
 
+    
+
     $("#id_peso_attuale").focusout(calc);
     $("#id_diabete_0").change(function () {
       // Verifica se il pulsante radio è selezionato
@@ -1451,7 +1451,51 @@
 
     $("#id_numero_sigarette").keyup(fumocalc);
 
+    function controllo()
+    {
+      if ($("#id_diabete_0").prop('checked')) 
+      {
+        diabete('attiva')
+      }
 
+      if ($("#id_gravidanza_0").prop('checked')) 
+      {
+        gravidanza('attiva')
+      }
+
+      if ($("#id_farmaci_0").prop('checked')) 
+      {
+        farmaci('attiva')
+      }
+        
+      if ($("#id_allergie_0").prop('checked'))
+      {
+        allergia('attiva')
+      }
+
+      if ($("#id_sport_0").prop('checked'))
+      {
+        sport('attiva')
+      }
+
+      if ($("#id_figli_0").prop('checked'))
+      {
+        figli('attiva')
+      }
+
+      if ($("#id_fumo_0").prop('checked'))
+      {
+        fumo('attiva')
+        fumocalc
+      }
+
+      if ($("#id_problemi_cardiaci_0").prop('checked'))
+      {
+        problemi_cardiaci('attiva')
+      }
+      
+    }
+    
 
     function calc() {
 
@@ -1696,6 +1740,10 @@
 
   }
     
+  window.addEventListener("load", function() {
+    // La tua funzione da eseguire dopo il caricamento completo della pagina
+    controllo();
+});
 
 
   })

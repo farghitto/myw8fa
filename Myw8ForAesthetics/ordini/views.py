@@ -311,6 +311,7 @@ def modulodati_mancante(request, id):
         if form.is_valid():
 
             print(form.cleaned_data)
+            pdb.set_trace()
             # passa al server per il salvataggio mettiamo un dato conferma al modulo che quando arrivano le mail firmate lo mette si
             return redirect('ordini:moduloalimenti_mancante', id=id)
 
@@ -320,6 +321,7 @@ def modulodati_mancante(request, id):
                 'form': form,
                 'cliente': cliente,
             }
+            print(form.errors)
             return render(request, 'ordini/moduloinfo.html', context)
 
     form = ModuloInformazioniForm(initial={
@@ -359,7 +361,7 @@ def moduloalimenti_mancante(request, id):
     lista_di_alimenti = alimenti
 
     if request.method == 'POST':
-        
+
         alimenti_selezionati = request.POST.getlist('alimenti_selezionati')
 
     context = {

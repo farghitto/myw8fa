@@ -462,7 +462,7 @@ GIORNI = (
 )
 
 GRUPPO = (
-    ('N', 'Non so'),
+    ('Non so', 'Non so'),
     ('0', '0'),
     ('A', 'A'),
     ('B', 'B'),
@@ -536,25 +536,25 @@ GIORNATA = (
 )
 
 DETERMINATO = (
-    (0, '0'),
-    (1, '1'),
-    (2, '2'),
-    (3, '3'),
-    (4, '4'),
-    (5, '5'),
-    (6, '6'),
-    (7, '7'),
-    (8, '8'),
-    (9, '9'),
-    (10, '10')
+    ('0', '0'),
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+    ('6', '6'),
+    ('7', '7'),
+    ('8', '8'),
+    ('9', '9'),
+    ('10', '10')
 )
 
 PASTI = (
-    (1, 'Sempre'),
-    (2, 'Colazione'),
-    (3, 'Pranzo'),
-    (4, 'Cena'),
-    (5, 'Mai')
+    ('Sempre', 'Sempre'),
+    ('Colazione', 'Colazione'),
+    ('Pranzo', 'Pranzo'),
+    ('Cena', 'Cena'),
+    ('Mai', 'Mai')
 
 )
 
@@ -1132,6 +1132,20 @@ class ModuloInformazioniForm(forms.Form):
         required=False
     )
 
+    def clean(self):
+
+        cleaned_data = super().clean()
+        menopausa = cleaned_data.get('menopausa')
+        gravidanza = cleaned_data.get('gravidanza')
+
+        if not menopausa:
+            self.errors['menopausa'] = ['Questo campo è obbligatorio']
+
+        if not gravidanza:
+            self.errors['gravidanza'] = ['Questo campo è obbligatorio']
+
+        return cleaned_data
+
 
 class AlimentiForm(forms.Form):
     def __init__(self, alimenti, *args, **kwargs):
@@ -1142,7 +1156,7 @@ class AlimentiForm(forms.Form):
             self.fields[f'alimento_{alimento["id"]}'] = forms.CharField(
 
                 label=alimento['nome'],
-    
+
                 initial=None,
                 error_messages={'required': 'Il campo è obbligatorio.'},
             )
