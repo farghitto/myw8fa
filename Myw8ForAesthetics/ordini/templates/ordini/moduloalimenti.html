@@ -39,14 +39,23 @@
         {% for alimento in classe_alimenti_group.list|dictsort:'nome' %}
           <div class="form-group alimentigruop  ">
             <label class="font_alimento " >{{ alimento.nome }}</label>
+          
+            <div class="inputGroup" id="checkbuttongroup-{{ alimento.id }}" style="display: none;">
+              <input type='checkbox' name="allergia" id="checkbutton-{{ alimento.id }}" value="{{ alimento.id }}" />
+              <label for="checkbutton-{{ alimento.id }}">Allergia</label>
+            </div>
             <div>
               <div class="button r" id="button-1">
-                <input type="checkbox" name="alimenti_selezionati"  value="{{ alimento.id }}" class="checkbox" />
+                <input type="checkbox" name="alimenti_selezionati"  value="{{ alimento.id }}" class="checkbox" onchange="showButton(this)" />
                 <div class="knobs"></div>
                 <div class="layer"></div>
               </div>
             </div>
+            
+   
           </div>  
+
+          
          
         {% endfor %}
       </div>
@@ -71,7 +80,16 @@
 {% endblock %}
 {% block script %}
 <script>
-  
+  function showButton(checkbox) {
+    var radiobuttonId = "checkbuttongroup-" + checkbox.value;
+    var radiobutton = document.getElementById(radiobuttonId);
+
+    if (checkbox.checked) {
+        radiobutton.style.display = "inline-block"; // Mostra il radiobutton
+    } else {
+        radiobutton.style.display = "none"; // Nascondi il radiobutton
+    }
+}
 </script>
 
 {% endblock script %}

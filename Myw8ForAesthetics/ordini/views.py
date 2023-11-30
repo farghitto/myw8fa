@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from datetime import datetime
 
 import requests
+import re
 import pdb
 
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
@@ -273,6 +274,7 @@ def invio_ordine(request, id):
 
 def modulodati_mancante(request, id):
 
+    #richiesta cliente
     url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
@@ -282,7 +284,7 @@ def modulodati_mancante(request, id):
         cliente = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-
+    #richiesta patologie nel sistema
     url_backend = settings.BASE_URL + 'cliente/listapatologie/'
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
@@ -293,6 +295,7 @@ def modulodati_mancante(request, id):
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
+    #suddivido patologie per sesso
     patologie_da_mostrare = []
 
     for patologia in patologie:
@@ -309,11 +312,93 @@ def modulodati_mancante(request, id):
         form = ModuloInformazioniForm(request.POST)
 
         if form.is_valid():
+            
+            id_numerici_patologie = [int(patologia.split('_')[-1]) for patologia in form.cleaned_data['patologie']]
+            
+            dati = {
+                    'cliente' : cliente['id'],
+                    'professione': form.cleaned_data['professione'],
+                    'stato_civile': form.cleaned_data['stato_civile'],
+                    'maggiorenne': form.cleaned_data['maggiorenne'],
+                    'peso_attuale': form.cleaned_data['peso_attuale'],
+                    'altezza': form.cleaned_data['altezza'],
+                    'bmi': form.cleaned_data['bmi'],
+                    'stato_attuale': form.cleaned_data['stato_attuale'],
+                    'peso_ottimale': form.cleaned_data['peso_ottimale'],
+                    'scostamento_peso': form.cleaned_data['scostamento_peso'],
+                    'peso_desiderato': form.cleaned_data['peso_desiderato'],
+                    'struttura_fisica': form.cleaned_data['struttura_fisica'],
+                    'struttura_desiderata': form.cleaned_data['struttura_desiderata'],
+                    'pressione_arteriosa': form.cleaned_data['pressione_arteriosa'],
+                    'diabete': form.cleaned_data['diabete'],
+                    'tipo_diabete': form.cleaned_data['tipo_diabete'],
+                    'menopausa': form.cleaned_data['menopausa'],
+                    'gravidanza': form.cleaned_data['gravidanza'],
+                    'mesi_gravidanza': form.cleaned_data['mesi_gravidanza'],
+                    'rapporto_corpo': form.cleaned_data['rapporto_corpo'],
+                    'droghe': form.cleaned_data['droghe'],
+                    'allergie': form.cleaned_data['allergie'],
+                    'allergie_elenco': form.cleaned_data['allergie_elenco'],
+                    'farmaci': form.cleaned_data['farmaci'],
+                    'farmaci_elenco': form.cleaned_data['farmaci_elenco'],
+                    'sport': form.cleaned_data['sport'],
+                    'sport_praticato': form.cleaned_data['sport_praticato'],
+                    'sport_praticato_giorni': form.cleaned_data['sport_praticato_giorni'],
+                    'gruppo_sanguigno': form.cleaned_data['gruppo_sanguigno'],
+                    'insonnia': form.cleaned_data['insonnia'],
+                    'stitichezza': form.cleaned_data['stitichezza'],
+                    'fame_nervosa': form.cleaned_data['fame_nervosa'],
+                    'fumo': form.cleaned_data['fumo'],
+                    'numero_sigarette': form.cleaned_data['numero_sigarette'],
+                    'delta_numero_sigarette': form.cleaned_data['delta_numero_sigarette'],
+                    'gengive': form.cleaned_data['gengive'],
+                    'tatuaggi': form.cleaned_data['tatuaggi'],
+                    'bevi_acqua': form.cleaned_data['bevi_acqua'],
+                    'litri_acqua': form.cleaned_data['litri_acqua'],
+                    'filosofia_alimentare': form.cleaned_data['filosofia_alimentare'],
+                    'maiale': form.cleaned_data['maiale'],
+                    'figli': form.cleaned_data['figli'],
+                    'numero_figli': form.cleaned_data['numero_figli'],
+                    'pasto_condiviso': form.cleaned_data['pasto_condiviso'],
+                    'alimenti_preferiti': ', '.join(form.cleaned_data['alimenti_preferiti']),
+                    'gusti_preferiti': ', '.join(form.cleaned_data['gusti_preferiti']),
+                    'patologie': id_numerici_patologie,
+                    'problemi_cardiaci': form.cleaned_data['problemi_cardiaci'],
+                    'problem_cardiaci_tipo': form.cleaned_data['problem_cardiaci_tipo'],
+                    'sicura': form.cleaned_data['sicura'],
+                    'felice': form.cleaned_data['felice'],
+                    'stress': form.cleaned_data['stress'],
+                    'paure': form.cleaned_data['paure'],
+                    'lutti': form.cleaned_data['lutti'],
+                    'incubi': form.cleaned_data['incubi'],
+                    'stanco': form.cleaned_data['stanco'],
+                    'rabbia': form.cleaned_data['rabbia'],
+                    'sfogo': form.cleaned_data['sfogo'],
+                    'colpa': form.cleaned_data['colpa'],
+                    'piangi': form.cleaned_data['piangi'],
+                    'carattere1': form.cleaned_data['carattere1'],
+                    'carattere2': form.cleaned_data['carattere2'],
+                    'carattere3': form.cleaned_data['carattere3'],
+                    'determinato': form.cleaned_data['determinato'],
+                    'amici_dieta': form.cleaned_data['amici_dieta'],
+                    'note': form.cleaned_data['note'],
+                }
 
-            print(form.cleaned_data)
-            pdb.set_trace()
-            # passa al server per il salvataggio mettiamo un dato conferma al modulo che quando arrivano le mail firmate lo mette si
-            return redirect('ordini:moduloalimenti_mancante', id=id)
+           
+            # Effettua la richiesta POST all'API
+            url_backend = settings.BASE_URL + 'cliente/inserisciinfo/'
+            headers = {
+                "Authorization": f"Token {request.session['auth_token']}"
+            }
+            response = requests.post(
+                url_backend, json=dati, headers=headers)
+            
+            if response.status_code == 201:  # Status code per "Created"
+
+                return redirect('ordini:moduloalimenti_mancante', id=id)
+            elif response.status_code >= 400:
+                return redirect('erroreserver', status_code=response.status_code, text=response.text)
+            
 
         else:
             form.fields['patologie'].choices = choices_patologie
@@ -338,13 +423,13 @@ def modulodati_mancante(request, id):
 
 def moduloalimenti_mancante(request, id):
 
-    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+    url_backend = settings.BASE_URL + 'cliente/gusti/'+str(id)+'/'
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
     }
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
-        cliente = response.json()
+        gusti = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
@@ -357,16 +442,34 @@ def moduloalimenti_mancante(request, id):
         alimenti = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-
+    
+    
+        
+    
     lista_di_alimenti = alimenti
+    
+    if gusti['filosofia_alimentare'] == 'Vegetariano':
+        
+        elementi_da_rimuovere = ['Agnello', 'Coniglio', 'Crostacei','Maiale', 'Manzo', 'Molluschi', 'Pesce', 'Pollo', 'Tacchino', 'Vitello']
 
+    # Filtra gli elementi rimuovendo quelli con 'nome' o 'classe_alimenti' nei valori da rimuovere
+        lista_di_alimenti_filtrata = [alimento for alimento in lista_di_alimenti if  alimento['classe_alimenti'] not in elementi_da_rimuovere]
+    else:
+        if  gusti['maile'] == 'No':
+            
+            lista_di_alimenti_filtrata = [alimento for alimento in lista_di_alimenti if alimento['classe_alimenti'] != 'Maiale']
+        else:
+            
+            lista_di_alimenti_filtrata = lista_di_alimenti
+        
+         
     if request.method == 'POST':
 
         alimenti_selezionati = request.POST.getlist('alimenti_selezionati')
 
     context = {
 
-        'alimenti': lista_di_alimenti
+        'alimenti': lista_di_alimenti_filtrata
 
     }
 
