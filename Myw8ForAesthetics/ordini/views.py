@@ -444,8 +444,6 @@ def moduloalimenti_mancante(request, id):
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
     
     
-        
-    
     lista_di_alimenti = alimenti
     
     if gusti['filosofia_alimentare'] == 'Vegetariano':
@@ -466,7 +464,37 @@ def moduloalimenti_mancante(request, id):
     if request.method == 'POST':
 
         alimenti_selezionati = request.POST.getlist('alimenti_selezionati')
+        allergia = request.POST.getlist('allergia')
 
+        for alimento in alimenti_selezionati:   
+            if alimento in allergia :
+                pericolo = True
+            else:
+                pericolo = False    
+                
+            dati = {
+                'cliente' : id,
+                'alimento' : alimento,
+                'allergia' : pericolo       
+            }
+            
+            url_backend = settings.BASE_URL + 'cliente/inserimentogusti/'
+            headers = {
+                "Authorization": f"Token {request.session['auth_token']}"
+            }
+            response = requests.post(
+                url_backend, json=dati, headers=headers)
+            
+        if response.status_code == 201:  # Status code per "Created"
+
+                return redirect('ordini:moduloalimenti_mancante', id=id)
+        elif response.status_code >= 400:
+                return redirect('erroreserver', status_code=response.status_code, text=response.text)
+            
+        
+        
+    
+    
     context = {
 
         'alimenti': lista_di_alimenti_filtrata

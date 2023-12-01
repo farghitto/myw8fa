@@ -14,7 +14,7 @@
 {% endblock header%}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/stileordini.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bottoniradio.css' %}" />
+
     <link rel="stylesheet" href="{% static 'css/bottonicheck.css' %}" />
    
     
@@ -38,12 +38,14 @@
       
         {% for alimento in classe_alimenti_group.list|dictsort:'nome' %}
           <div class="form-group alimentigruop  ">
+            <div class ="row_allign">
             <label class="font_alimento " >{{ alimento.nome }}</label>
           
             <div class="inputGroup" id="checkbuttongroup-{{ alimento.id }}" style="display: none;">
               <input type='checkbox' name="allergia" id="checkbutton-{{ alimento.id }}" value="{{ alimento.id }}" />
-              <label for="checkbutton-{{ alimento.id }}">Allergia</label>
+              <label for="checkbutton-{{ alimento.id }}"  class="custom-checkbox">Allergia</label>
             </div>
+          </div>
             <div>
               <div class="button r" id="button-1">
                 <input type="checkbox" name="alimenti_selezionati"  value="{{ alimento.id }}" class="checkbox" onchange="showButton(this)" />
