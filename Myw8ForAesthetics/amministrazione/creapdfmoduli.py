@@ -1,3 +1,4 @@
+from turtle import pd
 from PyPDF2 import PdfWriter, PdfReader
 
 from reportlab.pdfgen import canvas
@@ -13,6 +14,7 @@ import pdb
 
 from django.shortcuts import redirect
 from django.conf import settings
+from django.core.paginator import Paginator
 
 
 
@@ -28,7 +30,7 @@ def moduloDati (request, id):
     #
 
     # richiama dati
-    url_backend = settings.BASE_URL + 'clienti/datimoduloinfopdf/'+str(id)
+    url_backend = settings.BASE_URL + 'cliente/datimoduloinfopdf/'+str(id)
     headers = {"Authorization": f"Token {request.session['auth_token']}"}
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
@@ -496,41 +498,58 @@ def moduloAlimenti (request, id):
     output = PdfWriter()
 
      # richiama dati
-    url_backend = settings.BASE_URL + 'clienti/datimoduloalimentipdf/'+str(id)
+    url_backend = settings.BASE_URL + 'cliente/datimoduloalimentipdf/'+str(id)
     headers = {"Authorization": f"Token {request.session['auth_token']}"}
     response = requests.get(url_backend, headers=headers)
     if response.status_code == 200:
         dati = response.json()
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
-
     
-    gusti = GustiClienti.objects.filter(cliente = cliente)
-    alimenti = Alimenti.objects.all().order_by('classe_alimenti','nome')
+    url_backend = settings.BASE_URL + 'cliente/listaalimenti/'
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    response = requests.get(url_backend, headers=headers)
+    if response.status_code == 200:
+        alimenti = response.json()
+    elif response.status_code >= 400:
+        return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
 
     #anagrafica
     data=[]
     classealimento = ''
 
+    #per tutti gli alimenti presenti nella lista
+    for alimento in alimenti:     
+        #se l'alimento selezionato a una classe alimebnto diversa da quella che stiamo considerando prendo la sua classe come titolo
+        #e la cambio, altrimenti rimango con quella che ho
+        if alimento['classe_alimenti'] != classealimento:
 
-    for alimento in alimenti:
-
-        if alimento.classe_alimenti != classealimento:
-
-            riga = [str(alimento.classe_alimenti).upper(),' ']
+            riga = [str(alimento['classe_alimenti']).upper(),' ']
             data.append(riga)
-            classealimento = alimento.classe_alimenti
+            classealimento = alimento['classe_alimenti']
 
+        #se l'alimento è stato scartato esso sara nella lista degli alimenti del cliente
+        
+        # contiene tutti gli elementi scartati dal cliente
+        gusti_alimenti = dati['gusti_alimenti']
+        
+        alimento_da_verificare =  alimento['id']
 
-        alimentogusto = gusti.filter( alimento = alimento)
-        if alimentogusto:
-
-
-            riga = [str(alimento.nome), str(alimentogusto.first().specifica)]
+        # Verifica se c'è un elemento con 'alimento' uguale a 28
+        alimento_presente = next((gusto for gusto in gusti_alimenti if gusto['alimento'] == alimento_da_verificare), None)
+        if alimento_presente:
+            #vediamo se è allergico o no
+            if alimento_presente['allergia']:
+                riga = [str(alimento['nome']), str('A')]
+            else:
+                riga = [str(alimento['nome']), str('N')]
             data.append(riga)
         else:
-            riga = [str(alimento.nome), 'G']
+            #se non è presente è gradito
+            riga = [str(alimento['nome']), 'G']
             data.append(riga)
 
 
@@ -613,8 +632,8 @@ def moduloAlimenti (request, id):
         if not page.has_previous():
 
             #prima riga x,y partendo dall'angolo in basso a sinistra
-            can.drawString(110,755, cliente.nome)
-            can.drawString(368,755, cliente.cognome)
+            can.drawString(110,755, dati['cliente']['nome'])
+            can.drawString(368,755, dati['cliente']['cognome'])
 
             x = 30
 
@@ -644,14 +663,14 @@ def moduloAlimenti (request, id):
             can.save()
             packet.seek(0)
 
-            new_pdf = PdfFileReader(packet)
+            new_pdf = PdfReader(packet)
             # read your existing PDF
-            existing_pdf = PdfFileReader(open("static/Modulo_Alimenti_automatico.pdf", "rb"))
+            existing_pdf = PdfReader(open("static\static_file\modulo_alimenti.pdf", "rb"))
 
             # add the "watermark" (which is the new pdf) on the existing page
-            pagina = existing_pdf.getPage(0)
-            pagina.mergePage(new_pdf.getPage(0))
-            output.addPage(pagina)
+            pagina = existing_pdf.pages[0]
+            pagina.merge_page(new_pdf.pages[0])
+            output.add_page(pagina)
 
         #--------------------------------------------------------------
         #ultima pagina
@@ -683,7 +702,7 @@ def moduloAlimenti (request, id):
             tabella.drawOn(can, x,y_dinamico)
 
             #legeenda tabella
-            can.drawString(100,310, 'G = GRADITO     A = ALLERGIA    I = INTOLLERANZA    N = NON GRADITO')
+            can.drawString(100,310, 'G = GRADITO       A = ALLERGIA       N = NON GRADITO')
 
               #privacy
             can.drawString(292,86, 'X')
@@ -695,14 +714,15 @@ def moduloAlimenti (request, id):
             can.save()
             packet.seek(1)
 
-            new_pdf = PdfFileReader(packet)
+            new_pdf = PdfReader(packet)
             # read your existing PDF
-            existing_pdf = PdfFileReader(open("static/Modulo_Alimenti_automatico.pdf", "rb"))
+            existing_pdf = PdfReader(open("static\static_file\modulo_alimenti.pdf", "rb"))
 
             # add the "watermark" (which is the new pdf) on the existing page
-            pagina = existing_pdf.getPage(2)
-            pagina.mergePage(new_pdf.getPage(0))
-            output.addPage(pagina)
+            pagina = existing_pdf.pages[2]
+            
+            pagina.merge_page(new_pdf.pages[0])
+            output.add_page(pagina)
 
         else:
                 #--------------------------------------------------------------
@@ -737,17 +757,44 @@ def moduloAlimenti (request, id):
                 can.save()
                 packet.seek(2)
 
-                new_pdf = PdfFileReader(packet)
+                new_pdf = PdfReader(packet)
                 # read your existing PDF
-                existing_pdf = PdfFileReader(open("static/Modulo_Alimenti_automatico.pdf", "rb"))
+                existing_pdf = PdfReader(open("static\static_file\modulo_alimenti.pdf", "rb"))
 
                 # add the "watermark" (which is the new pdf) on the existing page
-                pagina = existing_pdf.getPage(1)
-                pagina.mergePage(new_pdf.getPage(0))
-                output.addPage(pagina)
+                pagina = existing_pdf.pages[1]
+                pagina.merge_page(new_pdf.pages[0])
+                output.add_page(pagina)
 
 
+    
+    
+    cartella_destinazione = 'pdf/' + str(dati['cliente']['codice_fiscale'])
 
-    outputStream = open('temporary/' + cliente.codice_fiscale + "-alimenti.pdf", "wb")
+    # Verifica e crea la cartella se non esiste
+    if not os.path.exists(cartella_destinazione):
+        try:
+            os.makedirs(cartella_destinazione)
+
+        except OSError as e:
+            print(
+                f"Errore durante la creazione della cartella '{cartella_destinazione}': {e}")
+
+    
+    nome_file_pdf = f"moduloalimenti-{dati['cliente']['cognome']}.pdf"
+
+    percorso_completo_pdf = os.path.join(cartella_destinazione, nome_file_pdf)
+
+    outputStream = open(percorso_completo_pdf, "wb")
     output.write(outputStream)
     outputStream.close()
+    
+    
+    indirizzo_allegati = {
+        'file_modulo_alimenti' : percorso_completo_pdf,
+    }  
+    
+    return indirizzo_allegati
+
+
+   

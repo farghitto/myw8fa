@@ -464,35 +464,69 @@ def moduloalimenti_mancante(request, id):
          
     if request.method == 'POST':
 
+        #se non ci sono elementi selezionati deve passare alla prossima pagina
         alimenti_selezionati = request.POST.getlist('alimenti_selezionati')
-        allergia = request.POST.getlist('allergia')
+        if not alimenti_selezionati:
+            return redirect('ordini:invio_moduli_mail', id=id)
+        else:
+            allergia = request.POST.getlist('allergia')
 
-        for alimento in alimenti_selezionati:   
-            if alimento in allergia :
-                pericolo = True
-            else:
-                pericolo = False    
+            for alimento in alimenti_selezionati:   
+                if alimento in allergia :
+                    pericolo = True
+                else:
+                    pericolo = False    
+                    
+                dati = {
+                    'cliente' : id,
+                    'alimento' : alimento,
+                    'allergia' : pericolo       
+                }
                 
-            dati = {
-                'cliente' : id,
-                'alimento' : alimento,
-                'allergia' : pericolo       
-            }
+                url_backend = settings.BASE_URL + 'cliente/inserimentogusti/'
+                headers = {
+                    "Authorization": f"Token {request.session['auth_token']}"
+                }
+                response = requests.post(
+                    url_backend, json=dati, headers=headers)
+                #puo dare errore per ogni inserimento 
+                if response.status_code >= 400:
+                    return redirect('erroreserver', status_code=response.status_code, text=response.text)
             
-            url_backend = settings.BASE_URL + 'cliente/inserimentogusti/'
-            headers = {
-                "Authorization": f"Token {request.session['auth_token']}"
-            }
-            response = requests.post(
-                url_backend, json=dati, headers=headers)
+            #se è vegetariano inserisco in automatico gli elementi non graditi
+            if gusti['filosofia_alimentare'] == 'Vegetariano':
+                
+                lista_di_alimenti_da_eliminare = [alimento for alimento in lista_di_alimenti if  alimento['classe_alimenti'] in elementi_da_rimuovere]
+            #elimino il maiale
+            elif gusti['maile'] == 'No':
+                
+                lista_di_alimenti_da_eliminare = [alimento for alimento in lista_di_alimenti if alimento['classe_alimenti'] == 'Maiale']
             
-        if response.status_code == 201:  # Status code per "Created"
+            else:
+                lista_di_alimenti_da_eliminare = []
 
-                return redirect('ordini:invio_moduli_mail', id=id)
-        elif response.status_code >= 400:
-                return redirect('erroreserver', status_code=response.status_code, text=response.text)
-            
-    
+            if lista_di_alimenti_da_eliminare:
+                for alimento in lista_di_alimenti_da_eliminare:   
+                
+                    dati = {
+                        'cliente' : id,
+                        'alimento' : alimento,
+                        'allergia' : False       
+                    }
+                    
+                    url_backend = settings.BASE_URL + 'cliente/inserimentogusti/'
+                    headers = {
+                        "Authorization": f"Token {request.session['auth_token']}"
+                    }
+                    response = requests.post(
+                        url_backend, json=dati, headers=headers)
+                    #puo dare errore per ogni inserimento 
+                    if response.status_code >= 400:
+                        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+       
+
+            return redirect('ordini:invio_moduli_mail', id=id)
+
     context = {
 
         'alimenti': lista_di_alimenti_filtrata
@@ -517,8 +551,9 @@ def invio_moduli(request, id):
             # idemail invio ordine
             idemail = 1
             percorso1 = moduloDati(request, id)
-            pdb.set_trace()
+            
             percorso2 = moduloAlimenti(request, id)
+            pdb.set_trace()
             
             risposta = inviomailchiaveallegato(
                 request, chiave, percorso, id, idemail)
