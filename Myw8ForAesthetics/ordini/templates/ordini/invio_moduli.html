@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Invio Moduli {% endblock title %}
+{% block header %}
+    <div id="text_header_rect" class = 'purple_rect' style='visibility: hidden'>
+        <p id="text_header" class="text"></p>
+    </div>
+
+{% endblock header%}
+{% block css %}
+ 
+    <link rel="stylesheet" href="{% static 'css/invio.css' %}" />
+{% endblock css %}
+{% block scriptlibrerie %}
+  
+{% endblock scriptlibrerie %}
+
+{% block content %}
+
+<div class="form-container">
+    <form method="post" action="{% url 'ordini:invio_moduli_mail' id %}" novalidate>
+        {% csrf_token %}
+        {% if inserimento %}
+        <div class = 'inserimento'>
+            <div class="form-floating" id = 'chiave'>
+                {% if form.is_bound %}
+                {% if form.chiave.errors %}
+                    {% render_field form.chiave class="form-control is-invalid" %}
+                    {% for error in form.chiave.errors  %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.chiave class="form-control is-valid" %}
+                {% endif %}
+                {% else %}
+                    {% render_field form.chiave class="form-control" %}
+                {% endif %}
+                <label class="font-custom" for="{{ form.chiave.id_for_label }}">{{ form.chiave.label_tag }}</label>
+            </div>
+            <button id= 'button_crea' class="bottone_viola" type="submit"  name="azione" value="chiave"><p id = 'menu_text_button'> Verifica </p></button>
+        </div>
+        {% endif %}
+        
+        <div id='conteiner_two_rect'>
+            <button type="submit" name="azione" value="sms" class = 'botton_rect'>
+                <p class= 'text_button_select_client'>Invio SMS</p>
+                <img
+                class="button_select_client_img"
+                src="{% static 'static_file/sms.png'%}"
+                alt="Immagine"
+                />
+                <p class= 'text_button_select_client_type' > Il codice sarà inviato al cliente tramite SMS al numero registrato
+                    nella sua scheda anagrafica</p>           
+            </button>
+            <button type="submit" name="azione" value="email" class = 'botton_rect'>
+                <p class= 'text_button_select_client'>Invio Mail</p>
+                <img
+                class="button_select_client_img"
+                src="{% static 'static_file/mail.png'%}"
+                alt="Immagine"
+                />
+                <p class= 'text_button_select_client_type' > Il codice sarà inviato al cliente tramite Email alla casella di
+                    posta elettronica registrata nella sua scheda anagrafica</p>       
+            </button>
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock %}
+{% block script %}
+   
+
+{% endblock script %}

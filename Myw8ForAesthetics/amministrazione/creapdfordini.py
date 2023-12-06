@@ -51,7 +51,7 @@ def moduloOrdine(request, id):
     can.drawString(310, 667, dati['cliente']['cap'])
 
     # # riga 4 - 23y
-    can.drawString(33, 644, dati['cliente']['indirizzo'])
+    can.drawString(33, 644, str(dati['cliente']['indirizzo']) + ' ' + str(dati['cliente']['numero_civico']))
     can.drawString(310, 644, dati['cliente']['codice_fiscale'])
 
     # riga 5 - 23y
@@ -210,7 +210,6 @@ def moduloOrdine(request, id):
         'file_privacy' : percorso_privacy
     }  
     
-    print(indirizzo_allegati)
     return indirizzo_allegati
 
 

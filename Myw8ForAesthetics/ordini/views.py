@@ -18,6 +18,7 @@ from amministrazione.views import inviomailchiave, inviosms, inviomailallegato, 
 from .form import FormRateale
 from clienti.form import FormChiave, ModuloInformazioniForm, AlimentiForm
 from amministrazione.creapdfordini import moduloOrdine, moduloOrdineFirmato
+from amministrazione.creapdfmoduli import moduloDati, moduloAlimenti
 # Create your views here.
 
 
@@ -487,13 +488,10 @@ def moduloalimenti_mancante(request, id):
             
         if response.status_code == 201:  # Status code per "Created"
 
-                return redirect('ordini:moduloalimenti_mancante', id=id)
+                return redirect('ordini:invio_moduli_mail', id=id)
         elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
             
-        
-        
-    
     
     context = {
 
@@ -502,6 +500,58 @@ def moduloalimenti_mancante(request, id):
     }
 
     return render(request, 'ordini/moduloalimenti.html', context)
+
+
+def invio_moduli(request, id):
+
+    risposta = False
+    if request.method == 'POST':
+
+        azione = request.POST.get('azione')
+        chiave = get_random_string(length=10, allowed_chars='0123456789')
+        if azione == 'sms':
+            risposta = inviosms(request, chiave, id)
+            request.session['firma_moduli_dati'] = chiave
+            # Esegui l'invio SMS
+        elif azione == 'email':
+            # idemail invio ordine
+            idemail = 1
+            percorso1 = moduloDati(request, id)
+            pdb.set_trace()
+            percorso2 = moduloAlimenti(request, id)
+            
+            risposta = inviomailchiaveallegato(
+                request, chiave, percorso, id, idemail)
+            request.session['firma_moduli_dati'] = chiave
+            print(chiave)
+            # Esegui l'invio Email
+        elif azione == 'chiave':
+            chiave_inserita = request.POST.get('chiave')
+            chiave = request.session['firma_moduli_dati']
+            if chiave == chiave_inserita:
+                # idemail invio ordine firmato
+                idemail = 2
+                percorso = moduloOrdineFirmato(request, id)
+                risposta = inviomailallegato(request, percorso, id, idemail)
+                # vedo se il cliente ha il modulo alimenti compilato
+                url_backend = settings.BASE_URL + \
+                    'cliente/clientedati/'+str(id)+'/'
+                headers = {
+                    "Authorization": f"Token {request.session['auth_token']}"}
+                response = requests.get(url_backend, headers=headers)
+                if response.status_code == 200:
+                    risposta = response.json()
+                elif response.status_code >= 400:
+                    return redirect('erroreserver', status_code=response.status_code, text=response.text)
+
+                if risposta['esiste']:
+                    return render(request, 'ordini/email_successo.html')
+                else:
+                    return redirect('ordini:modulodati_mancante', id=id)
+
+    form = FormChiave()
+    context = {'id': id, 'inserimento': risposta, 'form': form}
+    return render(request, 'ordini/invio_moduli.html', context)
 
 
 def elenco_ordini(request):
