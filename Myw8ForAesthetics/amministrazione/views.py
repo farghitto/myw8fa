@@ -152,15 +152,17 @@ def inviomailallegato(request, percorso, id, idemail):
         bcc_addresses = [emailAzienda['bcc'], emailAzienda['bcc2']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
-    
-    if percorso['file_privacy']:
+
+    if 'file_privacy' in percorso:
         email.attach_file(percorso['file_ordine'])
         email.attach_file(percorso['file_privacy'])
         email.attach_file(percorso['percorso_benvenuto'])
-             
-    else:
+
+    elif 'file_ordine' in percorso:
         email.attach_file(percorso['file_ordine'])
-        
+    elif 'file_modulo_dati' in percorso:
+        email.attach_file(percorso['file_modulo_dati'])
+        email.attach_file(percorso['file_modulo_alimenti'])
     email.send()
     try:
         num_email_inviati = 2
@@ -210,16 +212,21 @@ def inviomailchiaveallegato(request, chiave, percorso, id, idemail):
         bcc_addresses = [emailAzienda['bcc'], emailAzienda['bcc2']]
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
-        
-    if percorso['file_privacy']:
+
+    if 'file_privacy' in percorso:
         email.attach_file(percorso['file_ordine'])
-        email.attach_file(percorso['file_privacy'])     
-    else:
+        email.attach_file(percorso['file_privacy'])
+    elif 'file_ordine' in percorso:
         email.attach_file(percorso['file_ordine'])
-    
-        
-        
-    email.send()
+    elif 'file_modulo_dati' in percorso:
+        email.attach_file(percorso['file_modulo_dati'])
+        email.attach_file(percorso['file_modulo_alimenti'])
+
+    try:
+        email.send()
+    except Exception as e:
+        print(f"Errore durante l'invio dell'email: {str(e)}")
+
     try:
         num_email_inviati = 2
         ritorno = True
@@ -227,3 +234,4 @@ def inviomailchiaveallegato(request, chiave, percorso, id, idemail):
         ritorno = False
 
     return ritorno
+
