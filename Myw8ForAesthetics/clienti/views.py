@@ -26,6 +26,7 @@ from .form import ClientiSearchForm, FormChiave
 from .apiapp import dati_cliente_misure, dati_cliente_profilo
 from amministrazione.creapdfcheckup import ModuloPersonal
 from amministrazione.views import inviomailchiave, inviosms, inviomailallegato
+from amministrazione.myofficeapi import crea_cliente_myoffice
 
 import pdb
 
@@ -102,9 +103,9 @@ def crea_cliente(request):
         form = FormCliente(request.POST)
 
         if form.is_valid():
-            
+
             # Prendi i dati dal form
-            payload = {
+            dati = {
                 'nome': form.cleaned_data['nome'],
                 'cognome': form.cleaned_data['cognome'],
                 'citta_nascita': form.cleaned_data['citta_nascita'],
@@ -122,7 +123,7 @@ def crea_cliente(request):
                 'email': form.cleaned_data['email'],
                 'sesso': form.cleaned_data['sesso'],
                 'note': form.cleaned_data['note'],
-                
+
             }
 
             # Effettua la richiesta POST all'API
@@ -131,11 +132,12 @@ def crea_cliente(request):
                 "Authorization": f"Token {request.session['auth_token']}"
             }
             response = requests.post(
-                url_backend, data=payload, headers=headers)
+                url_backend, data=dati, headers=headers)
 
             if response.status_code == 201:  # Status code per "Created"
                 # Redirect alla lista dei clienti o dove preferisci
                 request.session['ultimo_utente'] = response.json()
+                crea_cliente_myoffice(dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -156,7 +158,7 @@ def crea_cliente_piva(request):
         if form.is_valid():
 
             # Prendi i dati dal form
-            payload = {
+            dati = {
                 'nome': form.cleaned_data['nome'],
                 'cognome': form.cleaned_data['cognome'],
                 'citta_nascita': form.cleaned_data['citta_nascita'],
@@ -191,10 +193,11 @@ def crea_cliente_piva(request):
                 "Authorization": f"Token {request.session['auth_token']}"
             }
             response = requests.post(
-                url_backend, data=payload, headers=headers)
+                url_backend, data=dati, headers=headers)
 
             if response.status_code == 201:  # Status code per "Created"
                 request.session['ultimo_utente'] = response.json()
+                crea_cliente_myoffice(dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -215,7 +218,7 @@ def crea_cliente_minore(request):
         if form.is_valid():
 
             # Prendi i dati dal form
-            payload = {
+            dati = {
                 'nome': form.cleaned_data['nome'],
                 'cognome': form.cleaned_data['cognome'],
                 'citta_nascita': form.cleaned_data['citta_nascita'],
@@ -246,10 +249,11 @@ def crea_cliente_minore(request):
                 "Authorization": f"Token {request.session['auth_token']}"
             }
             response = requests.post(
-                url_backend, data=payload, headers=headers)
+                url_backend, data=dati, headers=headers)
 
             if response.status_code == 201:  # Status code per "Created"
                 request.session['ultimo_utente'] = response.json()
+                crea_cliente_myoffice(dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
