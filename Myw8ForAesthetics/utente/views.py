@@ -1,3 +1,4 @@
+import pdb
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import HttpResponse
@@ -40,6 +41,10 @@ def login_view(request):
 
             request.session['auth_token'] = token
             request.session['user_id'] = user_id
+            request.session['username'] = username
+            request.session['password'] = password
+            
+            
 
             return redirect('utente:homec')
 

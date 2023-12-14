@@ -98,12 +98,13 @@ def get_codice_fiscale(request):
 @handle_exceptions
 def crea_cliente(request):
 
-    #
     if request.method == 'POST':
         form = FormCliente(request.POST)
 
         if form.is_valid():
-
+        
+           
+           
             # Prendi i dati dal form
             dati = {
                 'nome': form.cleaned_data['nome'],
@@ -115,8 +116,8 @@ def crea_cliente(request):
                 'indirizzo': form.cleaned_data['indirizzo'],
                 'cap': form.cleaned_data['cap'],
                 'citta': form.cleaned_data['citta'],
-                'provincia_residenza': form.cleaned_data['provincia_residenza'],
-                'stato_residenza': form.cleaned_data['stato_residenza'],
+                'provincia_residenza': form.cleaned_data['provincia'],
+                'stato_residenza': form.cleaned_data['stato'],
                 'codice_fiscale': form.cleaned_data['codice_fiscale'],
                 'telefono': form.cleaned_data['telefono'],
                 'cellulare': form.cleaned_data['cellulare'],
@@ -125,19 +126,20 @@ def crea_cliente(request):
                 'note': form.cleaned_data['note'],
 
             }
-
+            
             # Effettua la richiesta POST all'API
             url_backend = settings.BASE_URL + 'cliente/lista/'
             headers = {
                 "Authorization": f"Token {request.session['auth_token']}"
             }
+            
             response = requests.post(
                 url_backend, data=dati, headers=headers)
-
+            
             if response.status_code == 201:  # Status code per "Created"
                 # Redirect alla lista dei clienti o dove preferisci
                 request.session['ultimo_utente'] = response.json()
-                crea_cliente_myoffice(dati)
+                crea_cliente_myoffice(request, dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -168,8 +170,8 @@ def crea_cliente_piva(request):
                 'indirizzo': form.cleaned_data['indirizzo'],
                 'cap': form.cleaned_data['cap'],
                 'citta': form.cleaned_data['citta'],
-                'provincia_residenza': form.cleaned_data['provincia_residenza'],
-                'stato_residenza': form.cleaned_data['stato_residenza'],
+                'provincia_residenza': form.cleaned_data['provincia'],
+                'stato_residenza': form.cleaned_data['stato'],
                 'codice_fiscale': form.cleaned_data['codice_fiscale'],
                 'telefono': form.cleaned_data['telefono'],
                 'cellulare': form.cleaned_data['cellulare'],
@@ -197,7 +199,7 @@ def crea_cliente_piva(request):
 
             if response.status_code == 201:  # Status code per "Created"
                 request.session['ultimo_utente'] = response.json()
-                crea_cliente_myoffice(dati)
+                crea_cliente_myoffice(request, dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -228,8 +230,8 @@ def crea_cliente_minore(request):
                 'indirizzo': form.cleaned_data['indirizzo'],
                 'cap': form.cleaned_data['cap'],
                 'citta': form.cleaned_data['citta'],
-                'provincia_residenza': form.cleaned_data['provincia_residenza'],
-                'stato_residenza': form.cleaned_data['stato_residenza'],
+                'provincia_residenza': form.cleaned_data['provincia'],
+                'stato_residenza': form.cleaned_data['stato'],
                 'codice_fiscale': form.cleaned_data['codice_fiscale'],
                 'telefono': form.cleaned_data['telefono'],
                 'cellulare': form.cleaned_data['cellulare'],
@@ -253,7 +255,7 @@ def crea_cliente_minore(request):
 
             if response.status_code == 201:  # Status code per "Created"
                 request.session['ultimo_utente'] = response.json()
-                crea_cliente_myoffice(dati)
+                crea_cliente_myoffice(request, dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)

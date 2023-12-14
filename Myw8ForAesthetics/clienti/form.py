@@ -34,6 +34,7 @@ class FormCliente(forms.Form):
     indirizzo = forms.CharField(max_length=100, label='Indirizzo di residenza:',
                                 widget=forms.TextInput(
                                     attrs={'class': 'form-control font-custom', 'placeholder': 'indirizzo'}),
+    
                                 error_messages={'required': "L'indirizzo è obbligatorio."})
     cap = forms.CharField(max_length=10, label='Cap:',
                           widget=forms.NumberInput(
