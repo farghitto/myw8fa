@@ -19,7 +19,6 @@ from datetime import datetime
 from codicefiscale import codicefiscale
 
 from Myw8ForAesthetics.decorators import handle_exceptions, handle_error_response
-from .models import Cliente
 from .form import FormCliente, FormClientePiva, FormClienteMinore
 from .form import FormMisure, FormMisureRiassunto
 from .form import ClientiSearchForm, FormChiave
@@ -95,7 +94,7 @@ def get_codice_fiscale(request):
     return JsonResponse(data)
 
 
-@handle_exceptions
+
 def crea_cliente(request):
 
     if request.method == 'POST':

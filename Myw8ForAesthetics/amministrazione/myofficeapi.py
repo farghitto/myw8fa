@@ -1,3 +1,4 @@
+import imp
 import pdb
 import re
 import requests
@@ -5,6 +6,8 @@ import requests
 from django.shortcuts import render, redirect
 
 from django.conf import settings
+
+from clienti.models import AnagraficaCliente
 
 
 def estrai_numero(input_string):
@@ -24,24 +27,7 @@ def elimina_numero(input_string):
     return nuova_stringa
 
 
-def autenticazione(request):
-    
-    url = settings.MYOFFICE_URL + 'api/autenticazione/'
-    data = {
-            "username": request.session['username'],           
-            "password": request.session['password']
-        }
 
-    
-    response = requests.post(url, data=data)
-    print(response.text)
-    
-    if response.status_code == 200:
-
-            request.session['myoffice_token'] = response.json()["token"]
-            print(response.json()["token"])
-    
-    return True
 
 
 
@@ -67,7 +53,7 @@ def crea_cliente_myoffice (request, dati):
         'email':dati['email'],
         'sesso':dati['sesso'],
         'note':dati['note'],
-        'consuelente_id': request.session['user_id']
+        'consulente_id': request.session['user_id']
         
     }
     
@@ -97,22 +83,12 @@ def crea_cliente_myoffice (request, dati):
         
         dati_da_inviare.update(nuovi_dati)
     
-    if not 'myoffice_token' in request.session:
-        risposta = autenticazione(request)
-    pdb.set_trace()
-    
-    # Effettua la richiesta POST all'API
-    url_backend = settings.MYOFFICE_URL + 'api/crea_cliente'
-   
-    
-    response = requests.post(
-        url_backend, data=dati_da_inviare)
-    
+    nuovo_cliente = AnagraficaCliente.objects.create(**dati_da_inviare)
+    nuovo_cliente.save()
     
     pdb.set_trace()
         
-    if response.status_code >= 400:
-        return redirect('erroreserver', status_code=response.status_code, text=response.text)
+ 
 
     
     return True
