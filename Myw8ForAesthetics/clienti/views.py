@@ -25,8 +25,8 @@ from .form import ClientiSearchForm, FormChiave
 from .apiapp import dati_cliente_misure, dati_cliente_profilo
 from amministrazione.creapdfcheckup import ModuloPersonal
 from amministrazione.views import inviomailchiave, inviosms, inviomailallegato
-from amministrazione.myofficeapi import crea_cliente_myoffice
-
+from amministrazione.myofficeapi import crea_cliente_myoffice, modifica_cliente_myoffice, aggiungi_modifica_myoffice
+from amministrazione.myofficeapi import inserisci_misure_myoffice
 import pdb
 
 
@@ -94,16 +94,13 @@ def get_codice_fiscale(request):
     return JsonResponse(data)
 
 
-
 def crea_cliente(request):
 
     if request.method == 'POST':
         form = FormCliente(request.POST)
 
         if form.is_valid():
-        
-           
-           
+
             # Prendi i dati dal form
             dati = {
                 'nome': form.cleaned_data['nome'],
@@ -125,16 +122,16 @@ def crea_cliente(request):
                 'note': form.cleaned_data['note'],
 
             }
-            
+
             # Effettua la richiesta POST all'API
             url_backend = settings.BASE_URL + 'cliente/lista/'
             headers = {
                 "Authorization": f"Token {request.session['auth_token']}"
             }
-            
+
             response = requests.post(
                 url_backend, data=dati, headers=headers)
-            
+
             if response.status_code == 201:  # Status code per "Created"
                 # Redirect alla lista dei clienti o dove preferisci
                 request.session['ultimo_utente'] = response.json()
@@ -474,7 +471,7 @@ def modifica_cliente(request, id):
             if form.is_valid():
 
                 # Prendi i dati dal form
-                payload = {
+                dati = {
                     'nome': form.cleaned_data['nome'],
                     'cognome': form.cleaned_data['cognome'],
                     'citta_nascita': form.cleaned_data['citta_nascita'],
@@ -505,10 +502,11 @@ def modifica_cliente(request, id):
                 # Effettua la richiesta Put all'API per aggiornare
 
                 response = requests.put(
-                    url_backend, data=payload, headers=headers)
+                    url_backend, data=dati, headers=headers)
 
                 if response.status_code == 200:
                     # Redirect alla lista dei clienti
+                    modifica_cliente_myoffice(request, dati, id)
                     return redirect('clienti:search_clienti')
                 elif response.status_code >= 400:
                     return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -530,7 +528,7 @@ def modifica_cliente(request, id):
             if form.is_valid():
 
                 # Prendi i dati dal form
-                payload = {
+                dati = {
                     'nome': form.cleaned_data['nome'],
                     'cognome': form.cleaned_data['cognome'],
                     'citta_nascita': form.cleaned_data['citta_nascita'],
@@ -557,11 +555,11 @@ def modifica_cliente(request, id):
                 # Effettua la richiesta Put all'API per aggiornare
 
                 response = requests.put(
-                    url_backend, data=payload, headers=headers)
+                    url_backend, data=dati, headers=headers)
 
                 if response.status_code == 200:
 
-                    # Redirect alla lista dei clienti
+                    modifica_cliente_myoffice(request, dati, id)
                     return redirect('clienti:search_clienti')
                 elif response.status_code >= 400:
                     return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -583,7 +581,7 @@ def modifica_cliente(request, id):
             if form.is_valid():
 
                 # Prendi i dati dal form
-                misure = {
+                dati = {
                     'nome': form.cleaned_data['nome'],
                     'cognome': form.cleaned_data['cognome'],
                     'citta_nascita': form.cleaned_data['citta_nascita'],
@@ -606,10 +604,10 @@ def modifica_cliente(request, id):
                 # Effettua la richiesta Put all'API per aggiornare
 
                 response = requests.put(
-                    url_backend, data=misure, headers=headers)
+                    url_backend, data=dati, headers=headers)
 
                 if response.status_code == 200:
-
+                    modifica_cliente_myoffice(request, dati, id)
                     # Redirect alla lista dei clienti
                     return redirect('clienti:search_clienti')
                 elif response.status_code >= 400:
@@ -674,7 +672,9 @@ def crea_misura(request):
                     url_backend, data=informazioni_cliente, headers=headers)
 
                 if response.status_code == 200:
+                    aggiungi_modifica_myoffice(informazioni_cliente, str(dati_cliente['id']))
                     request.session['ultimo_utente'] = response.json()
+                    
                 elif response.status_code >= 400:
                     return redirect('erroreserver', status_code=response.status_code, text=response.text)
             # inserimento misura
@@ -685,6 +685,7 @@ def crea_misura(request):
             response = requests.post(
                 url_backend, data=misure, headers=headers)
             if response.status_code == 200 or response.status_code == 201:
+                inserisci_misure_myoffice (misure, str(dati_cliente['id']))
                 return redirect('clienti:misure_riepilogo_clienti', id=dati_cliente['id'])
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
