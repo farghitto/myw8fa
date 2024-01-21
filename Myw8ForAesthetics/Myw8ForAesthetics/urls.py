@@ -24,6 +24,8 @@ urlpatterns = [
     path('cliente/', include('clienti.urls')),
     path('amministrazione/', include('amministrazione.urls')),
     path('ordini/', include('ordini.urls')),
+    path('calendario/', include('calendario.urls')),
+    
 
 
     path('erroreserver/<int:status_code>/<str:text>/',

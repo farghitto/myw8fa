@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %} Appuntamenti {% endblock title %}
+{% block header %}
+
+<div id="text_header_rect" class = 'purple_rect'>
+    <p id="text_header" class="text"> Appuntamenti </p>
+</div>
+
+{% endblock header%}
+{% block css %}
+    
+{% endblock css %}
+{% block scriptlibrerie %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.10/index.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.10/index.global.js'></script>
+    <script src=https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/it.js></script>
+    <link rel="stylesheet" href="{% static 'css/agenda.css' %}" />
+   
+{% endblock scriptlibrerie %}
+{% block content %}
+<div class="container">
+    <div class="row">
+      
+            <div id='calendar'></div> 
+       </div> 
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            },
+            locale: 'it',
+            buttonIcons: false, // show the prev/next text
+            weekNumbers: false,
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            dayMaxEvents: true, // allow "more" link when too many events
+            themeSystem: 'bootstrap5',
+            slotMinTime: '07:00',
+            slotMaxTime: '21:00',
+            events: '/calendario/',
+
+            dateClick: function(start, end, allDay) {
+                var title = prompt("Aggiungi Appuntamento");
+                if (title) {
+                    var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
+                    var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+                    $.ajax({
+                        type: "GET",
+                        url: '/add_event',
+                        data: {'title': title, 'start': start, 'end': end},
+                        dataType: "json",
+                        success: function (data) {
+                            calendar.fullCalendar('refetchEvents');
+                            alert("Added Successfully");
+                        },
+                        error: function (data) {
+                            alert('There is a problem!!!');
+                        }
+                    });
+                }
+            },
+          });
+        
+          calendar.render();
+        });
+ </script>
+
+  
+{% endblock script %}
