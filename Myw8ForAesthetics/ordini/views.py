@@ -445,22 +445,22 @@ def moduloalimenti_mancante(request, id):
 
     lista_di_alimenti = alimenti
 
-    if gusti['filosofia_alimentare'] == 'Vegetariano':
+    # if gusti['filosofia_alimentare'] == 'Vegetariano':
 
-        elementi_da_rimuovere = ['Agnello', 'Coniglio', 'Crostacei', 'Maiale',
-                                 'Manzo', 'Molluschi', 'Pesce', 'Pollo', 'Tacchino', 'Vitello']
+    #     elementi_da_rimuovere = ['Agnello', 'Coniglio', 'Crostacei', 'Maiale',
+    #                              'Manzo', 'Molluschi', 'Pesce', 'Pollo', 'Tacchino', 'Vitello']
 
-    # Filtra gli elementi rimuovendo quelli con 'nome' o 'classe_alimenti' nei valori da rimuovere
-        lista_di_alimenti_filtrata = [
-            alimento for alimento in lista_di_alimenti if alimento['classe_alimenti'] not in elementi_da_rimuovere]
-    else:
-        if gusti['maile'] == 'No':
+    # # Filtra gli elementi rimuovendo quelli con 'nome' o 'classe_alimenti' nei valori da rimuovere
+    #     lista_di_alimenti_filtrata = [
+    #         alimento for alimento in lista_di_alimenti if alimento['classe_alimenti'] not in elementi_da_rimuovere]
+    # else:
+    #     if gusti['maile'] == 'No':
 
-            lista_di_alimenti_filtrata = [
-                alimento for alimento in lista_di_alimenti if alimento['classe_alimenti'] != 'Maiale']
-        else:
+    #         lista_di_alimenti_filtrata = [
+    #             alimento for alimento in lista_di_alimenti if alimento['classe_alimenti'] != 'Maiale']
+    #     else:
 
-            lista_di_alimenti_filtrata = lista_di_alimenti
+    lista_di_alimenti_filtrata = lista_di_alimenti
 
     if request.method == 'POST':
 
@@ -623,7 +623,7 @@ def elenco_ordini(request):
 
 def info_ordine(request, id):
 
-    url_backend = settings.BASE_URL + 'ordini/ordine/' + str(id)
+    url_backend = settings.BASE_URL + 'ordini/dettagli/' + str(id)
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
     }
@@ -633,6 +633,6 @@ def info_ordine(request, id):
     elif response.status_code >= 400:
         return redirect('erroreserver', status_code=response.status_code, text=response.text)
 
-    context = {'ordini': ordini}
-
+    context = {'programma': ordini}
+    print(ordini)
     return render(request, 'ordini/informazione_ordine.html', context)

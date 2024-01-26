@@ -153,16 +153,16 @@ def inviomailallegato(request, percorso, id, idemail):
         email = EmailMessage(subject, text_content,
                              from_email, [to], bcc=bcc_addresses)
 
-    if 'file_privacy' in percorso:
-        email.attach_file(percorso['file_ordine'])
-        email.attach_file(percorso['file_privacy'])
-        email.attach_file(percorso['percorso_benvenuto'])
+    # if 'file_privacy' in percorso:
+    #     email.attach_file(percorso['file_ordine'])
+    #     #email.attach_file(percorso['file_privacy'])
+    #     email.attach_file(percorso['percorso_benvenuto'])
 
-    elif 'file_ordine' in percorso:
-        email.attach_file(percorso['file_ordine'])
-    elif 'file_modulo_dati' in percorso:
-        email.attach_file(percorso['file_modulo_dati'])
-        email.attach_file(percorso['file_modulo_alimenti'])
+    # elif 'file_ordine' in percorso:
+    #     email.attach_file(percorso['file_ordine'])
+    # elif 'file_modulo_dati' in percorso:
+    #     email.attach_file(percorso['file_modulo_dati'])
+    #     email.attach_file(percorso['file_modulo_alimenti'])
     email.send()
     try:
         num_email_inviati = 2

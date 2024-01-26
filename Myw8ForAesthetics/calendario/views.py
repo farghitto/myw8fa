@@ -29,9 +29,10 @@ def appuntamenti(request):
             'end': appuntamento['fine'],
             'id': appuntamento['id'],
             'descrizione': appuntamento['descrizione'],
+            'effettuato': appuntamento['effettuato']
         })
         
-        print(events)
+    print(events)
     return JsonResponse(events, safe=False)
 
 def indice(request):  
@@ -55,11 +56,11 @@ def aggiungi_appuntamento(request):
     start = request.GET.get("start", None)
     end = request.GET.get("end", None)
     title = request.GET.get("title", None)
-    description = request.GET.get("title", None)
+    description = request.GET.get("description", None)
     
     if end is None:
         end = start
-    
+    print(end)
     url_backend = settings.BASE_URL + 'calendario/crea_appuntamento/'
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
@@ -105,3 +106,52 @@ def rimuovi_appuntamento(request):
     response = requests.delete(url_backend, headers=headers)
     data = {}
     return JsonResponse(data)
+
+def modifica_appuntamento(request):
+    id = request.GET.get("id", None)
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    
+    url_backend = settings.BASE_URL + 'calendario/appuntamento/' + str(id) +'/'
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    if end == '':
+        data = {
+            'id' : id,
+            'inizio' : start,
+            
+            
+        }
+    else:
+         data = {
+            'id' : id,
+            'inizio' : start,
+            'fine' : end,
+            
+        }
+    response = requests.patch(url_backend, data=data, headers=headers)
+    data = {}
+    return JsonResponse(data)
+
+def conferma_appuntamento(request):
+    id = request.GET.get("id", None)
+    
+    url_backend = settings.BASE_URL + 'calendario/appuntamento/' + str(id) +'/'
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    
+    data = {
+        'id' : id,
+        'effettuato' : True
+        
+    }
+    
+    
+    response = requests.patch(url_backend, data=data, headers=headers)
+    data = {}
+    return JsonResponse(data)
+    
+    
+

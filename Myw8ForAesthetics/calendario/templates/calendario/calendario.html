@@ -56,20 +56,20 @@
             editable: true,
             dayMaxEvents: true, // allow "more" link when too many events
             themeSystem: 'bootstrap5',
+            defaultTimedEventDuration: '00:30:00',
+            minTime: '07:00:00',
             slotMinTime: '07:00',
             slotMaxTime: '21:00',
             eventSources: [
-
             // your event source
             {
               url: '{% url 'calendario:lista_appuntamenti' %}', // use the `url` property
               color: '#d7d4de',    // an option!
               textColor: 'black'  // an option!
-            }
-        
-            // any other sources...
-        
+            }  
           ],
+
+        
             
           dateClick: function(info) {
             Swal.fire({
@@ -77,6 +77,11 @@
                 html:
                     '<input id="swal-input1" class="swal2-input" placeholder="Inserisci il titolo">' +
                     '<input id="swal-input2" class="swal2-input" placeholder="Inserisci la descrizione">',
+                showCancelButton: true,
+                confirmButtonText: 'Inserisci', 
+                cancelButtonText: 'Chiudi',
+                confirmButtonColor: '#83719c',
+                cancelButtonColor: '#83719c',
                 focusConfirm: false,
                 preConfirm: () => {
                     const title = Swal.getPopup().querySelector('#swal-input1').value;
@@ -87,6 +92,10 @@
                     }
         
                     return { title, description };
+                },
+                customClass: {
+                    confirmButton: 'custom-confirm-button', // Aggiungi la tua classe CSS per il pulsante "Aggiungi"
+                    cancelButton: 'custom-cancel-button' // Aggiungi la tua classe CSS per il pulsante "Chiudi"
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -116,6 +125,12 @@
                 html:
                     '<input id="swal-input1" class="swal2-input" placeholder="Inserisci il titolo">' +
                     '<input id="swal-input2" class="swal2-input" placeholder="Inserisci la descrizione">',
+                
+                showCancelButton: true,
+                confirmButtonText: 'Inserisci', 
+                cancelButtonText: 'Chiudi',
+                confirmButtonColor: '#83719c',
+                cancelButtonColor: '#83719c',
                 focusConfirm: false,
                 preConfirm: () => {
                     const title = Swal.getPopup().querySelector('#swal-input1').value;
@@ -150,18 +165,39 @@
         
 
         eventClick: function(info) {
+            var id = info.event.id;
+        
             Swal.fire({
-                title: 'Rimuovi Appuntamento',
-                text: 'Vuoi rimuovere l\'appuntamento?',
-                icon: 'warning',
+                title: 'Conferma o Cancella?',
+                text: 'Scegli se confermare l\'appuntamento o cancellarlo.',
+                icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sì, rimuovi!',
-                cancelButtonText: 'Annulla'
+                showDenyButton: true,
+                confirmButtonColor: '#83719c',
+                cancelButtonColor: '#83719c',
+                denyButtonColor: '#83719c',
+                confirmButtonText: 'Appuntamento Effettuato',
+                cancelButtonText: 'Cancella Appuntamento',
+                denyButtonText: `Annulla`,
+               
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var id = info.event.id;
+                    // Effettua la conferma
+                    $.ajax({
+                        type: "GET",
+                        url: '{% url 'calendario:conferma_appuntamento' %}',
+                        data: {'id': id},
+                        dataType: "json",
+                        success: function (data) {
+                            calendar.refetchEvents();
+                            Swal.fire('Confermato!', 'L\'appuntamento è stato confermato con successo.', 'success');
+                        },
+                        error: function (data) {
+                            Swal.fire('Errore!', 'Si è verificato un problema durante la conferma dell\'appuntamento.', 'error');
+                        }
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Cancella l'appuntamento
                     $.ajax({
                         type: "GET",
                         url: '{% url 'calendario:rimuovi_appuntamento' %}',
@@ -175,13 +211,13 @@
                             Swal.fire('Errore!', 'Si è verificato un problema durante la rimozione.', 'error');
                         }
                     });
-                }
+                } 
             });
         },
         
 
         eventDidMount: function(info) {
-            debugger;
+           
             $(info.el).popover({
                 
                 title: info.event.title,
@@ -190,11 +226,43 @@
                 content: info.event.extendedProps.descrizione,
                 container: 'body'
             });
+    
+            if (info.event.extendedProps.effettuato == true)
+            {
+                $(info.el).find(".fc-list-event-dot").css('border-color','#2a7568'); 
+                $(info.el).find(".fc-daygrid-event-dot").css('border-color','#2a7568');
+                $(info.el).find(".fc-event-main").css('color','#2a7568');
+                }
+           
           },
 
-          });
+        eventDrop: function(info) {
+      
+            var id = info.event.id;
+            var start = info.event.startStr;
+            var end = info.event.endStr;
 
-          
+            $('.popover').remove();
+        
+                    $.ajax({
+                        type: "GET",
+                        url: '{% url 'calendario:modifica_appuntamento' %}',
+                        data: {'id': id, 'start': start, 'end': end},
+                        dataType: "json",
+                        success: function (data) {
+                            calendar.refetchEvents();
+                            
+                        },
+                        error: function (data) {                        
+                        }
+                    });
+        },
+
+    
+        
+    });
+
+       
         
           calendar.render();
         });

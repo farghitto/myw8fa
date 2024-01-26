@@ -135,7 +135,7 @@ def crea_cliente(request):
             if response.status_code == 201:  # Status code per "Created"
                 # Redirect alla lista dei clienti o dove preferisci
                 request.session['ultimo_utente'] = response.json()
-                crea_cliente_myoffice(request, dati)
+                #crea_cliente_myoffice(request, dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -195,7 +195,7 @@ def crea_cliente_piva(request):
 
             if response.status_code == 201:  # Status code per "Created"
                 request.session['ultimo_utente'] = response.json()
-                crea_cliente_myoffice(request, dati)
+                #crea_cliente_myoffice(request, dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -251,7 +251,7 @@ def crea_cliente_minore(request):
 
             if response.status_code == 201:  # Status code per "Created"
                 request.session['ultimo_utente'] = response.json()
-                crea_cliente_myoffice(request, dati)
+                #crea_cliente_myoffice(request, dati)
                 return redirect('clienti:postcliente')
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -506,7 +506,7 @@ def modifica_cliente(request, id):
 
                 if response.status_code == 200:
                     # Redirect alla lista dei clienti
-                    modifica_cliente_myoffice(request, dati, id)
+                    #modifica_cliente_myoffice(request, dati, id)
                     return redirect('clienti:search_clienti')
                 elif response.status_code >= 400:
                     return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -559,7 +559,7 @@ def modifica_cliente(request, id):
 
                 if response.status_code == 200:
 
-                    modifica_cliente_myoffice(request, dati, id)
+                    #modifica_cliente_myoffice(request, dati, id)
                     return redirect('clienti:search_clienti')
                 elif response.status_code >= 400:
                     return redirect('erroreserver', status_code=response.status_code, text=response.text)
@@ -607,7 +607,7 @@ def modifica_cliente(request, id):
                     url_backend, data=dati, headers=headers)
 
                 if response.status_code == 200:
-                    modifica_cliente_myoffice(request, dati, id)
+                    #modifica_cliente_myoffice(request, dati, id)
                     # Redirect alla lista dei clienti
                     return redirect('clienti:search_clienti')
                 elif response.status_code >= 400:
@@ -621,7 +621,7 @@ def modifica_cliente(request, id):
             return render(request, 'clienti/modificacliente.html',  {'form': form})
 
 
-@handle_exceptions
+
 def crea_misura(request):
 
     dati_cliente = request.session['ultimo_utente']
@@ -672,7 +672,7 @@ def crea_misura(request):
                     url_backend, data=informazioni_cliente, headers=headers)
 
                 if response.status_code == 200:
-                    aggiungi_modifica_myoffice(informazioni_cliente, str(dati_cliente['id']))
+                    #aggiungi_modifica_myoffice(informazioni_cliente, str(dati_cliente['id']))
                     request.session['ultimo_utente'] = response.json()
                     
                 elif response.status_code >= 400:
@@ -685,7 +685,7 @@ def crea_misura(request):
             response = requests.post(
                 url_backend, data=misure, headers=headers)
             if response.status_code == 200 or response.status_code == 201:
-                inserisci_misure_myoffice (misure, str(dati_cliente['id']))
+                #inserisci_misure_myoffice (misure, str(dati_cliente['id']))
                 return redirect('clienti:misure_riepilogo_clienti', id=dati_cliente['id'])
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)
