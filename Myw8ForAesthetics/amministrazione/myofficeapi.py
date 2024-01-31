@@ -82,6 +82,22 @@ def crea_cliente_myoffice(request, dati):
 
     nuovo_cliente = AnagraficaCliente.objects.create(**dati_da_inviare)
     nuovo_cliente.save()
+    
+    id = nuovo_cliente.id
+    
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+
+    headers = {
+        "Authorization": f"Token {request.session['auth_token']}"
+    }
+    
+    dati = {       
+        'id_utente_myoffice' : id      
+    }
+       
+    response = requests.put(
+                    url_backend, data=dati, headers=headers)
+    
 
     return True
 
