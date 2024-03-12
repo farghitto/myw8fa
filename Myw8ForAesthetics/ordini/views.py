@@ -201,7 +201,7 @@ def riassuntoinfo(request, id):
                 url_backend, data=dati, headers=headers)
 
             if response.status_code == 201:  # Status code per "Created"
-
+                crea_ordine(dati)
                 return redirect(reverse('ordini:invio_ordine_mail', args=[id_cliente]))
             elif response.status_code >= 400:
                 return redirect('erroreserver', status_code=response.status_code, text=response.text)

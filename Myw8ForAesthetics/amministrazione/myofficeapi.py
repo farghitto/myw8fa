@@ -28,7 +28,7 @@ def elimina_numero(input_string):
     return nuova_stringa
 
 
-def crea_cliente_myoffice(request, dati):
+def crea_cliente_myoffice(request, dati, id_sistema):
 
     indirizzo = dati['indirizzo']
     numero_civico = estrai_numero(indirizzo)
@@ -83,19 +83,19 @@ def crea_cliente_myoffice(request, dati):
     nuovo_cliente = AnagraficaCliente.objects.create(**dati_da_inviare)
     nuovo_cliente.save()
     
-    id = nuovo_cliente.id
+    id_cliente = nuovo_cliente.id
     
-    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id)+'/'
+    url_backend = settings.BASE_URL + 'cliente/clienti/'+str(id_sistema)+'/'
 
     headers = {
         "Authorization": f"Token {request.session['auth_token']}"
     }
     
     dati = {       
-        'id_utente_myoffice' : id      
+        'id_utente_myoffice' : id_cliente      
     }
-       
-    response = requests.put(
+   
+    response = requests.patch(
                     url_backend, data=dati, headers=headers)
     
 
@@ -143,6 +143,7 @@ def modifica_cliente_myoffice(request, dati, id):
         cliente.beneficiario_codice_fiscale = dati['beneficiario_codice_fiscale']
         cliente.beneficiario_cellulare = dati['beneficiario_cellulare']
 
+    
     cliente.save()
 
     return True
